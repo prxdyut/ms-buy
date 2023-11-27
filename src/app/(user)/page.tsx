@@ -47,7 +47,7 @@ const getFeaturedItemsAsync = () => {
   return client.fetch(groq`${getAllFeaturedItemsQueries}`);
 };
 
-export const revalidate = 60; // revalidate this page every 60 seconds
+export const revalidate = 60;
 
 export default async function Home() {
   const featuredItems: IFeaturedItems[] = await getFeaturedItemsAsync();
@@ -56,7 +56,7 @@ export default async function Home() {
     <main>
       <Banner />
       <TopCategories categories={featuredItems[0].topCategories} />
-      <FeaturedProducts
+      {/* <FeaturedProducts
         title="Best Deals For You"
         products={featuredItems[0].bestDeals}
       />
@@ -67,7 +67,8 @@ export default async function Home() {
       <FeaturedProducts
         title="Trending Products"
         products={featuredItems[0].trendingProducts}
-      />
+      /> */}
+      {/* {console.log(featuredItems)} */}
     </main>
   );
 }
