@@ -3,7 +3,7 @@
 import { Loading } from '@src/components/Loading/Loading';
 import { NextPage } from 'next';
 
-const LoadingPage: NextPage = () => {
+const LoadingPage = () => {
   return <Loading />;
 };
 

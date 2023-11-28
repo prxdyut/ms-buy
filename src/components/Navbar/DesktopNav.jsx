@@ -5,6 +5,7 @@ import { AppLogo } from '../AppLogo';
 import { Cart } from '../Cart/Cart';
 import { Wishlist } from '../Wishlist/Wishlist';
 import { Search } from '../Search/Search';
+import { UserButton } from "@clerk/nextjs";
 
 export function DesktopNav() {
   return (
@@ -34,6 +35,7 @@ export function DesktopNav() {
       <Stack direction="row" spacing={2}>
         <Wishlist />
         <Cart />
+        <UserButton afterSignOutUrl="/"/>
       </Stack>
     </Flex>
   );

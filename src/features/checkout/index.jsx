@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import {
   Box,
   Button,
@@ -16,33 +16,113 @@ import {
   RadioGroup,
   Stack,
   Text,
-} from '@chakra-ui/react';
-import { AppContext } from '@src/context/AppContext';
-import { calculateItemsTotal, formatPrice, getSubstring } from '@src/helpers';
-import React, { useContext, useEffect, useState } from 'react';
+} from "@chakra-ui/react";
+import { AppContext } from "@src/context/AppContext";
+import { calculateItemsTotal, formatPrice, getSubstring } from "@src/helpers";
+import { useRouter } from "next/navigation";
+import Script from "next/script";
+import React, { useContext, useEffect, useState } from "react";
 
 export const Checkout = () => {
-  const [subTotal, setSubTotal] = useState<number>(0);
-  const [tax, setTax] = useState<number>(0);
+  const [subTotal, setSubTotal] = useState(0);
+  const [tax, setTax] = useState(0);
+  const [inputData, setInputData] = useState({});
 
+  const user = { email: "daspradyut516@gmail.com" };
+  const total = subTotal + tax;
+  const taxPercentage = 0.1;
+  const router = useRouter();
   const {
     state: { checkout },
+    resetItems,
   } = useContext(AppContext);
-
   useEffect(() => {
     const subTotal = calculateItemsTotal(checkout);
-    const tax = 0.1 * subTotal;
+    const tax = taxPercentage * subTotal;
     setSubTotal(subTotal);
     setTax(tax);
   }, [checkout]);
+
+  const makePayment = async () => {
+    const data = await fetch("/api/razorpay", {
+      method: "POST",
+      headers: {},
+      body: JSON.stringify({
+        products: checkout.map(({ id, slug, price, count }) => ({
+          id,
+          slug,
+          price,
+          count,
+        })),
+        subTotal,
+        tax,
+        user,
+        total,
+      }),
+    }).then((t) => t.json());
+
+    const options = {
+      key: process.env.NEXT_PUBLIC_RAZORPAY_ID,
+      name: "IMA",
+      currency: "INR",
+      amount: data.amount,
+      order_id: data.id,
+      description: "Payment Fees",
+      handler: function (response) {
+        console.log(response);
+        resetItems("checkout");
+        resetItems("cart");
+        fetch("/api/order", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            _type: "allOrders",
+            products: checkout.map(({ _id, count }, index) => ({
+              _key: `${index + 1}`,
+              productReference: { _type: "reference", _ref: _id },
+              quantity: count,
+            })),
+            note: "note",
+            subtotal: subTotal,
+            tax,
+            total,
+            razorpayId: response.razorpay_order_id,
+            timestamp: new Date().toISOString(),
+            ...inputData,
+          }),
+        })
+          .then((res) => res.json())
+          .then((res) => router.replace("/orders/" + res._id))
+          .catch((e) => console.log(e));
+        
+      },
+      prefill: {
+        name: "Pradyut Das",
+        email: "daspradyut516@gmail.com",
+        contact: "9323232961",
+      },
+    };
+
+    console.log(options);
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+
+    paymentObject.on("payment.failed", function (response) {
+      console.log(response);
+      alert(response.description);
+    });
+  };
   return (
     <Flex
-      w={{ base: '100%', lg: '90%' }}
+      w={{ base: "100%", lg: "90%" }}
       mx="auto"
-      flexDir={{ base: 'column', lg: 'row' }}
+      flexDir={{ base: "column", lg: "row" }}
       gap="2rem"
     >
-      <Stack spacing={10} w={{ base: '100%', lg: '60%' }}>
+      <Stack spacing={10} w={{ base: "100%", lg: "60%" }}>
         <Card borderWidth="1px" borderColor="gray.200" shadow="none">
           <CardHeader>
             <Heading size="md">Review Items</Heading>
@@ -61,7 +141,7 @@ export const Checkout = () => {
                     <Box mx="1rem">
                       <Text
                         fontWeight="bold"
-                        fontSize={{ base: 'sm', lg: 'lg' }}
+                        fontSize={{ base: "sm", lg: "lg" }}
                         maxW="500px"
                       >
                         {item.name}
@@ -72,10 +152,10 @@ export const Checkout = () => {
                     </Box>
                   </Flex>
                   <Box textAlign="right">
-                    <Text fontWeight="bold" fontSize={{ base: 'md', lg: 'lg' }}>
+                    <Text fontWeight="bold" fontSize={{ base: "md", lg: "lg" }}>
                       ${formatPrice(item.price)}
                     </Text>
-                    <Text fontSize={{ base: 'sm', lg: 'md' }}>
+                    <Text fontSize={{ base: "sm", lg: "md" }}>
                       Quantity: {item.count}
                     </Text>
                   </Box>
@@ -99,24 +179,54 @@ export const Checkout = () => {
 
               <Box>
                 <FormLabel>Address</FormLabel>
-                <Input type="text" placeholder="address" />
+                <Input
+                  type="text"
+                  placeholder="address"
+                  name="address"
+                  onChange={(e) =>
+                    setInputData({
+                      ...inputData,
+                      [e.target.name]: e.target.value,
+                    })
+                  }
+                />
               </Box>
 
               <Box>
                 <FormLabel>Phone</FormLabel>
-                <Input type="text" placeholder="phone number" />
+                <Input
+                  type="text"
+                  placeholder="phone number"
+                  name="phoneNumber"
+                  onChange={(e) =>
+                    setInputData({
+                      ...inputData,
+                      [e.target.name]: e.target.value,
+                    })
+                  }
+                />
               </Box>
 
               <Box>
                 <FormLabel>Email</FormLabel>
-                <Input type="email" placeholder="email" />
+                <Input
+                  type="email"
+                  placeholder="email"
+                  name="email"
+                  onChange={(e) =>
+                    setInputData({
+                      ...inputData,
+                      [e.target.name]: e.target.value,
+                    })
+                  }
+                />
               </Box>
             </Stack>
           </CardBody>
         </Card>
       </Stack>
 
-      <Box w={{ base: '100%', lg: '40%' }}>
+      <Box w={{ base: "100%", lg: "40%" }}>
         <Card borderWidth="1px" borderColor="gray.200" shadow="none" p="2rem">
           <CardHeader>
             <Heading size="md">Payment Details</Heading>
@@ -137,10 +247,10 @@ export const Checkout = () => {
                   ml="-40px"
                   px="2rem"
                   _hover={{
-                    bgColor: 'brand.primaryDark',
+                    bgColor: "brand.primaryDark",
                   }}
                   _active={{
-                    bgColor: 'brand.primaryDark',
+                    bgColor: "brand.primaryDark",
                   }}
                 >
                   Apply Coupon
@@ -185,24 +295,32 @@ export const Checkout = () => {
               </Flex>
               <Divider />
               <Flex justify="space-between" align="center" my="1rem">
-                <Text fontWeight="bold">Total</Text>
+                <Text fontWeight="bold">Sub total</Text>
                 <Text fontWeight="bold">${formatPrice(subTotal)}</Text>
               </Flex>
             </Box>
 
+            <Script
+              id="razorpay-checkout-js"
+              src="https://checkout.razorpay.com/v1/checkout.js"
+            />
             <Button
               bgColor="brand.primary"
               color="white"
               w="100%"
               rounded="full"
               _hover={{
-                bgColor: 'brand.primaryDark',
+                bgColor: "brand.primaryDark",
               }}
               _active={{
-                bgColor: 'brand.primaryDark',
+                bgColor: "brand.primaryDark",
+              }}
+              onClick={() => {
+                makePayment();
+                console.log("making payment");
               }}
             >
-              Pay ${formatPrice(subTotal)}
+              Pay ${formatPrice(total)}
             </Button>
           </CardBody>
         </Card>

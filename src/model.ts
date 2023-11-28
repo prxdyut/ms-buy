@@ -60,3 +60,7 @@ export interface IContext {
   isAdded: (key: ItemKey, productId: string) => boolean;
   resetItems: (key: ItemKey) => void;
 }
+
+export interface IOrders {
+  _id: string;
+}

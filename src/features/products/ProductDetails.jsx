@@ -22,11 +22,7 @@ import { getSubstring } from '@src/helpers';
 import { IBreadcrumbItem, IProduct } from '@src/model';
 import React, { useContext, useState } from 'react';
 
-interface ProductDetailsProps {
-  product: IProduct;
-}
-
-const items: IBreadcrumbItem[] = [
+const items = [
   {
     name: 'Products',
     link: '/products',
@@ -37,7 +33,7 @@ const items: IBreadcrumbItem[] = [
   },
 ];
 
-export const ProductDetails = ({ product }: ProductDetailsProps) => {
+export const ProductDetails = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
   const { isAdded, addItem, resetItems } = useContext(AppContext);
 
