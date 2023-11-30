@@ -22,6 +22,7 @@ import { calculateItemsTotal, formatPrice, getSubstring } from "@src/helpers";
 import { useRouter } from "next/navigation";
 import Script from "next/script";
 import React, { useContext, useEffect, useState } from "react";
+import { taxPercentage } from "@/config";
 
 export const Checkout = () => {
   const [subTotal, setSubTotal] = useState(0);
@@ -30,12 +31,13 @@ export const Checkout = () => {
 
   const user = { email: "daspradyut516@gmail.com" };
   const total = subTotal + tax;
-  const taxPercentage = 0.1;
+
   const router = useRouter();
   const {
     state: { checkout },
     resetItems,
   } = useContext(AppContext);
+
   useEffect(() => {
     const subTotal = calculateItemsTotal(checkout);
     const tax = taxPercentage * subTotal;
@@ -44,20 +46,19 @@ export const Checkout = () => {
   }, [checkout]);
 
   const makePayment = async () => {
-    const data = await fetch("/api/razorpay", {
+    const data = await fetch("/api/checkout", {
       method: "POST",
       headers: {},
       body: JSON.stringify({
-        products: checkout.map(({ id, slug, price, count }) => ({
-          id,
-          slug,
-          price,
-          count,
-        })),
-        subTotal,
-        tax,
-        user,
-        total,
+        allOrderedProducts: checkout,
+        allOrderData: {
+          note: "note",
+          subtotal: subTotal,
+          tax,
+          total,
+          timestamp: new Date().toISOString(),
+          ...inputData,
+        },
       }),
     }).then((t) => t.json());
 
@@ -65,39 +66,23 @@ export const Checkout = () => {
       key: process.env.NEXT_PUBLIC_RAZORPAY_ID,
       name: "IMA",
       currency: "INR",
-      amount: data.amount,
-      order_id: data.id,
+      amount: data.payment.amount,
+      order_id: data.payment.id,
       description: "Payment Fees",
-      handler: function (response) {
-        console.log(response);
+      handler: async function (response) {
+        let res = await fetch("/api/checkout", {
+          method: "PUT",
+          body: JSON.stringify({
+            _id: data.order._id,
+            razorpayId: response.razorpay_order_id,
+            paid: true,
+            successfull: true,
+          }),
+        }).then((res) => res.json());
+        console.log(res)
         resetItems("checkout");
         resetItems("cart");
-        fetch("/api/order", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            _type: "allOrders",
-            products: checkout.map(({ _id, count }, index) => ({
-              _key: `${index + 1}`,
-              productReference: { _type: "reference", _ref: _id },
-              quantity: count,
-            })),
-            note: "note",
-            subtotal: subTotal,
-            tax,
-            total,
-            razorpayId: response.razorpay_order_id,
-            timestamp: new Date().toISOString(),
-            ...inputData,
-          }),
-        })
-          .then((res) => res.json())
-          .then((res) => router.replace("/orders/" + res._id))
-          .catch((e) => console.log(e));
-        
+        router.replace("/orders/" + res._id);
       },
       prefill: {
         name: "Pradyut Das",
@@ -105,7 +90,6 @@ export const Checkout = () => {
         contact: "9323232961",
       },
     };
-
     console.log(options);
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();

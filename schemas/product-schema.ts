@@ -4,6 +4,12 @@ export const ProductSchema = {
   type: 'document',
   fields: [
     {
+      name: "active",
+      title: "Active",
+      type: "boolean",
+      initialValue: true,
+    },
+    {
       name: 'name',
       title: 'Name',
       type: 'string',

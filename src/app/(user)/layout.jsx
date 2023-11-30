@@ -1,9 +1,6 @@
 "use client";
 import "swiper/swiper.min.css";
 import { Navbar } from "@/components/Navbar/NavBar";
-import { theme } from "@/theme";
-import { CacheProvider } from "@chakra-ui/next-js";
-import { ChakraProvider } from "@chakra-ui/react";
 import AppContextProvider from "@src/context/AppContext";
 import { Footer } from "@src/components/Footer/Footer";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -25,15 +22,11 @@ export default function RootLayout({
       </head>
       <body>
         <ClerkProvider>
-          <CacheProvider>
-            <ChakraProvider theme={theme}>
               <AppContextProvider>
                 <Navbar />
                 {children}
                 <Footer />
               </AppContextProvider>
-            </ChakraProvider>
-          </CacheProvider>
         </ClerkProvider>
       </body>
     </html>

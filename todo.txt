@@ -1,2 +1,2 @@
-*calculate prices right from the server
+
 design frontent using tailwind

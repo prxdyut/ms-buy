@@ -27,7 +27,7 @@ export const Cart = () => {
   } = useContext(AppContext);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const btnRef = useRef<any>();
+  const btnRef = useRef();
 
   const handleCheckout = () => {
     resetItems('checkout');

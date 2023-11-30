@@ -1,13 +1,9 @@
-import { Checkout } from '@src/features/checkout';
-import { NextPage } from 'next';
-import React from 'react';
+import { Checkout } from "@src/features/checkout";
+
+import React from "react";
 
 const CheckoutPage = () => {
-  return (
-    <div>
-      <Checkout />
-    </div>
-  );
+  return <Checkout />;
 };
 
 export default CheckoutPage;
