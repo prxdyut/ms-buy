@@ -4,6 +4,8 @@ import { TopCategories } from "@src/features/home/TopCategories";
 import { IFeaturedItems } from "@src/model";
 import { client } from "@utils/sanity.client";
 import { groq } from "next-sanity";
+import EssentialList from "@/features/home//EssentialList";
+import { GridBanner } from "@/features/home//GridBanner";
 
 export const revalidate = 60;
 
@@ -20,6 +22,7 @@ export default async function Home() {
               "id": _id,
               name,
               description,
+              category -> {name},
               price,
               "slug": slug.current,
               rating,
@@ -29,6 +32,7 @@ export default async function Home() {
               "id": _id,
               name,
               description,
+              category -> {name},
               price,
               "slug": slug.current,
               rating,
@@ -38,6 +42,7 @@ export default async function Home() {
               "id": _id,
               name,
               description,
+              category -> {name},
               price,
               "slug": slug.current,
               rating,
@@ -52,21 +57,19 @@ export default async function Home() {
   const featuredItems = await getFeaturedItemsAsync();
 
   return (
-    <main>
-      <Banner />
-      <TopCategories categories={featuredItems[0]?.topCategories} />
-      <FeaturedProducts
-        title="Best Deals For You"
-        products={featuredItems[0]?.bestDeals}
-      />
+    <main className="flex flex-col gap-8">
+      <Banner aspectRatio={"wide"} />
       <FeaturedProducts
         title="Most Selling Products"
         products={featuredItems[0]?.mostSellingProducts}
       />
+      <Banner aspectRatio={"extra"} />
       <FeaturedProducts
-        title="Trending Products"
-        products={featuredItems[0]?.trendingProducts}
+        title="Best Deals For You"
+        products={featuredItems[0]?.bestDeals}
       />
+      <EssentialList />
+      <GridBanner />
     </main>
   );
 }

@@ -26,7 +26,7 @@ export function MobileNav() {
   const SearchBar = ({ visibility }) => (
     <div class={`relative  ${!visibility && "hidden"} `}>
       <input
-        className={`bg-gray-200 rounded-full h-10 pl-10 px-4 text-sm focus:outline-none transition-all w-[-webkit-fill-available] ${
+        className={`bg-grey rounded-full h-10 pl-10 px-4 text-sm focus:outline-none transition-all w-[-webkit-fill-available] ${
           !visibility && "hidden"
         }`}
         type="search"
@@ -61,16 +61,16 @@ export function MobileNav() {
             <div className="flex-grow" />
             <div
               className={`cursor-pointer ${
-                SearchisFocused && "bg-gray-200"
+                SearchisFocused && "bg-grey"
               } p-2 rounded-lg mr-[-4px] `}
               onClick={() => setSearchisFocused(!SearchisFocused)}
             >
               <SearchIcon size={20} />
             </div>
-            <div className="cursor-pointer hover:bg-gray-200 p-2 rounded-lg mr-[-4px]">
+            <div className="cursor-pointer hover:bg-grey p-2 rounded-lg mr-[-4px]">
               <AccountIcon size={20} />
             </div>
-            <div className="cursor-pointer hover:bg-gray-200 p-2 rounded-lg">
+            <div className="cursor-pointer hover:bg-grey p-2 rounded-lg">
               <BagIcon size={20} />
             </div>
           </div>

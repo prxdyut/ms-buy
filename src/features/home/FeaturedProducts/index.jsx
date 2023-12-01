@@ -5,16 +5,11 @@ import { IProduct } from '@src/model';
 import React from 'react';
 import { ProductsSlider } from './ProductsSlider';
 
-interface FeaturedProducts {
-  title: string;
-  products: IProduct[];
-}
-
-export const FeaturedProducts = ({ title, products }: FeaturedProducts) => {
+export const FeaturedProducts = ({ title, products }) => {
   return (
-    <Box w={{ base: '100%', lg: '90%' }} mx="auto" p="2rem">
+    <div className='w-100 bg-primary p-8 pb-20'>
       <SectionHeading title={title} />
       <ProductsSlider products={products} />
-    </Box>
+    </div>
   );
 };

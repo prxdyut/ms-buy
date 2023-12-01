@@ -10,29 +10,14 @@ const IMAGES = [
   "https://images.pexels.com/photos/1115128/pexels-photo-1115128.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
 ];
 
-export const Banner = ({ aspectRatio }) => {
+export const GridBanner = ({  }) => {
   return (
-    <div>
-      <div className="text-2xl aspect-square aspect-wide aspect-extra hidden" />
-      <Swiper
-        modules={[Autoplay]}
-        spaceBetween={0}
-        slidesPerView={1}
-        loop={true}
-        autoplay={{
-          delay: 2500,
-          disableOnInteraction: false,
-        }}
-        onSwiper={(swiper) => console.log(swiper)}
-        onSlideChange={() => console.log("slide change")}
-        className={`rounded aspect-${aspectRatio} `}
-      >
+    <div className={`w-100 grid grid-cols-1 lg:grid-cols-3 gap-4 p-8`}>
         {IMAGES.map((src, index) => (
-          <SwiperSlide key={index} style={{ position: "relative" }}>
+          <div key={index} className="relative aspect-wide">
             <Image src={src} fill className="object-cover" />
-          </SwiperSlide>
+          </div>
         ))}
-      </Swiper>
     </div>
   );
 };

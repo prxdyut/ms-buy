@@ -35,7 +35,7 @@ export function DesktopNav() {
   return (
     <React.Fragment>
       <div className="sticky bg-white inset-x-0 p-4 top-0 z-10 ">
-        <div className="container flex gap-4 mx-auto px-4">
+        <div className=" flex gap-4 mx-auto px-4">
           <div className="flex-grow grid grid-cols-1 gap-4">
             <div className="flex w-100 items-center gap-4 ">
               <AppLogo />
@@ -44,8 +44,15 @@ export function DesktopNav() {
               </p>
 
               <div class="relative">
+                <div
+                  className={`top-12 absolute transition-all overflow-hidden rounded px-4 py-2 border-grey bg-white ${
+                    SearchisFocused ? " h-60 w-96 shadow-2xl" : "w-40 h-0 px-0 py-0"
+                  }`}
+                >
+                  <p>Suggestions</p>
+                </div>
                 <input
-                  className={`bg-gray-200 rounded-full h-10 pl-10 px-4 text-sm focus:outline-none transition-all ${
+                  className={`bg-grey rounded-full h-10 pl-10 px-4 text-sm focus:outline-none transition-all ${
                     SearchisFocused ? "w-96" : "w-40"
                   }`}
                   type="search"
@@ -58,16 +65,16 @@ export function DesktopNav() {
                   <SearchIcon />
                 </button>
               </div>
-              <div className="cursor-pointer flex flex-row gap-2 hover:bg-gray-200 px-3 py-2 rounded-lg mr-[-4px]">
+              <div className="cursor-pointer flex flex-row gap-2 hover:bg-grey px-3 py-2 rounded-lg mr-[-4px]">
                 <AccountIcon size={20} />
                 <p>Pradyut Das</p>
               </div>
-              <div className="cursor-pointer hover:bg-gray-200 px-3 py-2 rounded-lg">
+              <div className="cursor-pointer hover:bg-grey px-3 py-2 rounded-lg">
                 <BagIcon size={20} />
               </div>
             </div>
             <ul
-              className="flex gap-6 w-100 align-middle items-center justify-center"
+              className="container flex gap-6 w-100 align-middle items-center justify-center"
               onMouseEnter={() => setMenuBarisFocused(true)}
               onMouseLeave={() => setMenuBarisFocused(false)}
             >
@@ -78,7 +85,7 @@ export function DesktopNav() {
                 <React.Fragment>
                   <li
                     className={`cursor-pointer font-medium text-sm uppercase hover:underline underline-offset-4 decoration-[1.5px] decoration-gray-700 ${
-                      MenuItemisFocused -1 == index && "underline"
+                      MenuItemisFocused - 1 == index && "underline"
                     }`}
                     onMouseEnter={() => setMenuItemisFocused(index + 1)}
                   >
@@ -97,7 +104,9 @@ export function DesktopNav() {
           onMouseLeave={() => setMenuDropdownisFocused(false)}
         >
           <div className=""></div>
-          <div className="cols-span-4">{CATEGORIES[MenuItemisFocused -1]?.title}</div>
+          <div className="cols-span-4">
+            {CATEGORIES[MenuItemisFocused - 1]?.title}
+          </div>
         </div>
       </div>
       <div

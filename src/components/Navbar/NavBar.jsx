@@ -6,7 +6,7 @@ import { MobileNav } from "./MobileNav";
 export const Navbar = () => {
   return (
     <>
-      <div className="fixed z-40 w-screen">
+      <div className="fixed z-40 w-screen bg-white">
         <div className="hidden lg:block">
           <DesktopNav />
         </div>
