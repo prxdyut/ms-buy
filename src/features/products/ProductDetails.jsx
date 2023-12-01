@@ -43,8 +43,8 @@ export const ProductDetails = ({ product }) => {
         items={[
           ...items,
           {
-            name: product.category.name,
-            link: `/categories/${product.category.id}`,
+            name: product?.category.name,
+            link: `/categories/${product?.category.id}`,
           },
           {
             name: getSubstring(product.name, 20),

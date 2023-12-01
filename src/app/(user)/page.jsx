@@ -53,7 +53,7 @@ export default async function Home() {
 
   return (
     <main>
-      {/* <Banner /> */}
+      <Banner />
       <TopCategories categories={featuredItems[0]?.topCategories} />
       <FeaturedProducts
         title="Best Deals For You"

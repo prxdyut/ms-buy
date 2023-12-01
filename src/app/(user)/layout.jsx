@@ -5,9 +5,7 @@ import AppContextProvider from "@src/context/AppContext";
 import { Footer } from "@src/components/Footer/Footer";
 import { ClerkProvider } from "@clerk/nextjs";
 
-export default function RootLayout({
-  children,
-}) {
+export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
@@ -22,11 +20,11 @@ export default function RootLayout({
       </head>
       <body>
         <ClerkProvider>
-              <AppContextProvider>
-                <Navbar />
-                {children}
-                <Footer />
-              </AppContextProvider>
+          <AppContextProvider>
+            <Navbar />
+            {children}
+            <Footer />
+          </AppContextProvider>
         </ClerkProvider>
       </body>
     </html>

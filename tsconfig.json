@@ -30,6 +30,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/features/products/ProductDetails.jsx"
-, "src/features/checkout/index.jsx", "src/app/(user)/checkout/page.jsx", "src/components/Navbar/DesktopNav.jsx", "src/components/Navbar/NavBar.jsx", "src/components/Navbar/MobileNav.jsx", "src/app/(user)/layout.jsx", "src/app/(user)/orders/page.jsx", "src/app/(user)/products/[slug]/page.jsx", "src/app/(user)/products/page.jsx", "src/app/(user)/categories/page.jsx", "src/app/(user)/categories/[id]/page.jsx", "src/app/(user)/products/loading.jsx", "src/app/(user)/categories/loading.jsx", "src/app/(user)/loading.jsx", "src/app/(user)/page.jsx", "src/app/sign-up/[[...sign-up]]/page.jsx", "src/components/Cart/Cart.jsx", "schemas/orders-schema.js", "src/components/AppLogo.jsx"  ],
+, "src/features/checkout/index.jsx", "src/app/(user)/checkout/page.jsx", "src/components/Navbar/DesktopNav.jsx", "src/components/Navbar/NavBar.jsx", "src/components/Navbar/MobileNav.jsx", "src/app/(user)/layout.jsx", "src/app/(user)/orders/page.jsx", "src/app/(user)/products/[slug]/page.jsx", "src/app/(user)/products/page.jsx", "src/app/(user)/categories/page.jsx", "src/app/(user)/categories/[id]/page.jsx", "src/app/(user)/products/loading.jsx", "src/app/(user)/categories/loading.jsx", "src/app/(user)/loading.jsx", "src/app/(user)/page.jsx", "src/app/sign-up/[[...sign-up]]/page.jsx", "src/components/Cart/Cart.jsx", "schemas/orders-schema.js", "src/components/AppLogo.jsx", "src/features/home/Banner.jsx"  ],
   "exclude": ["node_modules"]
 }
