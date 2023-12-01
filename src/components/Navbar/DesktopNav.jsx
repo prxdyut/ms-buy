@@ -34,7 +34,7 @@ export function DesktopNav() {
 
   return (
     <React.Fragment>
-      <div className="sticky bg-white inset-x-0 p-4 top-0 z-10 bg-opacity-90 ">
+      <div className="sticky bg-white inset-x-0 p-4 top-0 z-10 ">
         <div className="container flex gap-4 mx-auto px-4">
           <div className="flex-grow grid grid-cols-1 gap-4">
             <div className="flex w-100 items-center gap-4 ">

@@ -1,11 +1,37 @@
 "use client";
-import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import Link from "next/link";
-import React from "react";
-import { BannerSlider } from "./BannerSlider";
+import { Autoplay } from "swiper";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import Image from "next/image";
 
-// bg = 'center / cover no-repeat url(/banner-img1.jpg)';
+const IMAGES = [
+  "https://images.pexels.com/photos/1377034/pexels-photo-1377034.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  "https://images.pexels.com/photos/208052/pexels-photo-208052.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  "https://images.pexels.com/photos/1115128/pexels-photo-1115128.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+];
 
 export const Banner = () => {
-  return <div className="h-96  lg:h-screen w-100 bg-[url('https://static.vecteezy.com/system/resources/previews/002/702/831/non_2x/3d-realistic-red-lipstick-cream-bottle-and-pencil-on-black-silk-design-template-of-fashion-cosmetics-product-for-ads-flyer-banner-or-magazine-background-iillustration-free-vector.jpg')]"></div>;
+  return (
+    <div className="px-2">
+      <Swiper
+        modules={[Autoplay]}
+        spaceBetween={0}
+        slidesPerView={1}
+        loop={true}
+        autoplay={{
+          delay: 2500,
+          disableOnInteraction: false,
+        }}
+        onSwiper={(swiper) => console.log(swiper)}
+        onSlideChange={() => console.log("slide change")}
+        className="container mt-2 rounded h-48 lg:h-[80vh]"
+      >
+        {IMAGES.map((src, index) => (
+          <SwiperSlide key={index} style={{ position: "relative" }}>
+            <Image src={src} fill className="object-cover" />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
+  );
 };

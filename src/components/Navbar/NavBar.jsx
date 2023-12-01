@@ -6,16 +6,15 @@ import { MobileNav } from "./MobileNav";
 export const Navbar = () => {
   return (
     <>
-      <Box className="navbar-wrapper">
-        <Box pos="fixed" w="100%" bgColor="white" mb="1rem" zIndex={10}>
-          <div className="hidden lg:block">
-            <DesktopNav />
-          </div>
-          <div className="block lg:hidden">
-            <MobileNav />
-          </div>
-        </Box>
-      </Box>
+      <div className="fixed z-40 w-screen">
+        <div className="hidden lg:block">
+          <DesktopNav />
+        </div>
+        <div className="block lg:hidden">
+          <MobileNav />
+        </div>
+      </div>
+      <div className="h-[108px]"></div>
     </>
   );
 };
