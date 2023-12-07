@@ -8,7 +8,7 @@ export const revalidate = 60; // revalidate this page every 60 seconds
 export default async function ProductsPage({ params: { id } }) {
   const { userId } = auth();
   const getAllProductsQueries = `
-    *[_type == "allOrders" && userId == "${userId}" ][0] {
+    *[_type == "allOrders" && _id == "${id}" && userId == "${userId}" ][0] {
       "id": _id, products[]{
         productReference -> {
           "id": _id,
@@ -19,9 +19,9 @@ export default async function ProductsPage({ params: { id } }) {
         },
         price, 
         quantity
-      },
-      address, phoneNumber, email, timestamp,
-        subtotal, tax, total 
+      }, firstname, lastname,
+      address1, address1, city, state, country, pincode, phone1, phone2, email, timestamp,
+        subtotal, shipping, total, trackingCode
     }
 `;
 
@@ -29,10 +29,6 @@ export default async function ProductsPage({ params: { id } }) {
     return client.fetch(groq`${getAllProductsQueries}`, { _id: id });
   };
   const order = await getOrderAsync();
-
-  return (
-    <p>
-      <Orderdetails order={order} />
-    </p>
-  );
+console.log(order)
+  return <Orderdetails order={order} />;
 }

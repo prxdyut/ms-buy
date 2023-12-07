@@ -1,4 +1,4 @@
-export type ItemKey = 'cart' | 'wishlist' | 'checkout';
+export type ItemKey = "cart" | "wishlist" | "checkout";
 
 export interface NavItem {
   label: string;
@@ -20,6 +20,7 @@ export interface IProduct {
   mainImage: string;
   category: ICategory;
   gallery: string[];
+  instock: number;
 }
 
 export interface ICategory {
@@ -53,12 +54,17 @@ export interface IBreadcrumbItem {
 
 export interface IContext {
   state: IState;
-  addItem: (key: ItemKey, product: IProduct, count?: number) => void;
+  addItem: (key: ItemKey, productId: string, count?: number) => void;
   removeItem: (key: ItemKey, productId: string) => void;
-  increaseCount: (key: ItemKey, productId: string) => void;
+  increaseCount: (
+    key: ItemKey,
+    productId: string,
+    callback: () => void
+  ) => void;
   decreaseCount: (key: ItemKey, productId: string) => void;
   isAdded: (key: ItemKey, productId: string) => boolean;
   resetItems: (key: ItemKey) => void;
+  forceUpdate: (key: ItemKey, productId: string, count: number) => void;
 }
 
 export interface IOrders {

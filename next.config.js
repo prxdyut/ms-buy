@@ -14,6 +14,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "www.maccosmetics.in",
       },
+      {
+        protocol: "https",
+        hostname: "img.clerk.com",
+      },
     ],
   },
 };

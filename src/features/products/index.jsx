@@ -6,18 +6,12 @@ import { IBreadcrumbItem, IProduct } from '@src/model';
 import React, { useState } from 'react';
 import { usePagination } from '@mantine/hooks';
 import { Hero } from '@src/components/Hero/Hero';
-
-interface AllProductsProps {
-  products: IProduct[];
-  breadcrumbItems?: IBreadcrumbItem[];
-}
-
 const itemsPerPage = 10;
 
 export const AllProducts = ({
   products,
   breadcrumbItems,
-}: AllProductsProps) => {
+}) => {
   const [visibleProducts, setVisibleProducts] = useState(
     products.slice(0, itemsPerPage)
   );

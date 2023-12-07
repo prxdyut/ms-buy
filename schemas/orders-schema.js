@@ -52,8 +52,8 @@ export const OrdersSchema = {
       readOnly: true,
     },
     {
-      name: "tax",
-      title: "Tax",
+      name: "shipping",
+      title: "Shipping Price",
       type: "number",
       readOnly: true,
     },
@@ -64,33 +64,81 @@ export const OrdersSchema = {
       readOnly: true,
     },
     {
-      name: "phoneNumber",
-      title: "Phone Number",
-      type: "string",
-      readOnly: true,
-    },
-    {
       name: "userId",
       title: "User ID",
       type: "string",
       readOnly: true,
     },
     {
-      name: "address",
-      title: "Address",
-      type: "text",
-      readOnly: true,
-    },
-    {
-      name: "note",
-      title: "Note",
-      type: "text",
-      readOnly: true,
-    },
-    {
       name: "email",
-      title: "email",
+      title: "Email",
       type: "string",
+      readOnly: true,
+    },
+    {
+      name: "firstname",
+      title: "First Name",
+      type: "string",
+      readOnly: true,
+    },
+    {
+      name: "lastname",
+      title: "Last Name",
+      type: "string",
+      readOnly: true,
+    },
+    {
+      title: "Phone Number 1",
+      name: "phone1",
+      type: "string",
+      readOnly: true,
+    },
+    {
+      title: "Phone Number 2",
+      name: "phone2",
+      type: "string",
+      readOnly: true,
+    },
+    {
+      name: "address1",
+      title: "Address Line 1",
+      type: "string",
+      readOnly: true,
+    },
+    {
+      name: "address2",
+      title: "Address Line 2",
+      type: "string",
+      readOnly: true,
+    },
+    {
+      name: "city",
+      title: "City",
+      type: "string",
+      readOnly: true,
+    },
+    {
+      name: "state",
+      title: "State",
+      type: "string",
+      readOnly: true,
+    },
+    {
+      name: "country",
+      title: "Country",
+      type: "string",
+      readOnly: true,
+    },
+    {
+      name: "pincode",
+      title: "Pincode",
+      type: "string",
+      readOnly: true,
+    },
+    {
+      name: "instructions",
+      title: "Delivery Instructions",
+      type: "text",
       readOnly: true,
     },
     {
@@ -118,9 +166,16 @@ export const OrdersSchema = {
       readOnly: true,
     },
     {
+      name: "trackingCode",
+      title: "Tracking Code",
+      type: "string",
+      initialValue: '123456789123'
+    },
+    {
       name: "fulfilled",
       title: "fulfilled",
       type: "boolean",
+      initialValue: false,
     },
   ],
 };

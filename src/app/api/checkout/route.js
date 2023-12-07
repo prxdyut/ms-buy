@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 import { client } from "../../../../utils/sanity.client";
 import { groq } from "next-sanity";
-import { calculateItemsTotal } from "../../../helpers";
-import { taxPercentage } from "@/config";
+import { calculateItemsTotal, calculateShipping } from "../../../helpers";
 import { auth } from "@clerk/nextjs";
 
 const Razorpay = require("razorpay");
@@ -12,6 +11,7 @@ export async function POST(req) {
   const reqData = await req.json();
   const { userId } = auth();
   const { allOrderedProducts, allOrderData } = reqData;
+  const { orderData } = allOrderData;
 
   const orderProductsOnly = allOrderedProducts
     .map(({ id }) => `"${id}"`)
@@ -25,21 +25,26 @@ export async function POST(req) {
     ...data,
     count: allOrderedProducts.find(({ id }) => id == data._id).count,
   }));
-  const tax = taxPercentage * calculateItemsTotal(orderedProducts);
-  const total = tax + calculateItemsTotal(orderedProducts);
+  const subtotal = calculateItemsTotal(orderedProducts);
+  const shipping = calculateShipping(subtotal);
+  const total = shipping + subtotal;
 
   const data = await client.create({
     _type: "allOrders",
     userId,
     paid: false,
     successfull: false,
-    products: allOrderedProducts.map(({ _id, count, price }, index) => ({
+    timestamp: new Date().toISOString(),
+    products: allOrderedProducts.map(({ id, count, price }, index) => ({
       _key: `${index + 1}`,
-      productReference: { _type: "reference", _ref: _id },
+      productReference: { _type: "reference", _ref: id },
       price,
       quantity: count,
     })),
-    ...allOrderData,
+    subtotal,
+    shipping,
+    total,
+    ...orderData,
   });
 
   const razorpay = new Razorpay({
@@ -56,8 +61,16 @@ export async function POST(req) {
     currency,
     receipt: "receipt#" + shortid.generate(),
     payment_capture,
-    notes: { id: data._id, total, tax, userId },
+    notes: { id: data._id, total, userId },
   };
+  console.log(
+    allOrderedProducts.map(({ id, count, price }, index) => ({
+      _key: `${index + 1}`,
+      productReference: { _type: "reference", _ref: id },
+      price,
+      quantity: count,
+    }))
+  );
   try {
     const response = await razorpay.orders.create(options);
     return NextResponse.json({ payment: response, order: data });

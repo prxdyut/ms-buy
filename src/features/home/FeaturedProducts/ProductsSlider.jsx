@@ -8,8 +8,8 @@ import { ProductCard } from "@src/components/ProductCard";
 export const ProductsSlider = ({ products }) => {
   return (
     <Swiper
-      slidesPerView={1}
-      spaceBetween={10}
+      slidesPerView={1.4}
+      spaceBetween={20}
       pagination={{
         clickable: true,
       }}

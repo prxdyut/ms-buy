@@ -30,6 +30,11 @@ export const ProductSchema = {
       type: 'number',
     },
     {
+      name: 'instock',
+      title: 'In Stock',
+      type: 'number',
+    },
+    {
       name: 'description',
       title: 'Description',
       type: 'text',

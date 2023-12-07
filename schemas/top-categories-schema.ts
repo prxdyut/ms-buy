@@ -1,51 +1,74 @@
 export const FeaturedProductsAndCategories = {
-  name: 'featuredProductsAndCategories',
-  title: 'Featured',
-  type: 'document',
+  name: "featuredProductsAndCategories",
+  title: "Featured",
+  type: "document",
   fields: [
     {
-      name: 'topCategories',
-      title: 'Top Categories',
-      type: 'array',
+      name: "banner1",
+      title: "Banner 1",
+      description: "Upload 16x9 Image Only.",
+      type: "array",
       of: [
         {
-          type: 'reference',
-          to: [{ type: 'category' }],
+          type: "galleryImage",
         },
       ],
     },
     {
-      name: 'mostSellingProducts',
-      title: 'Most Selling Products',
-      type: 'array',
+      name: "mostSellingProducts",
+      title: "Most Selling Products",
+      type: "array",
       of: [
         {
-          type: 'reference',
-          to: [{ type: 'product' }],
+          type: "reference",
+          to: [{ type: "product" }],
         },
       ],
     },
     {
-      name: 'bestDeals',
-      title: 'Best Deals',
-      type: 'array',
+      name: "banner2",
+      title: "Banner 2",
+      description: "Upload 3x2 Image Only.",
+      type: "array",
       of: [
         {
-          type: 'reference',
-          to: [{ type: 'product' }],
+          type: "galleryImage",
         },
       ],
     },
     {
-      name: 'trendingProducts',
-      title: 'Trending Products',
-      type: 'array',
+      name: "bestDeals",
+      title: "Best Deals",
+      type: "array",
       of: [
         {
-          type: 'reference',
-          to: [{ type: 'product' }],
+          type: "reference",
+          to: [{ type: "product" }],
         },
       ],
+    },
+    {
+      name: "topCategories",
+      title: "Top Categories",
+      type: "array",
+      of: [
+        {
+          type: "reference",
+          to: [{ type: "category" }],
+        },
+      ],
+    },
+    {
+      name: "banner3",
+      title: "Banner 3",
+      description: "Upload 16x9 Image Only.",
+      type: "array",
+      of: [
+        {
+          type: "galleryImage",
+        },
+      ],
+      options: { max: 3 },
     },
   ],
 };

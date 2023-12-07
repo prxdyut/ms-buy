@@ -1,8 +1,11 @@
 "use client";
 import { AppLogo } from "../AppLogo";
+import { AccountIcon } from "../Icons";
+import React, { useState } from "react";
+import Search from "./Search";
+import Link from "next/link";
+import { Cart } from "@/components/Cart/Cart";
 import { useUser } from "@clerk/nextjs";
-import { AccountIcon, BagIcon, SearchIcon } from "@/components/icons";
-import React, { useEffect, useRef, useState } from "react";
 
 const CATEGORIES = [
   { title: "Concealer" },
@@ -16,21 +19,10 @@ const CATEGORIES = [
   { title: "Sponges" },
 ];
 
-export function DesktopNav() {
+export function DesktopNav({categories: CATEGORIES}) {
   const [SearchisFocused, setSearchisFocused] = useState(false);
-
-  const [MenuItemisFocused, setMenuItemisFocused] = useState(null);
-  const [MenuBarisFocused, setMenuBarisFocused] = useState(false);
-  const [MenuDropdownisFocused, setMenuDropdownisFocused] = useState(false);
-
-  const MenuisFocused =
-    Boolean(MenuItemisFocused) && (MenuBarisFocused || MenuDropdownisFocused);
-
-  useEffect(() => {
-    if (!(MenuBarisFocused || MenuDropdownisFocused)) {
-      setMenuItemisFocused(null);
-    }
-  }, [MenuBarisFocused, MenuDropdownisFocused]);
+  const [input, setInput] = useState("");
+  const { user, isSignedIn } = useUser();
 
   return (
     <React.Fragment>
@@ -40,80 +32,78 @@ export function DesktopNav() {
             <div className="flex w-100 items-center gap-4 ">
               <AppLogo />
               <p className=" flex-grow bg-black text-white text-xs font-medium text-center p-2 rounded-full">
-                UPCOMING OFFER ALERTS!
+                Gala Eyelashes Artistry
               </p>
 
-              <div class="relative">
-                <div
-                  className={`top-12 absolute transition-all overflow-hidden rounded px-4 py-2 border-grey bg-white ${
-                    SearchisFocused ? " h-60 w-96 shadow-2xl" : "w-40 h-0 px-0 py-0"
-                  }`}
-                >
-                  <p>Suggestions</p>
-                </div>
-                <input
-                  className={`bg-grey rounded-full h-10 pl-10 px-4 text-sm focus:outline-none transition-all ${
-                    SearchisFocused ? "w-96" : "w-40"
-                  }`}
-                  type="search"
-                  name="search"
-                  placeholder="SEARCH"
-                  onFocus={() => setSearchisFocused(true)}
-                  onBlur={() => setSearchisFocused(false)}
-                />
-                <button type="submit" class="absolute left-0 top-0 mt-3 ml-4">
-                  <SearchIcon />
-                </button>
-              </div>
-              <div className="cursor-pointer flex flex-row gap-2 hover:bg-grey px-3 py-2 rounded-lg mr-[-4px]">
-                <AccountIcon size={20} />
-                <p>Pradyut Das</p>
-              </div>
-              <div className="cursor-pointer hover:bg-grey px-3 py-2 rounded-lg">
-                <BagIcon size={20} />
-              </div>
-            </div>
-            <ul
-              className="container flex gap-6 w-100 align-middle items-center justify-center"
-              onMouseEnter={() => setMenuBarisFocused(true)}
-              onMouseLeave={() => setMenuBarisFocused(false)}
-            >
-              <li className="cursor-pointer font-medium text-sm uppercase	text-red-800">
-                Bestsellers
-              </li>
-              {CATEGORIES.map((category, index) => (
-                <React.Fragment>
-                  <li
-                    className={`cursor-pointer font-medium text-sm uppercase hover:underline underline-offset-4 decoration-[1.5px] decoration-gray-700 ${
-                      MenuItemisFocused - 1 == index && "underline"
-                    }`}
-                    onMouseEnter={() => setMenuItemisFocused(index + 1)}
+              <Search
+                SearchisFocused={SearchisFocused}
+                setSearchisFocused={setSearchisFocused}
+                input={input}
+                setInput={setInput}
+              />
+                  <Link
+                    href={"/profile"}
+                    className="cursor-pointer flex flex-row gap-2 hover:bg-grey px-3 py-2 rounded-lg mr-[-4px]"
                   >
-                    {category.title}
-                  </li>
-                </React.Fragment>
-              ))}
+                    <AccountIcon size={20} />
+              {isSignedIn ? (
+                <>
+                    <p className=" text-sm font-semibold">{user.fullName}</p>{" "}
+                </>
+              ) : (
+                <p className=" ">
+                  Sign in
+                </p>
+              )}
+
+                  </Link>
+              <Cart />
+            </div>
+            <ul className="container flex gap-6 w-100 align-middle items-center justify-center">
+           
+              {CATEGORIES.map(({name, slug}, index) => {
+                const [hover, setHover] = useState(false);
+                return (
+                  <React.Fragment>
+                    <Link
+                      className={`relative cursor-pointer font-medium text-sm uppercase hover:underline underline-offset-2 decoration-[1.5px] decoration-gray-700 ${
+                        hover && "underline"
+                      }`}
+                      href={'/category/' + slug}
+                      // onMouseEnter={() => setHover(true)}
+                      // onMouseLeave={() => setHover(false)}
+                    >
+                      {name}
+                      {/* <div
+                        onMouseEnter={() => setHover(true)}
+                        onMouseLeave={() => setHover(false)}
+                        className={`absolute top-5 pb-2 transition-all overflow-x-hidden overflow-y-auto rounded text-dark bg-white capitalize shadow-xl ${
+                          hover
+                            ? "py-2 pt-4 w-40 h-56 opacity-100"
+                            : "h-0 w-0 p-0 opacity-0"
+                        } ${
+                          CATEGORIES.length / 2 < index ? "right-0" : "left-0"
+                        }`}
+                      >
+                        {[...Array(10)].map((product) => (
+                          <li>
+                            <Link
+                              href={`/products/${input}`}
+                              className=" px-4 py-2 w-full hover:bg-grey flex gap-2 items-center"
+                            >
+                              <p>Product Name</p>
+                            </Link>
+                          </li>
+                        ))}
+                      </div> */}
+                    </Link>
+                  </React.Fragment>
+                );
+              })}
             </ul>
           </div>
         </div>
-        <div
-          className={`container transition-all duration-200 grid grid-cols-5 pt-8 ${
-            MenuisFocused ? "h-60" : "h-0 hidden"
-          }`}
-          onMouseEnter={() => setMenuDropdownisFocused(true)}
-          onMouseLeave={() => setMenuDropdownisFocused(false)}
-        >
-          <div className=""></div>
-          <div className="cols-span-4">
-            {CATEGORIES[MenuItemisFocused - 1]?.title}
-          </div>
-        </div>
       </div>
-      <div
-        className={`fixed z-8 right-0 top-0 h-screen w-screen bg-black bg-opacity-50 ${
-          MenuisFocused ? "block" : "hidden"
-        }`}
-      />
     </React.Fragment>
   );
 }

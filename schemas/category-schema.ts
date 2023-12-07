@@ -4,6 +4,12 @@ export const CategorySchema = {
   type: 'document',
   fields: [
     {
+      name: 'mainPhoto',
+      title: 'Main Photo',
+      decription: 'Upload 1x1 Image Only',
+      type: "image",
+    },
+    {
       name: 'name',
       title: 'Name',
       type: 'string',

@@ -7,7 +7,7 @@ import { ProductsSlider } from './ProductsSlider';
 
 export const FeaturedProducts = ({ title, products }) => {
   return (
-    <div className='w-100 bg-primary p-8 pb-20'>
+    <div className='w-100 bg-primary px-4 py-8 lg:p-8 pb-20'>
       <SectionHeading title={title} />
       <ProductsSlider products={products} />
     </div>

@@ -4,6 +4,8 @@ import { client } from "@utils/sanity.client";
 import { groq } from "next-sanity";
 import React from "react";
 
+export const revalidate = 2;
+
 export default async function ProductDetailsPage({ params: { slug } }) {
   const query = groq`
 *[_type == "product" && slug.current == $slug][0] {
@@ -16,10 +18,10 @@ export default async function ProductDetailsPage({ params: { slug } }) {
         "id": _id,
         "image": image.asset->url
     },
-    "gallery": gallery[].asset->url
+    "gallery": gallery[] {asset -> {...}},
+    instock
 }
 `;
   const product = await client.fetch(query, { slug });
-
   return <ProductDetails product={product} />;
 }

@@ -30,3 +30,10 @@ export const calculateItemsTotal = (items: IItem[]): number => {
 export const formatPrice = (value: number): string => {
   return value.toFixed(2);
 };
+
+
+export const calculateShipping = (subTotal: number) => {
+  if (subTotal < 500) return 50;
+  if (subTotal < 700) return 70;
+  return 100;
+};

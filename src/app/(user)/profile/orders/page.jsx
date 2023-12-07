@@ -3,7 +3,7 @@ import { client } from "@utils/sanity.client";
 import { groq } from "next-sanity";
 import AllOrders from "@/features/orders/index";
 
-export const revalidate = 60; // revalidate this page every 60 seconds
+export const revalidate = 60; 
 
 export default async function OrdersPage() {
   const { userId } = auth();
@@ -19,7 +19,7 @@ export default async function OrdersPage() {
       },
       price, 
       quantity
-    }, total }
+    }, total, timestamp, fulfilled }
 `;
 
   const getOrdersAsync = () => {

@@ -1,11 +1,12 @@
 "use client";
 import { AppLogo } from "../AppLogo";
-import { useUser } from "@clerk/nextjs";
-import { AccountIcon, BagIcon, SearchIcon } from "@/components/icons";
-import React, { useRef, useState } from "react";
+import { AccountIcon, SearchIcon } from "../Icons";
+import React, { useState } from "react";
 import { HiOutlineMenuAlt2 as HamIcon } from "react-icons/hi";
 import { CgClose as CloseIcon } from "react-icons/cg";
-
+import Search from "./Search";
+import { Cart } from "../Cart/Cart";
+import Link from "next/link";
 const CATEGORIES = [
   { title: "Concealer" },
   { title: "Eyeshadow" },
@@ -18,36 +19,17 @@ const CATEGORIES = [
   { title: "Sponges" },
 ];
 
-export function MobileNav() {
+export function MobileNav({ categories: CATEGORIES }) {
   const [SearchisFocused, setSearchisFocused] = useState(false);
-
   const [MenuisFocused, setMenuisFocused] = useState(false);
-
-  const SearchBar = ({ visibility }) => (
-    <div class={`relative  ${!visibility && "hidden"} `}>
-      <input
-        className={`bg-grey rounded-full h-10 pl-10 px-4 text-sm focus:outline-none transition-all w-[-webkit-fill-available] ${
-          !visibility && "hidden"
-        }`}
-        type="search"
-        name="search"
-        placeholder="SEARCH"
-      />
-      <button
-        type="submit"
-        class={`absolute left-0 top-0 mt-3 ml-4 ${!visibility && "hidden"}`}
-      >
-        <SearchIcon />
-      </button>
-    </div>
-  );
+  const [input, setInput] = useState("");
 
   return (
     <React.Fragment>
       <div className="sticky bg-white inset-x-0 p-4 top-0 z-10 bg-opacity-90 ">
-        <div className="container grid grid-cols-1 gap-y-4">
+        <div className="container grid grid-cols-1 gap-y-4 mx-auto">
           <p className="flex-grow bg-black text-white text-xs font-medium text-center p-2 rounded-full">
-            UPCOMING OFFER ALERTS!
+            Gala Eyelashes Artistry
           </p>
 
           <div className="flex w-100 items-center gap-2 ">
@@ -67,15 +49,23 @@ export function MobileNav() {
             >
               <SearchIcon size={20} />
             </div>
-            <div className="cursor-pointer hover:bg-grey p-2 rounded-lg mr-[-4px]">
+            <Link
+              href={"/profile"}
+              className="cursor-pointer hover:bg-grey p-2 rounded-lg mr-[-4px]"
+            >
               <AccountIcon size={20} />
-            </div>
-            <div className="cursor-pointer hover:bg-grey p-2 rounded-lg">
-              <BagIcon size={20} />
-            </div>
+            </Link>
+            <Cart />
           </div>
-
-          <SearchBar visibility={SearchisFocused} />
+          <div class={` ${!SearchisFocused && "hidden"} `}>
+            <Search
+              device="mobile"
+              SearchisFocused={SearchisFocused}
+              setSearchisFocused={setSearchisFocused}
+              input={input}
+              setInput={setInput}
+            />
+          </div>
         </div>
       </div>
       <div
@@ -96,20 +86,56 @@ export function MobileNav() {
           <AppLogo />
           <p className="mt-2 font-semibold text-sm">Beauty Accessories</p>
         </div>
-        <div className="mb-8 mx-[-4px]">
-          <SearchBar visibility={true} />
-        </div>
-        <ul className="flex flex-col gap-6 items-left justify-center">
-          <li className="cursor-pointer font-medium text-sm uppercase	text-red-800">
-            Bestsellers
-          </li>
-          {CATEGORIES.map((category, index) => (
+        <br />
+        <ul className="flex flex-col gap-6 items-left justify-center" onClick={() => setMenuisFocused(false)}>
+          {CATEGORIES.map(({ slug, name }, index) => (
             <React.Fragment>
-              <li className="cursor-pointer font-medium text-sm uppercase">
-                {category.title}
-              </li>
+              <Link
+                href={"/category/" + slug}
+                className="cursor-pointer font-medium text-sm uppercase"
+              >
+                {name}
+              </Link>
             </React.Fragment>
           ))}
+          <hr />
+          <Link
+            href={"/profile/account"}
+            className="cursor-pointer font-medium text-sm uppercase"
+          >
+            My Account
+          </Link>
+          <Link
+            href={"/profile/orders"}
+            className="cursor-pointer font-medium text-sm uppercase"
+          >
+            My Orders
+          </Link>
+          <hr />
+          <Link
+            href={"/page/" + "privacy_policy"}
+            className="cursor-pointer font-medium text-sm uppercase"
+          >
+            Privacy Policy
+          </Link>
+          <Link
+            href={"/page/" + "terms_of_use"}
+            className="cursor-pointer font-medium text-sm uppercase"
+          >
+            Terms Of Use
+          </Link>
+          <Link
+            href={"/page/" + "return_policy"}
+            className="cursor-pointer font-medium text-sm uppercase"
+          >
+            Return Policy
+          </Link>
+          <Link
+            href={"/page/" + "cancellation_policy"}
+            className="cursor-pointer font-medium text-sm uppercase"
+          >
+            Cancellation Policy
+          </Link>
         </ul>
       </div>
     </React.Fragment>

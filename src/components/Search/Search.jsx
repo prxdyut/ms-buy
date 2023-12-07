@@ -1,4 +1,4 @@
-import { SearchIcon } from '@chakra-ui/icons';
+import { SearchIcon } from "@chakra-ui/icons";
 import {
   Box,
   Flex,
@@ -9,15 +9,16 @@ import {
   Tag,
   Text,
   useOutsideClick,
-} from '@chakra-ui/react';
-import { IProduct } from '@src/model';
-import { client } from '@utils/sanity.client';
-import { groq } from 'next-sanity';
-import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
-import { inputGroup } from './Style';
+} from "@chakra-ui/react";
+import { IProduct } from "@src/model";
+import { client } from "@utils/sanity.client";
+import { groq } from "next-sanity";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import { inputGroup } from "./Style";
+import { useRouter } from "next/navigation";
 
-const query: string = groq`
+const query = groq`
     *[_type == "product" && (name match $searchText || description match $searchText) ] {
       ...,
       "id": _id,
@@ -32,24 +33,16 @@ const query: string = groq`
     }
 `;
 
-export const Search = () => {
-  const ref = useRef<any>();
+export default () => {
+  const ref = useRef();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [products, setProducts] = useState<IProduct[]>([]);
-
-  useOutsideClick({
-    ref: ref,
-    handler: () => {
-      setIsModalOpen(false);
-      setProducts([]);
-    },
-  });
+  const [products, setProducts] = useState([]);
 
   const fetchProducts = async () => {
     setIsLoading(true);
-    const products: IProduct[] = await client.fetch(query, {
+    const products = await client.fetch(query, {
       searchText: `*${searchText}*`,
     });
     setProducts(products);
@@ -65,9 +58,9 @@ export const Search = () => {
 
     return () => clearTimeout(timeout);
   }, [searchText]);
-
+const router = useRouter()
   return (
-    <Box pos="relative" w={{ base: '100%', lg: '32rem' }} ref={ref}>
+    <Box pos="relative" w={{ base: "100%", lg: "32rem" }} ref={ref}>
       <InputGroup {...inputGroup}>
         <InputLeftElement
           pointerEvents="none"
@@ -82,6 +75,7 @@ export const Search = () => {
           value={searchText}
           onClick={() => setIsModalOpen(true)}
           onChange={(e) => setSearchText(e.target.value)}
+          onKeyUp={e => router.push('/category/')}
         />
       </InputGroup>
 
@@ -111,11 +105,7 @@ export const Search = () => {
   );
 };
 
-interface SearchedProductListProps {
-  products: IProduct[];
-}
-
-const SearchedProductList = ({ products }: SearchedProductListProps) => {
+const SearchedProductList = ({ products }) => {
   return (
     <>
       {products.map((product) => (
@@ -124,7 +114,7 @@ const SearchedProductList = ({ products }: SearchedProductListProps) => {
             borderBottomWidth="1px"
             borderBottomColor="gray.200"
             p="2"
-            _hover={{ bgColor: 'gray.100' }}
+            _hover={{ bgColor: "gray.100" }}
           >
             <Flex align="center">
               <Image

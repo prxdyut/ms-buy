@@ -4,16 +4,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import Image from "next/image";
 
-const IMAGES = [
-  "https://images.pexels.com/photos/1377034/pexels-photo-1377034.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  "https://images.pexels.com/photos/208052/pexels-photo-208052.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  "https://images.pexels.com/photos/1115128/pexels-photo-1115128.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-];
-
-export const Banner = ({ aspectRatio }) => {
+export const Banner = ({ banners }) => {
+  const IMAGES = banners?.map(({asset}) => ({src: asset.url, alt: '' }))
   return (
     <div>
-      <div className="text-2xl aspect-square aspect-wide aspect-extra hidden" />
       <Swiper
         modules={[Autoplay]}
         spaceBetween={0}
@@ -25,11 +19,11 @@ export const Banner = ({ aspectRatio }) => {
         }}
         onSwiper={(swiper) => console.log(swiper)}
         onSlideChange={() => console.log("slide change")}
-        className={`rounded aspect-${aspectRatio} `}
+        className={`rounded aspect-wide lg:aspect-extra `}
       >
-        {IMAGES.map((src, index) => (
+        {IMAGES?.map(({src, alt}, index) => (
           <SwiperSlide key={index} style={{ position: "relative" }}>
-            <Image src={src} fill className="object-cover" />
+            <Image src={src} alt={alt} fill className="object-cover" />
           </SwiperSlide>
         ))}
       </Swiper>

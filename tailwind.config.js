@@ -4,9 +4,9 @@ module.exports = {
   theme: {
     aspectRatio: { square: "1 / 1", wide: "16 / 9", extra: "4 / 1" },
     fontFamily: {
-      sans: [`'Inter'`, `sans-serif`],
-      ubuntu: [`'Ubuntu'`, `sans-serif`],
-      inconsolata: [` 'Inconsolata'`, `monospace`],
+      sans: [`'Poppins'`, `sans-serif`],
+      ubuntu: [`'Poppins'`, `sans-serif`],
+      inconsolata: [`'Poppins'`, `sans-serif`],
       poppins: [`'Poppins'`, `sans-serif`],
     },
     extend: {},

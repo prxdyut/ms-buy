@@ -1,2 +1,1 @@
-
-design frontent using tailwind
+not able to type on phone screen 

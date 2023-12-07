@@ -17,32 +17,47 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { useUser } from "@clerk/nextjs";
+import { Loading } from "@src/components/Loading/Loading";
 import { AppContext } from "@src/context/AppContext";
-import { calculateItemsTotal, formatPrice, getSubstring } from "@src/helpers";
+import {
+  calculateItemsTotal,
+  calculateShipping,
+  formatPrice,
+  getSubstring,
+} from "@src/helpers";
 import { useRouter } from "next/navigation";
 import Script from "next/script";
 import React, { useContext, useEffect, useState } from "react";
-import { taxPercentage } from "@/config";
 
 export const Checkout = () => {
-  const [subTotal, setSubTotal] = useState(0);
-  const [tax, setTax] = useState(0);
-  const [inputData, setInputData] = useState({});
+  const { user, isLoaded, isSignedIn } = useUser();
 
-  const user = { email: "daspradyut516@gmail.com" };
-  const total = subTotal + tax;
+  const [subTotal, setSubTotal] = useState(0);
+  const [inputData, setInputData] = useState({});
+  const total = subTotal + calculateShipping(subTotal);
+
+  useEffect(() => {
+    if (isSignedIn) {
+      setInputData({
+        email: user?.primaryEmailAddress?.emailAddress || "",
+        phone1: user?.primaryPhoneNumber?.phoneNumber || "",
+        firstname: user?.firstName || "",
+        lastname: user?.lastName || "",
+      });
+    }
+  }, [isLoaded]);
 
   const router = useRouter();
+
   const {
-    state: { checkout },
+    state: { checkout, cart },
     resetItems,
   } = useContext(AppContext);
 
   useEffect(() => {
     const subTotal = calculateItemsTotal(checkout);
-    const tax = taxPercentage * subTotal;
     setSubTotal(subTotal);
-    setTax(tax);
   }, [checkout]);
 
   const makePayment = async () => {
@@ -54,10 +69,10 @@ export const Checkout = () => {
         allOrderData: {
           note: "note",
           subtotal: subTotal,
-          tax,
+          shipping: calculateShipping(subTotal),
           total,
           timestamp: new Date().toISOString(),
-          ...inputData,
+          orderData: inputData,
         },
       }),
     }).then((t) => t.json());
@@ -79,18 +94,17 @@ export const Checkout = () => {
             successfull: true,
           }),
         }).then((res) => res.json());
-        console.log(res)
+        console.log(res);
         resetItems("checkout");
         resetItems("cart");
-        router.replace("/orders/" + res._id);
+        router.replace("/profile/orders/" + res._id);
       },
       prefill: {
-        name: "Pradyut Das",
-        email: "daspradyut516@gmail.com",
-        contact: "9323232961",
+        name: user.fullName,
+        email: user.primaryEmailAddress,
       },
     };
-    console.log(options);
+
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
 
@@ -99,216 +113,182 @@ export const Checkout = () => {
       alert(response.description);
     });
   };
+
+  if (!isLoaded) return <Loading />;
+
   return (
-    <Flex
-      w={{ base: "100%", lg: "90%" }}
-      mx="auto"
-      flexDir={{ base: "column", lg: "row" }}
-      gap="2rem"
-    >
-      <Stack spacing={10} w={{ base: "100%", lg: "60%" }}>
-        <Card borderWidth="1px" borderColor="gray.200" shadow="none">
-          <CardHeader>
-            <Heading size="md">Review Items</Heading>
-          </CardHeader>
+    <>
+      <div className="container grid grid-cols-3 py-8 gap-8 max-lg:px-4">
+        <p className="my-0 lg:my-4 col-span-3 font-poppins font-bold uppercase text-xl text-center">
+          Checkout
+        </p>
+        <div className=" col-span-3 lg:col-span-2 flex flex-col gap-4 lg:pl-32">
+          <input
+            className=" border-2 px-3 py-4 focus:outline-none placeholder:font-light border-grey"
+            value={inputData?.email || ""}
+          />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <input
+              placeholder="FIRST NAME"
+              className=" border-2 px-3 py-4 focus:outline-none placeholder:font-light border-grey"
+              onChange={(e) =>
+                setInputData({ ...inputData, firstname: e.target.value })
+              }
+              value={inputData?.firstname || ""}
+            />
+            <input
+              placeholder="LAST NAME"
+              className=" border-2 px-3 py-4 focus:outline-none placeholder:font-light border-grey"
+              onChange={(e) =>
+                setInputData({ ...inputData, lastname: e.target.value })
+              }
+              value={inputData?.lastname || ""}
+            />
+          </div>
 
-          <CardBody>
-            <Stack spacing="2rem">
-              {checkout.map((item) => (
-                <Flex key={item.id} align="center" justify="space-between">
-                  <Flex align="center">
-                    <Image
-                      src={item.mainImage}
-                      boxSize="100px"
-                      bgSize="contain"
-                    />
-                    <Box mx="1rem">
-                      <Text
-                        fontWeight="bold"
-                        fontSize={{ base: "sm", lg: "lg" }}
-                        maxW="500px"
-                      >
-                        {item.name}
-                      </Text>
-                      <Text color="gray.500">
-                        {getSubstring(item.description, 50)}
-                      </Text>
-                    </Box>
-                  </Flex>
-                  <Box textAlign="right">
-                    <Text fontWeight="bold" fontSize={{ base: "md", lg: "lg" }}>
-                      ${formatPrice(item.price)}
-                    </Text>
-                    <Text fontSize={{ base: "sm", lg: "md" }}>
-                      Quantity: {item.count}
-                    </Text>
-                  </Box>
-                </Flex>
-              ))}
-            </Stack>
-          </CardBody>
-        </Card>
-
-        <Card borderWidth="1px" borderColor="gray.200" shadow="none">
-          <CardHeader>
-            <Heading size="md">Delivery Information</Heading>
-          </CardHeader>
-
-          <CardBody>
-            <Stack spacing="2rem">
-              <Box>
-                <FormLabel>Full Name</FormLabel>
-                <Input type="text" placeholder="Full name" />
-              </Box>
-
-              <Box>
-                <FormLabel>Address</FormLabel>
-                <Input
-                  type="text"
-                  placeholder="address"
-                  name="address"
-                  onChange={(e) =>
-                    setInputData({
-                      ...inputData,
-                      [e.target.name]: e.target.value,
-                    })
-                  }
-                />
-              </Box>
-
-              <Box>
-                <FormLabel>Phone</FormLabel>
-                <Input
-                  type="text"
-                  placeholder="phone number"
-                  name="phoneNumber"
-                  onChange={(e) =>
-                    setInputData({
-                      ...inputData,
-                      [e.target.name]: e.target.value,
-                    })
-                  }
-                />
-              </Box>
-
-              <Box>
-                <FormLabel>Email</FormLabel>
-                <Input
-                  type="email"
-                  placeholder="email"
-                  name="email"
-                  onChange={(e) =>
-                    setInputData({
-                      ...inputData,
-                      [e.target.name]: e.target.value,
-                    })
-                  }
-                />
-              </Box>
-            </Stack>
-          </CardBody>
-        </Card>
-      </Stack>
-
-      <Box w={{ base: "100%", lg: "40%" }}>
-        <Card borderWidth="1px" borderColor="gray.200" shadow="none" p="2rem">
-          <CardHeader>
-            <Heading size="md">Payment Details</Heading>
-          </CardHeader>
-
-          <CardBody>
-            <Stack spacing="2rem">
-              <Flex>
-                <Input
-                  type="text"
-                  placeholder="Enter Coupon Code"
-                  rounded="full"
-                />
-                <Button
-                  bgColor="brand.primary"
-                  color="white"
-                  rounded="full"
-                  ml="-40px"
-                  px="2rem"
-                  _hover={{
-                    bgColor: "brand.primaryDark",
-                  }}
-                  _active={{
-                    bgColor: "brand.primaryDark",
-                  }}
-                >
-                  Apply Coupon
-                </Button>
-              </Flex>
-              <Divider mt="1rem" />
-
-              <Box>
-                <Heading size="xs" my="1rem">
-                  Payment Option
-                </Heading>
-                <RadioGroup>
-                  <Stack>
-                    <Radio value="cashOnDelivery">Cash On Delivery</Radio>
-                    <Radio value="momo">Mobile Money Payment</Radio>
-                    <Radio value="3">Credit Card (Master/Visa)</Radio>
-                  </Stack>
-                </RadioGroup>
-              </Box>
-            </Stack>
-            <Divider mt="1rem" />
-
-            <Box>
-              <Flex justify="space-between" align="center" my="1rem">
-                <Text fontWeight="bold">Sub Total</Text>
-                <Text fontWeight="bold">${formatPrice(subTotal)}</Text>
-              </Flex>
-
-              <Flex justify="space-between" align="center" my="1rem">
-                <Text fontWeight="bold">Tax(10%)</Text>
-                <Text fontWeight="bold">${formatPrice(tax)}</Text>
-              </Flex>
-
-              <Flex justify="space-between" align="center" my="1rem">
-                <Text fontWeight="bold">Coupon Discount</Text>
-                <Text fontWeight="bold">-${formatPrice(tax)}</Text>
-              </Flex>
-
-              <Flex justify="space-between" align="center" my="1rem">
-                <Text fontWeight="bold">Shipping Cost</Text>
-                <Text fontWeight="bold">-${formatPrice(0)}</Text>
-              </Flex>
-              <Divider />
-              <Flex justify="space-between" align="center" my="1rem">
-                <Text fontWeight="bold">Sub total</Text>
-                <Text fontWeight="bold">${formatPrice(subTotal)}</Text>
-              </Flex>
-            </Box>
-
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <input
+              placeholder="PHONE NO. 1"
+              className=" border-2 px-3 py-4 w-full focus:outline-none placeholder:font-light border-grey"
+              onChange={(e) =>
+                setInputData({ ...inputData, phone1: e.target.value })
+              }
+              value={inputData?.phone1 || ""}
+            />
+            <input
+              placeholder="PHONE NO. 2"
+              className=" border-2 px-3 py-4 w-full focus:outline-none placeholder:font-light border-grey"
+              onChange={(e) =>
+                setInputData({ ...inputData, phone2: e.target.value })
+              }
+              value={inputData?.phone2 || ""}
+            />
+          </div>
+          <div className="col-span-2 flex flex-col gap-4 ">
+            <input
+              placeholder="ADDRESS LINE 1"
+              className=" border-2 px-3 py-4 w-full focus:outline-none placeholder:font-light border-grey"
+              onChange={(e) =>
+                setInputData({ ...inputData, address1: e.target.value })
+              }
+              value={inputData?.address1 || ""}
+            />
+            <input
+              placeholder="ADDRESS LINE 2"
+              className=" border-2 px-3 py-4 w-full focus:outline-none placeholder:font-light border-grey"
+              onChange={(e) =>
+                setInputData({ ...inputData, address2: e.target.value })
+              }
+              value={inputData?.address2 || ""}
+            />
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <input
+              placeholder="CITY"
+              className=" border-2 px-3 py-4 w-full focus:outline-none placeholder:font-light border-grey"
+              onChange={(e) => setInputData({ ...inputData, city: e.target.value })}
+              value={inputData?.city || ""}
+            />
+            <input
+              placeholder="STATE"
+              className=" border-2 px-3 py-4 w-full focus:outline-none placeholder:font-light border-grey"
+              onChange={(e) => setInputData({ ...inputData, state: e.target.value })}
+              value={inputData?.state || ""}
+            />
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <input
+              placeholder="COUNTRY"
+              className=" border-2 px-3 py-4 w-full focus:outline-none placeholder:font-light border-grey"
+              onChange={(e) =>
+                setInputData({ ...inputData, country: e.target.value })
+              }
+              value={inputData?.country || ""}
+            />
+            <input
+              placeholder="PINCODE"
+              className=" border-2 px-3 py-4 w-full focus:outline-none placeholder:font-light border-grey"
+              onChange={(e) =>
+                setInputData({ ...inputData, pincode: e.target.value })
+              }
+              value={inputData?.pincode || ""}
+            />
+          </div>
+          <textarea
+            id="message"
+            rows="4"
+            class="border-2 px-3 py-4 col-span-2 w-full focus:outline-none placeholder:font-light border-grey"
+            placeholder="DELIVERY INSTRUCTIONS"
+            onChange={(e) =>
+              setInputData({ ...inputData, instructions: e.target.value })
+            }
+            value={inputData?.instructions || ""}
+          />
+          <div>
             <Script
               id="razorpay-checkout-js"
               src="https://checkout.razorpay.com/v1/checkout.js"
             />
-            <Button
-              bgColor="brand.primary"
-              color="white"
-              w="100%"
-              rounded="full"
-              _hover={{
-                bgColor: "brand.primaryDark",
-              }}
-              _active={{
-                bgColor: "brand.primaryDark",
-              }}
-              onClick={() => {
-                makePayment();
-                console.log("making payment");
-              }}
+            <button
+              className="px-4 py-4 bg-black text-white w-full"
+              onClick={makePayment}
             >
-              Pay ${formatPrice(total)}
-            </Button>
-          </CardBody>
-        </Card>
-      </Box>
-    </Flex>
+              Pay ₹ {formatPrice(total)}
+            </button>
+          </div>
+        </div>
+        <div className=" lg:pr-32 max-lg:col-span-3">
+          <p className=" font-poppins text-lg uppercase font-semibold mb-2">
+            Summary
+          </p>
+          <div className="grid grid-cols-3 gap-2">
+            <div className=" col-span-2 uppercase font-poppins font-semibold opacity-60">
+              Subtotal
+            </div>
+            <div className=" font-poppins text-right font-semibold">
+              ₹ {formatPrice(subTotal)}
+            </div>
+            <div className=" col-span-2 uppercase font-poppins font-semibold opacity-60">
+              Shipping
+            </div>
+            <div className="font-poppins text-right font-semibold">
+              ₹ {formatPrice(calculateShipping(subTotal))}
+            </div>
+            <hr className=" col-span-3 my-1 opacity-50 border-1" />
+            <div className=" col-span-2 uppercase font-poppins font-semibold opacity-60"></div>
+            <div className="font-poppins text-lg text-right font-semibold">
+              ₹ {formatPrice(total)}{" "}
+            </div>
+          </div>
+          <div className="my-8" />
+          <p className=" font-poppins text-lg uppercase font-semibold mb-2">
+            shopping Bag
+          </p>
+          {cart.map((item, index) => (
+            <div key={index} className=" grid grid-cols-4 px-4 py-2">
+              <div className=" relative aspect-square rounded">
+                <Image src={item.mainImage} fill />
+              </div>
+              <div className=" flex flex-col col-span-3 px-2">
+                <p className=" uppercase font-semibold text-sm mb-1">
+                  {getSubstring(item.name, 22)}
+                </p>
+                <p className="  text-xs">
+                  {getSubstring(item.category?.name, 22)}
+                </p>
+                <p className=" uppercase text-xs">QTY: {item.count}</p>
+                <div className="flex-grow" />
+                <div className="flex flex-row justify-between">
+                  <p className=" font-poppins text-sm ">₹ {item.price}</p>
+                  <p className=" font-poppins text-sm font-semibold ">
+                    ₹ {item.price * item.count}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
   );
 };

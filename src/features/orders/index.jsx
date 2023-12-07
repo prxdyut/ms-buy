@@ -18,67 +18,39 @@ import Link from "next/link";
 export default function AllOrders({ orders }) {
   console.log(orders);
   return (
-    <div>
-      <Flex
-        flexWrap="wrap"
-        w={{ base: "100%", lg: "90%" }}
-        mx="auto"
-        justify={{ base: "center", lg: "space-between" }}
-      >
-        {orders.map((order, index) => (
-          <Card w="xs" pos="relative" key={index}>
-            <CardBody>
-              {order.products.map(({ productReference, ...product }, index) => (
-                <Grid
-                  key={index}
-                  alignItems="center"
-                  templateColumns="repeat(8, 1fr)"
-                  borderBottomWidth="1px"
-                  borderBottomColor="gray.200"
-                  my="2"
-                  py="1"
-                >
-                  <GridItem>
-                    <Link href={'/products/' + productReference.slug}>
-                      <Image
-                        src={productReference.mainImage}
-                        boxSize="20px"
-                        rounded="full"
-                        borderWidth="1px"
-                        borderColor="gray.300"
-                      />
-                    </Link>
-                  </GridItem>
-                  <GridItem colSpan={4}>
-                    <Link href={'/products/' + productReference.slug}>
-                      <Text fontSize="sm" title={productReference.name}>
-                        {getSubstring(productReference.name, 17)}
-                      </Text>
-                    </Link>
-                  </GridItem>
+    <div className=" grid lg:grid-cols-4 gap-4 p-4">
+      {orders.map((order, index) => (
+        <div className=" ">
+          <Link href={`/profile/orders/${order.id}`} className="" key={index}>
+            <div className="p-4 pb-2 bg-grey  rounded">
+              <p className=" font-semibold mb-4 text-end">
+                {new Date(order.timestamp).toLocaleDateString()}
+              </p>
+              <div className=" flex gap-1 flex-col">
+                {order.products.map(
+                  ({ productReference, ...product }, index) => (
+                    <div className=" grid grid-flow-col">
+                      <div colSpan={4}>
+                        <p>{getSubstring(productReference.name, 15)}</p>
+                      </div>
 
-                  <GridItem>
-                    <Text fontWeight="bold" fontSize="xs">
-                      $ {product.price}
-                    </Text>
-                  </GridItem>
-                  <GridItem>
-                    <Text fontWeight="bold" fontSize="xs" align={"end"}>
-                      {product.quantity}
-                    </Text>
-                  </GridItem>
-                </Grid>
-              ))}
-            </CardBody>
-            <CardBody>
-              <Text fontWeight={"bold"}>Total : $ {order.total}</Text>
-              <Link href={`/orders/${order.id}`}>
-                <Button>View</Button>
-              </Link>
-            </CardBody>
-          </Card>
-        ))}
-      </Flex>
+                      <div>
+                        <p className="text-end">{product.quantity}</p>
+                      </div>
+                    </div>
+                  )
+                )}
+              </div>
+              <p className=" text-xl font-semibold mt-4 text-end">
+                Total : ₹ {order.total}
+              </p>
+            </div>
+            <p className=" rounded p-2 bg-black text-white font-semibold text-end">
+              Status : {order.fulfilled ? "Fulfilled" : "Yet to Fulfill"}
+            </p>
+          </Link>
+        </div>
+      ))}
     </div>
   );
 }
