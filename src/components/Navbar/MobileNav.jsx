@@ -1,7 +1,7 @@
 "use client";
 import { AppLogo } from "../AppLogo";
 import { AccountIcon, SearchIcon } from "../Icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HiOutlineMenuAlt2 as HamIcon } from "react-icons/hi";
 import { CgClose as CloseIcon } from "react-icons/cg";
 import Search from "./Search";
@@ -19,26 +19,33 @@ const CATEGORIES = [
   { title: "Sponges" },
 ];
 
-export function MobileNav({ categories: CATEGORIES }) {
+export function MobileNav({ categories: CATEGORIES, topText }) {
   const [SearchisFocused, setSearchisFocused] = useState(false);
   const [MenuisFocused, setMenuisFocused] = useState(false);
   const [input, setInput] = useState("");
+
+
+  const [counter, setCounter] = useState(0);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCounter((prevCounter) =>
+        prevCounter >= topText?.length-1 ? 0 : prevCounter + 1
+      );
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <React.Fragment>
       <div className="sticky bg-white inset-x-0 p-4 top-0 z-10 bg-opacity-90 ">
         <div className="container grid grid-cols-1 gap-y-4 mx-auto">
           <p className="flex-grow bg-black text-white text-xs font-medium text-center p-2 rounded-full">
-            Gala Eyelashes Artistry
+            {topText[counter]}
           </p>
 
           <div className="flex w-100 items-center gap-2 ">
-            <div
-              onClick={() => setMenuisFocused(!MenuisFocused)}
-              className="mr-2"
-            >
-              <HamIcon size={24} />
-            </div>
+            
             <AppLogo />
             <div className="flex-grow" />
             <div
@@ -56,6 +63,12 @@ export function MobileNav({ categories: CATEGORIES }) {
               <AccountIcon size={20} />
             </Link>
             <Cart />
+            <div
+              onClick={() => setMenuisFocused(!MenuisFocused)}
+              className="ml-2"
+            >
+              <HamIcon size={24} />
+            </div>
           </div>
           <div class={` ${!SearchisFocused && "hidden"} `}>
             <Search

@@ -33,7 +33,7 @@ export default function ProfileDetails() {
   return (
     <div className="container mx-auto px-4 py-8 lg:px-32 lg:py-16 flex w-full flex-col  lg:grid lg:grid-cols-2 gap-8">
       <div className=" flex flex-col gap-2">
-        <label className="text-sm font-poppins uppercase">
+        <label className="text-sm   uppercase">
           email {"( non editable )"}
         </label>
         <input
@@ -42,7 +42,7 @@ export default function ProfileDetails() {
         />
       </div>
       <div className=" flex flex-col gap-2">
-        <label className="text-sm font-poppins uppercase">Username</label>
+        <label className="text-sm   uppercase">Username</label>
         <input
           value={data?.username}
           className=" border-2 px-3 py-4 focus:outline-none placeholder:font-light border-grey"
@@ -52,7 +52,7 @@ export default function ProfileDetails() {
         />
       </div>
       <div className=" flex flex-col gap-2">
-        <label className="text-sm font-poppins uppercase">First Name</label>
+        <label className="text-sm   uppercase">First Name</label>
         <input
           className=" border-2 px-3 py-4 focus:outline-none placeholder:font-light border-grey"
           value={data?.firstName}
@@ -62,7 +62,7 @@ export default function ProfileDetails() {
         />
       </div>
       <div className=" flex flex-col gap-2">
-        <label className="text-sm font-poppins uppercase">Last Name</label>
+        <label className="text-sm   uppercase">Last Name</label>
         <input
           className=" border-2 px-3 py-4 focus:outline-none placeholder:font-light border-grey"
           value={data?.lastName}

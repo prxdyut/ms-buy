@@ -40,6 +40,11 @@ export const ProductSchema = {
       type: 'text',
     },
     {
+      name: 'badge',
+      title: 'Badge',
+      type: 'string',
+    },
+    {
       name: 'category',
       title: 'Product Category',
       type: 'reference',

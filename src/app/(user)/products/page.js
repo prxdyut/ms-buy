@@ -51,7 +51,7 @@ export default function SearchPage() {
       <div className=" flex justify-end">
         <button
           onClick={() => setSidebarisOpen(!sidebarIsOpen)}
-          className="bg-grey uppercase font-poppins text-black pl-4 pr-12 pb-4 py-2 text-left flex flex-row items-center justify-center gap-4"
+          className="bg-grey uppercase   text-black pl-4 pr-12 pb-4 py-2 text-left flex flex-row items-center justify-center gap-4"
         >
           Filters <GoArrowRight />
         </button>

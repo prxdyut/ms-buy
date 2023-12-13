@@ -99,7 +99,7 @@ export const Cart = () => {
             <p className=" text-sm">{getSubstring(item.category?.name, 22)}</p>
             <div className=" flex-grow" />
 
-            <p className=" font-poppins flex justify-between ">
+            <p className="   flex justify-between ">
               <p>₹ {item.price}</p>
               <p className=" lg:hidden font-semibold">
                 ₹ {item.price * item.count}
@@ -180,21 +180,21 @@ export const Cart = () => {
         {cart.length !== 0 && (
           <div className="px-4 py-2 pb-0">
             <div className="grid grid-cols-3 gap-2">
-              <div className=" col-span-2 uppercase font-poppins font-semibold">
+              <div className=" col-span-2 uppercase   font-semibold">
                 Subtotal
               </div>
-              <div className=" font-poppins text-right font-semibold">
+              <div className="   text-right font-semibold">
                 ₹ {formatPrice(calculateItemsTotal(cart))}
               </div>
-              <div className=" col-span-2 uppercase font-poppins font-semibold ">
+              <div className=" col-span-2 uppercase   font-semibold ">
                 Shipping
               </div>
-              <div className="font-poppins text-right font-semibold">
+              <div className="  text-right font-semibold">
                 ₹ {formatPrice(calculateShipping(calculateItemsTotal(cart)))}
               </div>
               <hr className=" col-span-3 my-1 opacity-50 border-1" />
-              <div className=" col-span-2 uppercase font-poppins font-semibold opacity-60"></div>
-              <div className="font-poppins text-lg text-right font-semibold">
+              <div className=" col-span-2 uppercase   font-semibold opacity-60"></div>
+              <div className="  text-lg text-right font-semibold">
                 ₹{" "}
                 {calculateItemsTotal(cart) +
                   calculateShipping(calculateItemsTotal(cart))}{" "}
@@ -203,14 +203,14 @@ export const Cart = () => {
             <div className=" flex flex-row">
               <p
                 href={"/checkout"}
-                className=" cursor-pointer w-max bg-black text-white px-8 py-2 rounded mr-2 font-poppins text-sm uppercase"
+                className=" cursor-pointer w-max bg-black text-white px-8 py-2 rounded mr-2   text-sm uppercase"
                 onClick={handleCheckout}
               >
                 Checkout
               </p>
               <button
                 onClick={() => resetItems("cart")}
-                className=" bg-grey text-black px-8 py-2 rounded mr-2 font-poppins text-sm uppercase"
+                className=" bg-grey text-black px-8 py-2 rounded mr-2   text-sm uppercase"
               >
                 Clear
               </button>

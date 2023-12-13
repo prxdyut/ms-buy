@@ -47,9 +47,24 @@ export const ProductDetails = ({ product }) => {
             ]}
           />
         </div>
+        <div className="block lg:hidden ">
+          <div className="mb-2 lg:mb-6">
+            <Rating rating={product?.rating} />
+          </div>
+          <p className=" text-2xl uppercase font-semibold w-3/4 mb-3">
+            {product?.name}
+          </p>
+          <div className="text-right  max-lg:text-xl font-semibold mb-2 lg:mb-6">
+            ₹ {product?.price}
+          </div>
+        </div>
         <div className="grid grid-cols-1 lg:grid-cols-3">
           <div className=" grid max-lg:overflow-x-auto max-lg:grid-flow-col lg:grid-cols-2 lg:col-span-2 gap-4">
-            <Link href={product?.mainImage} target="_blank" className="relative w-[75vw] lg:w-full aspect-square rounded">
+            <Link
+              href={product?.mainImage}
+              target="_blank"
+              className="relative w-[75vw] lg:w-full aspect-square rounded"
+            >
               <Image
                 src={product?.mainImage}
                 alt={product?.name}
@@ -59,7 +74,11 @@ export const ProductDetails = ({ product }) => {
               />
             </Link>
             {product?.gallery?.map((image, i) => (
-              <Link href={image.asset.url} target="_blank"  className="relative w-[75vw] lg:w-full aspect-square rounded">
+              <Link
+                href={image.asset.url}
+                target="_blank"
+                className="relative w-[75vw] lg:w-full aspect-square rounded"
+              >
                 <Image
                   key={i}
                   src={image.asset.url}
@@ -73,38 +92,49 @@ export const ProductDetails = ({ product }) => {
           </div>
           <div className="px-0 lg:px-12">
             <div className="sticky top-32">
-              <div className="mb-2 lg:mb-6">
-                <Rating rating={product?.rating} />
+              <div className=" max-lg:hidden">
+                <div className="mb-2 lg:mb-6">
+                  <Rating rating={product?.rating} />
+                </div>
+                <p className=" text-2xl uppercase font-semibold w-3/4 mb-3">
+                  {product?.name}
+                </p>
+                <div className=" lg:text-right   font-semibold mb-2 lg:mb-6">
+                  ₹ {product?.price}
+                </div>
+                <hr className="mb-2 lg:mb-6" />
               </div>
-              <p className=" text-2xl uppercase font-semibold w-3/4 mb-3">
-                {product?.name}
-              </p>
-              <div className=" lg:text-right font-poppins font-semibold mb-2 lg:mb-6">
-                ₹ {product?.price}
-              </div>
-              <hr className="mb-2 lg:mb-6" />
-              <div className=" text-dark mb-4">{product?.description}</div>
+              <div className=" text-dark mb-4 pt-8">{product?.description}</div>
               <div className=" text-dark text-sm uppercase mb-6">
                 {product?.category?.name}
               </div>
               <div className=" text-dark text-xs mb-2">
                 MRP inclusive of all taxes
               </div>
-              <button
-                onClick={() => {
-                  resetItems("checkout");
-                  addItem("checkout", product, product.instock, quantity);
-                }}
-                className=" font-poppins uppercase font-semibold w-full border-2 border-dark text-dark py-2 rounded-full mb-2"
-              >
-                Buy Now
-              </button>
-              <Quantity
-                setQuantity={setQuantity}
-                quantity={quantity}
-                disabled={isAdded("cart", product?.id)}
-              />
-              <AddToCartButton product={product} count={quantity} instock={product.instock} />
+              <div className=" flex flex-row lg:flex-col gap-4">
+               
+                <button
+                  className="lg:px-8 text-[0.6rem] uppercase max-lg:w-full font-semibold  bg-white border text-black py-2 rounded-full mb-6"
+                  onClick={() => {
+                    resetItems("checkout");
+                    addItem("checkout", product, product.instock, quantity);
+                  }}
+                >
+                  Buy Now
+                </button>
+                <div className=" max-lg:hidden">
+                  <Quantity
+                    setQuantity={setQuantity}
+                    quantity={quantity}
+                    disabled={isAdded("cart", product?.id)}
+                  />
+                </div>
+                <AddToCartButton
+                  product={product}
+                  count={quantity}
+                  instock={product.instock}
+                />
+              </div>
               <div className=" text-dark text-sm mb-2 text-center">
                 Shipping Charges are calculated at checkout
               </div>

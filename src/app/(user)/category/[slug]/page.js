@@ -69,7 +69,7 @@ export default function SearchPage({ params: { slug } }) {
 
 const SearchedProductList = ({ products }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 bg-grey  gap-4 p-8">
+    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 bg-white  gap-4 p-8">
       {products.map((product) => (
         <ProductCard product={product} key={product.id} variant={"compact"} />
       ))}

@@ -7,23 +7,72 @@ import { useContext } from "react";
 import { AppContext } from "@src/context/AppContext";
 import { AddToCartButton } from "./Cart/AddToCartButton";
 
-export const ProductCard = ({ product }) => {
+export const ProductCard = ({ product, variant }) => {
   const { addItem, removeItem, isAdded } = useContext(AppContext);
-  return (
-    <div className="bg-white py-4 px-6">
+
+  const small = (
+    <div className="bg-white flex flex-row gap-4">
+      <Link href={`/products/${product.slug}`} className=" w-36">
+        <div className="relative aspect-square">
+          <Image
+            src={product.mainImage}
+            alt={product.name}
+            fill
+            objectFit="cover"
+          />
+        </div>
+      </Link>
+      <div className=" flex flex-col justify-between flex-grow">
+        <div>
+          <p className=" uppercase text-sm font-semibold mb-2">
+            {getSubstring(product.name, 22)}
+          </p>
+          <p className=" text-md   mb-1">₹ {product.price}</p>
+          <p className=" text-xs text-dark mb-0">{product.category.name}</p>
+        </div>
+        <div className="text-right cursor-pointer">
+          {isAdded("cart", product.id) ? (
+            <button
+              className="  text-[.6rem]   px-4 py-2 uppercase w-max bg-grey text-black rounded-full"
+              onClick={() => removeItem("cart", product.id)}
+            >
+              Remove
+            </button>
+          ) : (
+            <button
+              className=" text-[.6rem]  px-4 py-2 uppercase w-max border-2 bg-black text-white rounded-full"
+              onClick={() => addItem("cart", product.id, 1)}
+            >
+              Add to bag
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+  const big = (
+    <div className="bg-white py-4 px-4 lg:px-6">
       <Link href={`/products/${product.slug}`}>
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center mb-4 ">
           <Rating rating={product.rating} />
+          {product?.badge && (
+            <p className=" uppercase text-xs border pt-1 px-2 rounded-full font-semibold border-dark">
+              {product?.badge}
+            </p>
+          )}{" "}
         </div>
         <div className="relative aspect-square mb-4">
-          <Image src={product.mainImage} alt={product.name} fill objectFit="cover" />
+          <Image
+            src={product.mainImage}
+            alt={product.name}
+            fill
+            objectFit="cover"
+          />
         </div>
         <p className="text-center uppercase text-md font-semibold mb-2">
           {getSubstring(product.name, 20)}
         </p>
-        <p className="text-center text-xl font-poppins mb-2">
-          ₹ {product.price}
-        </p>
+        <p className="text-center text-xl  mb-2">₹ {product.price}</p>
         <p className="text-center text-sm text-dark mb-4">
           {product.category.name}
         </p>
@@ -36,33 +85,15 @@ export const ProductCard = ({ product }) => {
         />
       </div>
     </div>
-    // <Card w="xs" pos="relative" m="0.5rem">
-    //
-    //   <CardBody>
-    //     <Link href={`/products/${product.slug}`}>
-    //       <Box
-    //         bg={`center / contain no-repeat url(${product.mainImage})`}
-    //         borderRadius="lg"
-    //         boxSize="200px"
-    //         mx="auto"
-    //       />
-    //     </Link>
-    //     <Stack mt="6" spacing="3">
-    //       <Flex justify="space-between" align="center">
-    //         <Link href={`/products/${product.slug}`}>
-    //           <Heading size="sm">{getSubstring(product.name, 20)}</Heading>
-    //         </Link>
-    //         <Flex color="brand.primaryDark" fontWeight="bold">
-    //           <Text fontSize="sm">$ </Text>
-    //           <Text fontSize="lg">{product.price}</Text>
-    //         </Flex>
-    //       </Flex>
-    //       <Text fontSize="sm"> {getSubstring(product.description, 30)} </Text>
-    //
-
-    //       <AddToCartButton product={product} />
-    //     </Stack>
-    //   </CardBody>
-    // </Card>
   );
+
+  if (variant == "compact") {
+    return (
+      <div className="">
+        <div className=" lg:hidden">{small}</div>
+        <div className=" max-lg:hidden">{big}</div>
+      </div>
+    );
+  }
+  return big;
 };

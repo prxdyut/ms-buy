@@ -1,31 +1,46 @@
-'use client'
+"use client";
 import { IContext, IProduct, IState, ItemKey } from "@src/model";
-import React, { createContext, ReactNode, useState } from "react";
+import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { useLocalStorage } from "@mantine/hooks";
 import { groq } from "next-sanity";
 import { client } from "@utils/sanity.client";
 
-export const AppContext = createContext<IContext>(null as any);
-
-interface IAppContextProviderProps {
-  children: ReactNode;
-}
-
-const initialState: IState = {
+export const AppContext = createContext();
+const initialState = {
+  store: {},
   cart: [],
   wishlist: [],
   checkout: [],
 };
-
-const AppContextProvider: React.FC<IAppContextProviderProps> = ({
-  children,
-}) => {
-  const [state, setState] = useLocalStorage<IState>({
+const AppContextProvider = ({ children }) => {
+  const [state, setState] = useLocalStorage({
     key: "ms-buy",
     defaultValue: initialState,
   });
 
-  const addItem = async (key: ItemKey, productId: string, count?: number) => {
+  const [store, setStore] = useState({});
+
+  useEffect(() => {
+    client
+      .fetch(groq`*[_type == "settings"][0]
+      { 
+        "logo" : {
+          "footer": logo.footer.asset -> {
+            url,
+            "height" : metadata.dimensions.height, 
+            "width": metadata.dimensions.width
+          },
+          "header": logo.header.asset -> {
+            url, 
+            "height" : metadata.dimensions.height, 
+            "width": metadata.dimensions.width
+          }
+        }
+      }`)
+      .then((res) => setStore(res));
+  }, []);
+
+  const addItem = async (key, productId, count) => {
     const itemCount = count || 1;
     const query = groq`*[_type == "product" && _id == $id][0] {
       "id": _id,
@@ -52,18 +67,14 @@ const AppContextProvider: React.FC<IAppContextProviderProps> = ({
     }
   };
 
-  const removeItem = (key: ItemKey, productId: string) => {
+  const removeItem = (key, productId) => {
     setState((prevState) => ({
       ...prevState,
       [key]: prevState[key].filter((item) => item.id !== productId),
     }));
   };
 
-  const increaseCount = async (
-    key: ItemKey,
-    productId: string,
-    callback: () => void
-  ) => {
+  const increaseCount = async (key, productId, callback) => {
     const query = groq`*[_type == "product" && _id == $id][0].instock`;
     const instock = await client.fetch(query, { id: productId });
     const items = [...state[key]];
@@ -82,7 +93,7 @@ const AppContextProvider: React.FC<IAppContextProviderProps> = ({
     }
   };
 
-  const forceUpdate = async (key: ItemKey, productId: string) => {
+  const forceUpdate = async (key, productId) => {
     const query = groq`*[_type == "product" && _id == $id][0].instock`;
     const instock = await client.fetch(query, { id: productId });
     const items = [...state[key]];
@@ -91,7 +102,7 @@ const AppContextProvider: React.FC<IAppContextProviderProps> = ({
     setState((prevState) => ({ ...prevState, [key]: items }));
   };
 
-  const decreaseCount = (key: ItemKey, productId: string) => {
+  const decreaseCount = (key, productId) => {
     const items = [...state[key]];
     const index = items.findIndex((item) => item.id === productId);
     if (items[index].count > 1) {
@@ -100,14 +111,14 @@ const AppContextProvider: React.FC<IAppContextProviderProps> = ({
     setState((prevState) => ({ ...prevState, [key]: items }));
   };
 
-  const resetItems = (key: ItemKey) => {
+  const resetItems = (key) => {
     setState((prevState) => ({
       ...prevState,
       [key]: [],
     }));
   };
 
-  const isAdded = (key: ItemKey, productId: string): boolean => {
+  const isAdded = (key, productId) => {
     return state[key].some((item) => item.id === productId);
   };
 
@@ -115,6 +126,7 @@ const AppContextProvider: React.FC<IAppContextProviderProps> = ({
     <AppContext.Provider
       value={{
         state,
+        store,
         addItem,
         removeItem,
         increaseCount,

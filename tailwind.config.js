@@ -4,14 +4,14 @@ module.exports = {
   theme: {
     aspectRatio: { square: "1 / 1", wide: "16 / 9", extra: "4 / 1" },
     fontFamily: {
-      sans: [`'Poppins'`, `sans-serif`],
-      ubuntu: [`'Poppins'`, `sans-serif`],
-      inconsolata: [`'Poppins'`, `sans-serif`],
-      poppins: [`'Poppins'`, `sans-serif`],
+      sans: [`var(--ano-custom-font)`],
+      ubuntu: [`var(--ano-custom-font)`],
+      inconsolata: [`var(--ano-custom-font)`],
+      poppins: [`var(--ano-custom-font)`],
     },
     extend: {},
     colors: {
-      primary: "#d6be85",
+      primary: "#eb4e5e",
       white: "#ffffff",
       black: "#000000",
       grey: "#e5e7eb",

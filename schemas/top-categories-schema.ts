@@ -4,6 +4,16 @@ export const FeaturedProductsAndCategories = {
   type: "document",
   fields: [
     {
+      name: "topTexts",
+      title: "Top Texts",
+      type: "array",
+      of: [
+        {
+          type: "string",
+        },
+      ],
+    },
+    {
       name: "banner1",
       title: "Banner 1",
       description: "Upload 16x9 Image Only.",
@@ -57,18 +67,6 @@ export const FeaturedProductsAndCategories = {
           to: [{ type: "category" }],
         },
       ],
-    },
-    {
-      name: "banner3",
-      title: "Banner 3",
-      description: "Upload 16x9 Image Only.",
-      type: "array",
-      of: [
-        {
-          type: "galleryImage",
-        },
-      ],
-      options: { max: 3 },
     },
   ],
 };

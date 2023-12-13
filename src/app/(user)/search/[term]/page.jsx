@@ -96,7 +96,11 @@ export default function SearchPage({ params: { term } }) {
   }, [products]);
 
   const sidebar = (
-    <div className=" bg-white w-full h-auto overflow-hidden flex flex-col p-4 gap-4">
+    <div
+      className={`bg-white w-full  overflow-hidden flex flex-col p-4 gap-4 ${
+        sidebarIsOpen ? " h-full" : " h-0"
+      }`}
+    >
       <div className="">
         <p className=" text-xl font-semibold">Categories</p>
         <ul className="pt-2">
@@ -195,7 +199,7 @@ export default function SearchPage({ params: { term } }) {
       <div className=" flex justify-end">
         <button
           onClick={() => setSidebarisOpen(!sidebarIsOpen)}
-          className="bg-grey uppercase font-poppins text-black pl-4 pr-12 pb-4 py-2 text-left flex flex-row items-center justify-center gap-4"
+          className="bg-grey uppercase   text-black pl-4 pr-12 pb-4 py-2 text-left flex flex-row items-center justify-center gap-4"
         >
           Filters <GoArrowRight />
         </button>
@@ -203,7 +207,7 @@ export default function SearchPage({ params: { term } }) {
       <hr />
       <div className="flex flex-col lg:flex-row">
         <div
-          className={` hidden max-lg:block bg-grey  transition-all  ${
+          className={` hidden max-lg:block bg-white  transition-all  ${
             sidebarIsOpen
               ? "w-full h-full p-4"
               : "w-full h-0 p-0 mr-[-8px] opacity-0"
@@ -219,7 +223,7 @@ export default function SearchPage({ params: { term } }) {
           <SearchedProductList products={filteredProducts} />
         </div>
         <div
-          className={` hidden lg:block bg-grey  transition-all  ${
+          className={` hidden lg:block bg-white  transition-all  ${
             sidebarIsOpen ? "w-1/6 p-4" : "w-0 p-0 mr-[-8px] opacity-0"
           }`}
         >
@@ -234,7 +238,7 @@ const SearchedProductList = ({ products }) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 bg-grey  gap-4 p-8">
+    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 bg-white  gap-4 p-4 lg:p-8">
       {products.length > 0 ? (
         products.map((product) => (
           <ProductCard product={product} key={product.id} variant={"compact"} />

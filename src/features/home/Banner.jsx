@@ -7,19 +7,19 @@ import Image from "next/image";
 export const Banner = ({ banners }) => {
   const IMAGES = banners?.map(({asset}) => ({src: asset.url, alt: '' }))
   return (
-    <div>
+    <div className="container mx-auto">
       <Swiper
         modules={[Autoplay]}
         spaceBetween={0}
         slidesPerView={1}
         loop={true}
         autoplay={{
-          delay: 2500,
+          delay: 5000,
           disableOnInteraction: false,
         }}
         onSwiper={(swiper) => console.log(swiper)}
         onSlideChange={() => console.log("slide change")}
-        className={`rounded aspect-wide lg:aspect-extra `}
+        className={` aspect-wide lg:aspect-extra `}
       >
         {IMAGES?.map(({src, alt}, index) => (
           <SwiperSlide key={index} style={{ position: "relative" }}>

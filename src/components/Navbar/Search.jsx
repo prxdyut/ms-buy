@@ -111,7 +111,7 @@ export default function Search({
             : "lg:w-40 px-0 py-0 opacity-0"
         }`}
       >
-        <p className="text-xs uppercase font-poppins flex gap-2  px-4 ">
+        <p className="text-xs uppercase   flex gap-2  px-4 ">
           Suggestions {isLoading && Loading}
         </p>
         <ul className="mt-2">

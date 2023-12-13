@@ -119,7 +119,7 @@ export const Checkout = () => {
   return (
     <>
       <div className="container grid grid-cols-3 py-8 gap-8 max-lg:px-4">
-        <p className="my-0 lg:my-4 col-span-3 font-poppins font-bold uppercase text-xl text-center">
+        <p className="my-0 lg:my-4 col-span-3   font-bold uppercase text-xl text-center">
           Checkout
         </p>
         <div className=" col-span-3 lg:col-span-2 flex flex-col gap-4 lg:pl-32">
@@ -238,30 +238,30 @@ export const Checkout = () => {
           </div>
         </div>
         <div className=" lg:pr-32 max-lg:col-span-3">
-          <p className=" font-poppins text-lg uppercase font-semibold mb-2">
+          <p className="   text-lg uppercase font-semibold mb-2">
             Summary
           </p>
           <div className="grid grid-cols-3 gap-2">
-            <div className=" col-span-2 uppercase font-poppins font-semibold opacity-60">
+            <div className=" col-span-2 uppercase   font-semibold opacity-60">
               Subtotal
             </div>
-            <div className=" font-poppins text-right font-semibold">
+            <div className="   text-right font-semibold">
               ₹ {formatPrice(subTotal)}
             </div>
-            <div className=" col-span-2 uppercase font-poppins font-semibold opacity-60">
+            <div className=" col-span-2 uppercase   font-semibold opacity-60">
               Shipping
             </div>
-            <div className="font-poppins text-right font-semibold">
+            <div className="  text-right font-semibold">
               ₹ {formatPrice(calculateShipping(subTotal))}
             </div>
             <hr className=" col-span-3 my-1 opacity-50 border-1" />
-            <div className=" col-span-2 uppercase font-poppins font-semibold opacity-60"></div>
-            <div className="font-poppins text-lg text-right font-semibold">
+            <div className=" col-span-2 uppercase   font-semibold opacity-60"></div>
+            <div className="  text-lg text-right font-semibold">
               ₹ {formatPrice(total)}{" "}
             </div>
           </div>
           <div className="my-8" />
-          <p className=" font-poppins text-lg uppercase font-semibold mb-2">
+          <p className="   text-lg uppercase font-semibold mb-2">
             shopping Bag
           </p>
           {cart.map((item, index) => (
@@ -279,8 +279,8 @@ export const Checkout = () => {
                 <p className=" uppercase text-xs">QTY: {item.count}</p>
                 <div className="flex-grow" />
                 <div className="flex flex-row justify-between">
-                  <p className=" font-poppins text-sm ">₹ {item.price}</p>
-                  <p className=" font-poppins text-sm font-semibold ">
+                  <p className="   text-sm ">₹ {item.price}</p>
+                  <p className="   text-sm font-semibold ">
                     ₹ {item.price * item.count}
                   </p>
                 </div>

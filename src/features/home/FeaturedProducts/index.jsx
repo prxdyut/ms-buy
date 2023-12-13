@@ -7,9 +7,12 @@ import { ProductsSlider } from './ProductsSlider';
 
 export const FeaturedProducts = ({ title, products }) => {
   return (
-    <div className='w-100 bg-primary px-4 py-8 lg:p-8 pb-20'>
+    <div className='lg:w-[-webkit-fill-available] bg-black lg:-mx-16 px-4 py-8 lg:px-16 lg:py-8 pb-20 left-0'>
+      <div className=' container mx-auto'>
+        
       <SectionHeading title={title} />
       <ProductsSlider products={products} />
+      </div>
     </div>
   );
 };

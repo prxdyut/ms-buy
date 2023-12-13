@@ -14,7 +14,7 @@ const {signOut} = useClerk()
         <div className="relative w-40 aspect-square rounded-full">
           <Image className="rounded-full" src={user?.imageUrl} fill />
         </div>
-        <div className=" font-poppins uppercase flex flex-col gap-2 ">
+        <div className="   uppercase flex flex-col gap-2 ">
           <p className=" text-xl font-bold mb-1">Profile</p>
           <Link
             className="hover:underline cursor-pointer "
