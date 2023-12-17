@@ -1,18 +1,22 @@
-export const Pages = {
-  name: "pages",
-  title: "Pages",
+export const Promo = {
+  name: "promo",
+  title: "Promo",
   type: "document",
   fields: [
     {
-      title: "Slug",
-      name: "slug",
-      type: "slug",
+      title: "Code",
+      name: "code",
+      type: "string",
     },
     {
-      title: "Content",
-      name: "content",
-      type: "array",
-      of: [{ type: "block" }],
+      title: "Percentage",
+      name: "percentage",
+      type: "number",
+    },
+    {
+      title: "Max Amount",
+      name: "max",
+      type: "number",
     },
   ],
 };

@@ -18,13 +18,13 @@ const {signOut} = useClerk()
           <p className=" text-xl font-bold mb-1">Profile</p>
           <Link
             className="hover:underline cursor-pointer "
-            href="/profile/account"
+            href="/account"
           >
             My Account
           </Link>
           <Link
             className="hover:underline cursor-pointer "
-            href="/profile/orders"
+            href="/order-history"
           >
             My Orders
           </Link>

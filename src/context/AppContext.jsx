@@ -4,6 +4,7 @@ import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { useLocalStorage } from "@mantine/hooks";
 import { groq } from "next-sanity";
 import { client } from "@utils/sanity.client";
+import { usePathname, useRouter } from "next/navigation";
 
 export const AppContext = createContext();
 const initialState = {
@@ -22,8 +23,10 @@ const AppContextProvider = ({ children }) => {
 
   useEffect(() => {
     client
-      .fetch(groq`*[_type == "settings"][0]
+      .fetch(
+        groq`*[_type == "settings"][0]
       { 
+        productInfo,
         "logo" : {
           "footer": logo.footer.asset -> {
             url,
@@ -36,7 +39,8 @@ const AppContextProvider = ({ children }) => {
             "width": metadata.dimensions.width
           }
         }
-      }`)
+      }`
+      )
       .then((res) => setStore(res));
   }, []);
 
@@ -71,6 +75,13 @@ const AppContextProvider = ({ children }) => {
     setState((prevState) => ({
       ...prevState,
       [key]: prevState[key].filter((item) => item.id !== productId),
+    }));
+  };
+
+  const setPromoCode = (code) => {
+    setState((prevState) => ({
+      ...prevState,
+      ["promo"]: code,
     }));
   };
 
@@ -115,12 +126,14 @@ const AppContextProvider = ({ children }) => {
     setState((prevState) => ({
       ...prevState,
       [key]: [],
-    }));
+    })); 
   };
 
   const isAdded = (key, productId) => {
     return state[key].some((item) => item.id === productId);
   };
+  const router = useRouter();
+  const pathname = usePathname();
 
   return (
     <AppContext.Provider
@@ -134,6 +147,7 @@ const AppContextProvider = ({ children }) => {
         isAdded,
         resetItems,
         forceUpdate,
+        setPromoCode,
       }}
     >
       {children}

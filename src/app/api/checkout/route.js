@@ -3,6 +3,7 @@ import { client } from "../../../../utils/sanity.client";
 import { groq } from "next-sanity";
 import { calculateItemsTotal, calculateShipping } from "../../../helpers";
 import { auth } from "@clerk/nextjs";
+import { sendMail } from "../../../../utils/sendMail";
 
 const Razorpay = require("razorpay");
 const shortid = require("shortid");
@@ -27,7 +28,25 @@ export async function POST(req) {
   }));
   const subtotal = calculateItemsTotal(orderedProducts);
   const shipping = calculateShipping(subtotal);
-  const total = shipping + subtotal;
+
+  let total = shipping + subtotal;
+  let discount = 0;
+  let discountedPrice = total;
+
+  if (allOrderData?.promo?.code) {
+    const promo = await client.fetch(
+      groq`*[ _type == "promo" && code == $code ][0] {code, max, percentage}`,
+      { code: allOrderData.promo.code.trim() }
+    );
+    if (promo !== null) {
+      const { max, percentage } = promo;
+      discount = parseInt(total) / parseInt(percentage);
+      if (discount > max) {
+        total = total - max;
+        discount = max;
+      } else total = total - discount;
+    }
+  }
 
   const data = await client.create({
     _type: "allOrders",
@@ -44,6 +63,7 @@ export async function POST(req) {
     subtotal,
     shipping,
     total,
+    promo: allOrderData?.promo,
     ...orderData,
   });
 
@@ -61,16 +81,8 @@ export async function POST(req) {
     currency,
     receipt: "receipt#" + shortid.generate(),
     payment_capture,
-    notes: { id: data._id, total, userId },
+    notes: { id: data._id, total, userId, promo: allOrderData.promo.code },
   };
-  console.log(
-    allOrderedProducts.map(({ id, count, price }, index) => ({
-      _key: `${index + 1}`,
-      productReference: { _type: "reference", _ref: id },
-      price,
-      quantity: count,
-    }))
-  );
   try {
     const response = await razorpay.orders.create(options);
     return NextResponse.json({ payment: response, order: data });
@@ -80,10 +92,15 @@ export async function POST(req) {
 }
 
 export async function PUT(req) {
-  const { _id, ...reqData } = await req.json();
+  const data = await req.json();
+  const {
+    update: { _id, ...reqData },
+  } = data;
 
   try {
     const result = await client.patch(_id).set(reqData).commit();
+    console.log(JSON.stringify(data));
+    await sendMail(data)
 
     return NextResponse.json(result);
   } catch (err) {

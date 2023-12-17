@@ -117,12 +117,6 @@ export const Footer = () => {
             className=" text-sm mb-1 opacity-60 hover:opacity-90"
             href={"/contact"}
           >
-            Socials
-          </Link>
-          <Link
-            className=" text-sm mb-1 opacity-60 hover:opacity-90"
-            href={"/contact"}
-          >
             Contact Us
           </Link>
           <Link
@@ -130,6 +124,12 @@ export const Footer = () => {
             href={"/contact"}
           >
             Write A Mail
+          </Link>
+          <Link
+            className=" text-sm mb-1 opacity-60 hover:opacity-90"
+            href={"/contact"}
+          >
+            Chat on WhatsApp
           </Link>
         </div>
       </div>

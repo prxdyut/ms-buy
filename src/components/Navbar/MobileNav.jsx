@@ -31,7 +31,7 @@ export function MobileNav({ categories: CATEGORIES, topText }) {
       setCounter((prevCounter) =>
         prevCounter >= topText?.length-1 ? 0 : prevCounter + 1
       );
-    }, 5000);
+    }, 2000);
 
     return () => clearInterval(intervalId);
   }, []);
@@ -57,7 +57,7 @@ export function MobileNav({ categories: CATEGORIES, topText }) {
               <SearchIcon size={20} />
             </div>
             <Link
-              href={"/profile"}
+              href={"/account"}
               className="cursor-pointer hover:bg-grey p-2 rounded-lg mr-[-4px]"
             >
               <AccountIcon size={20} />
@@ -97,7 +97,6 @@ export function MobileNav({ categories: CATEGORIES, topText }) {
         </div>
         <div className="mb-4">
           <AppLogo />
-          <p className="mt-2 font-semibold text-sm">Beauty Accessories</p>
         </div>
         <br />
         <ul className="flex flex-col gap-6 items-left justify-center" onClick={() => setMenuisFocused(false)}>
@@ -113,38 +112,38 @@ export function MobileNav({ categories: CATEGORIES, topText }) {
           ))}
           <hr />
           <Link
-            href={"/profile/account"}
+            href={"/account"}
             className="cursor-pointer font-medium text-sm uppercase"
           >
             My Account
           </Link>
           <Link
-            href={"/profile/orders"}
+            href={"/order-history"}
             className="cursor-pointer font-medium text-sm uppercase"
-          >
+          >           
             My Orders
           </Link>
           <hr />
           <Link
-            href={"/page/" + "privacy_policy"}
+            href={"/privacy-policy"}
             className="cursor-pointer font-medium text-sm uppercase"
           >
             Privacy Policy
           </Link>
           <Link
-            href={"/page/" + "terms_of_use"}
+            href={"/terms-and-conditions"}
             className="cursor-pointer font-medium text-sm uppercase"
           >
             Terms Of Use
           </Link>
           <Link
-            href={"/page/" + "return_policy"}
+            href={"/return-policy"}
             className="cursor-pointer font-medium text-sm uppercase"
           >
             Return Policy
           </Link>
           <Link
-            href={"/page/" + "cancellation_policy"}
+            href={"/cancellation-policy"}
             className="cursor-pointer font-medium text-sm uppercase"
           >
             Cancellation Policy

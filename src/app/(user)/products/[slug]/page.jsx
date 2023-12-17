@@ -15,6 +15,7 @@ export default async function ProductDetailsPage({ params: { slug } }) {
     "mainImage": mainImage.asset->url,
     category->{
         name,
+        slug,
         "id": _id,
         "image": image.asset->url
     },

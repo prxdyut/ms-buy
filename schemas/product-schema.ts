@@ -30,6 +30,11 @@ export const ProductSchema = {
       type: 'number',
     },
     {
+      name: 'mrp',
+      title: 'MRP',
+      type: 'number',
+    },
+    {
       name: 'instock',
       title: 'In Stock',
       type: 'number',
@@ -37,7 +42,8 @@ export const ProductSchema = {
     {
       name: 'description',
       title: 'Description',
-      type: 'text',
+      type: 'array',
+      of:[{type: 'block'}]
     },
     {
       name: 'badge',

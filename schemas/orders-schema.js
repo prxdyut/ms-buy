@@ -169,7 +169,24 @@ export const OrdersSchema = {
       name: "trackingCode",
       title: "Tracking Code",
       type: "string",
-      initialValue: '123456789123'
+      initialValue: "123456789123",
+    },
+    {
+      name: "promo",
+      title: "Promo",
+      type: "object",
+      fields: [
+        {
+          name: "code",
+          title: "Code",
+          type: "string",
+        },
+        {
+          name: "discount",
+          title: "Discount",
+          type: "number",
+        },
+      ],
     },
     {
       name: "fulfilled",

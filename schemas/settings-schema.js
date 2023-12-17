@@ -21,9 +21,10 @@ export const Settings = {
       ],
     },
     {
-      title: "Email",
-      name: "email",
-      type: "string",
+      title: "Extra Product Info",
+      name: "productInfo",
+      type: "array",
+      of: [{ type: "block" }],
     },
   ],
 };

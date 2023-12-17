@@ -27,7 +27,15 @@ export const ProductCard = ({ product, variant }) => {
           <p className=" uppercase text-sm font-semibold mb-2">
             {getSubstring(product.name, 22)}
           </p>
-          <p className=" text-md   mb-1">₹ {product.price}</p>
+        <div className=" flex mb-1 items-center gap-2">
+          <p className=" text-md  ">₹ {product.price}</p>
+          <p className=" text-sm  opacity-60 line-through">₹ {product?.mrp}</p>
+          <p className=" text-xs font-semibold  ">
+            {parseInt(100 - (product?.price / product?.mrp) * 100)}% Off
+          </p>
+
+        </div>
+
           <p className=" text-xs text-dark mb-0">{product.category.name}</p>
         </div>
         <div className="text-right cursor-pointer">
@@ -72,7 +80,14 @@ export const ProductCard = ({ product, variant }) => {
         <p className="text-center uppercase text-md font-semibold mb-2">
           {getSubstring(product.name, 20)}
         </p>
-        <p className="text-center text-xl  mb-2">₹ {product.price}</p>
+        <div className=" flex mb-1 items-center gap-2 justify-center">
+          <p className=" text-md  ">₹ {product.price}</p>
+          <p className=" text-sm  opacity-60 line-through">₹ {product?.mrp}</p>
+          <p className=" text-xs font-semibold  ">
+            {parseInt(100 - (product?.price / product?.mrp) * 100)}% Off
+          </p>
+
+        </div>
         <p className="text-center text-sm text-dark mb-4">
           {product.category.name}
         </p>
@@ -86,6 +101,34 @@ export const ProductCard = ({ product, variant }) => {
       </div>
     </div>
   );
+  const related = (
+    <div className="bg-white py-4 px-4 lg:px-6">
+      <Link href={`/products/${product.slug}`}>
+        <div className="relative aspect-square mb-4">
+          <Image
+            src={product.mainImage}
+            alt={product.name}
+            fill
+            objectFit="cover"
+          />
+        </div>
+        <p className="text-center uppercase text-md font-semibold mb-2">
+          {getSubstring(product.name, 14)}
+        </p>
+        <div className=" flex mb-1 items-center gap-2 justify-center">
+          <p className=" text-md  ">₹ {product.price}</p>
+          <p className=" text-sm  opacity-60 line-through">₹ {product?.mrp}</p>
+          <p className=" text-xs font-semibold  ">
+            {parseInt(100 - (product?.price / product?.mrp) * 100)}% Off
+          </p>
+
+        </div>
+        <p className="text-center text-sm text-dark mb-4">
+          {product.category.name}
+        </p>
+      </Link>
+    </div>
+  );
 
   if (variant == "compact") {
     return (
@@ -95,5 +138,6 @@ export const ProductCard = ({ product, variant }) => {
       </div>
     );
   }
+  if (variant == "related") return related;
   return big;
 };

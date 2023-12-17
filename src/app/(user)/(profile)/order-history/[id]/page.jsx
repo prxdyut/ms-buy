@@ -9,6 +9,7 @@ export default async function ProductsPage({ params: { id } }) {
   const { userId } = auth();
   const getAllProductsQueries = `
     *[_type == "allOrders" && _id == "${id}" && userId == "${userId}" ][0] {
+      ...,
       "id": _id, products[]{
         productReference -> {
           "id": _id,

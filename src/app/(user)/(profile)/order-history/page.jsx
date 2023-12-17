@@ -3,12 +3,12 @@ import { client } from "@utils/sanity.client";
 import { groq } from "next-sanity";
 import AllOrders from "@/features/orders/index";
 
-export const revalidate = 60; 
+export const revalidate = 60;
 
 export default async function OrdersPage() {
   const { userId } = auth();
   const getAllOrdersQueries = `
-    *[_type == "allOrders" && userId == "${userId}"] {
+    *[_type == "allOrders" && userId == $userId && successfull == true] {
       "id": _id, products[]{
       productReference -> {
         "id": _id,
@@ -23,7 +23,7 @@ export default async function OrdersPage() {
 `;
 
   const getOrdersAsync = () => {
-    return client.fetch(groq`${getAllOrdersQueries}`);
+    return client.fetch(groq`${getAllOrdersQueries}`, { userId });
   };
   const orders = await getOrdersAsync();
 

@@ -27,6 +27,7 @@
     "multi-range-slider-react": "^2.0.7",
     "next": "^14.0.3",
     "next-sanity": "^5.5.10",
+    "nodemailer": "^6.9.7",
     "pretty-rating-react": "^2.2.0",
     "razorpay": "^2.9.2",
     "react": "18.2.0",

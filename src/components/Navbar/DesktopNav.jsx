@@ -30,7 +30,7 @@ export function DesktopNav({ categories: CATEGORIES, topText }) {
       setCounter((prevCounter) =>
         prevCounter >= topText?.length - 1 ? 0 : prevCounter + 1
       );
-    }, 5000);
+    }, 2000);
 
     return () => clearInterval(intervalId);
   }, []);
@@ -53,7 +53,7 @@ export function DesktopNav({ categories: CATEGORIES, topText }) {
                 setInput={setInput}
               />
               <Link
-                href={"/profile"}
+                href={"/account"}
                 className="cursor-pointer flex flex-row gap-2 hover:bg-grey px-3 py-2 rounded-lg mr-[-4px]"
               >
                 <AccountIcon size={20} />

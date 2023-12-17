@@ -5,13 +5,12 @@ import { AppContext } from "@src/context/AppContext";
 import { getSubstring } from "@src/helpers";
 import { useContext, useState } from "react";
 import Image from "next/image";
-import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
-import NextJsImage from "@/components/NextJsImage";
-import { Rating } from "@src/components/Rating";
 import { Quantity } from "@src/components/Quantity/Quantity";
 import { AddToCartButton } from "@src/components/Cart/AddToCartButton";
 import Link from "next/link";
+import { PortableText } from "@portabletext/react";
+import { RandomProducts } from "./random";
 const items = [
   {
     name: "Products",
@@ -19,15 +18,13 @@ const items = [
   },
   {
     name: "Categories",
-    link: "/categories",
+    link: "/category",
   },
 ];
 
 export const ProductDetails = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
-  const { isAdded, addItem, resetItems } = useContext(AppContext);
-  const [open, setOpen] = useState(false);
-  // console.log(product, 'productdetails')
+  const { isAdded, addItem, resetItems, store } = useContext(AppContext);
 
   return (
     <>
@@ -38,7 +35,7 @@ export const ProductDetails = ({ product }) => {
               ...items,
               {
                 name: product?.category?.name,
-                link: `/categories/${product?.category?.id}`,
+                link: `/category/${product?.category?.slug.current}`,
               },
               {
                 name: getSubstring(product?.name, 20),
@@ -46,17 +43,6 @@ export const ProductDetails = ({ product }) => {
               },
             ]}
           />
-        </div>
-        <div className="block lg:hidden ">
-          <div className="mb-2 lg:mb-6">
-            <Rating rating={product?.rating} />
-          </div>
-          <p className=" text-2xl uppercase font-semibold w-3/4 mb-3">
-            {product?.name}
-          </p>
-          <div className="text-right  max-lg:text-xl font-semibold mb-2 lg:mb-6">
-            ₹ {product?.price}
-          </div>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3">
           <div className=" grid max-lg:overflow-x-auto max-lg:grid-flow-col lg:grid-cols-2 lg:col-span-2 gap-4">
@@ -90,31 +76,29 @@ export const ProductDetails = ({ product }) => {
               </Link>
             ))}
           </div>
-          <div className="px-0 lg:px-12">
+          <div className="px-0 lg:px-12 mt-4">
             <div className="sticky top-32">
-              <div className=" max-lg:hidden">
-                <div className="mb-2 lg:mb-6">
+              <p className=" text-sm opacity-75 uppercase w-3/4 mb-1">Gala</p>
+              {/* <div className="mb-2 lg:mb-6">
                   <Rating rating={product?.rating} />
-                </div>
-                <p className=" text-2xl uppercase font-semibold w-3/4 mb-3">
-                  {product?.name}
-                </p>
-                <div className=" lg:text-right   font-semibold mb-2 lg:mb-6">
-                  ₹ {product?.price}
-                </div>
-                <hr className="mb-2 lg:mb-6" />
+                </div> */}
+              <p className=" text-2xl  w-3/4 mb-3">{product?.name}</p>
+              <div className=" flex items-end gap-2">
+                <div className=" text-3xl">₹ {product?.price}</div>
+                <div className=" text-xl opacity-60 line-through">₹ {product?.mrp}</div>
+                <div className=" font-semibold">{parseInt(100 - (product?.price / product?.mrp *100))}% Off</div>
               </div>
-              <div className=" text-dark mb-4 pt-8">{product?.description}</div>
-              <div className=" text-dark text-sm uppercase mb-6">
-                {product?.category?.name}
-              </div>
-              <div className=" text-dark text-xs mb-2">
+              <div className=" opacity-75 text-xs mb-2">
                 MRP inclusive of all taxes
               </div>
-              <div className=" flex flex-row lg:flex-col gap-4">
-               
+              <div
+                className={` max-lg:hidden transition-all opacity-75 duration-500 overflow-auto pb-2`}
+              >
+                <PortableText value={product?.description} />
+              </div>
+              <div className=" flex flex-row lg:flex-col  max-lg:gap-4">
                 <button
-                  className="lg:px-8 text-[0.6rem] uppercase max-lg:w-full font-semibold  bg-white border text-black py-2 rounded-full mb-6"
+                  className="lg:px-8 text-sm uppercase max-lg:w-full font-semibold  bg-white border text-black py-2 rounded-full mb-6"
                   onClick={() => {
                     resetItems("checkout");
                     addItem("checkout", product, product.instock, quantity);
@@ -135,111 +119,32 @@ export const ProductDetails = ({ product }) => {
                   instock={product.instock}
                 />
               </div>
+
               <div className=" text-dark text-sm mb-2 text-center">
                 Shipping Charges are calculated at checkout
               </div>
             </div>
           </div>
         </div>
-        {/* <CustomBreadcrumb
-        items={[
-          ...items,
-          {
-            name: product?.category.name,
-            link: `/categories/${product?.category.id}`,
-          },
-          {
-            name: getSubstring(product.name, 20),
-            link: `/products/${product.slug}`,
-          },
-        ]}
-      />
-      <Grid
-        templateColumns={{ base: 'repeat(1, 1fr)', lg: 'repeat(2, 1fr)' }}
-        w={{ base: '100%', lg: '90%' }}
-        mx="auto"
-        p="2rem"
-        gap="20"
-      >
-        <GridItem p="1rem" pos="relative">
-          <AddToWishlistButton product={product} />
-          <Image src={product?.mainImage} alt={product?.name} mx="auto" />
-         
-          <Flex>
-            {product.gallery?.length !== 0 &&
-              product.gallery?.map((image, i) => (
-                <Image
-                  key={i}
-                  src={image}
-                  alt={product.name}
-                  mx="auto"
-                  boxSize="70px"
-                  rounded="md"
-                  shadow="sm"
-                  borderWidth="1px"
-                  borderColor="gray.100"
-                />
-              ))}
-          </Flex>
-        </GridItem>
-        <GridItem p="1rem">
-          <Heading>{product?.name}</Heading>
-          <Text my="1rem">{product.description}</Text>
-          <Rating rating={product.rating} />
 
-          <Text fontWeight="bold" fontSize="2rem">
-            ${product.price}
-          </Text>
-          <Divider my="1rem" />
-          <Quantity
-            setQuantity={(_valueAsString, valueAsNumber) =>
-              setQuantity(valueAsNumber)
-            }
-            disabled={isAdded('cart', product.id)}
-          />
-          <Divider my="1rem" />
-          <Box>
-            <Link href="/checkout">
-              <Button
-                variant="outline"
-                bgColor="brand.primary"
-                color="white"
-                borderRadius="50px"
-                size="sm"
-                w="160px"
-                mr="1rem"
-                my="0.5rem"
-                _hover={{ bgColor: 'none' }}
-                onClick={() => {
-                  resetItems('checkout');
-                  addItem('checkout', product, quantity);
-                }}
-              >
-                Buy Now
-              </Button>
-            </Link>
-            <AddToCartButton product={product} count={quantity} />
-          </Box>
-
-          <Stack py="2rem">
-            <Box borderWidth={1} borderColor="gray.100" p="1rem">
-              <Text fontWeight="bold">Free Deliver</Text>
-              <Link textDecor="underline" color="gray.500">
-                Enter Your postal Code for Delivery Availability
-              </Link>
-            </Box>
-
-            <Box borderWidth={1} borderColor="gray.100" p="1rem">
-              <Text fontWeight="bold">Return Delivery</Text>
-              <Text color="gray.500">
-                Free 30 Days Delivery Returns
-                <Link textDecor="underline"> Details</Link>
-              </Text>
-            </Box>
-          </Stack>
-        </GridItem>
-      </Grid> */}
+        <div className=" mb-4 pt-4">
+          <p className=" lg:hidden cursor-pointer uppercase mb-1 text-sm font-semibold">
+            Description
+          </p>
+          <div
+            className={` lg:hidden transition-all duration-500 overflow-auto`}
+          >
+            <PortableText value={product?.description} />
+          </div>
+          <div className={` transition-all duration-500 overflow-auto pt-2`}>
+            <PortableText
+              value={store?.productInfo}
+              components={{ block: {} }}
+            />
+          </div>
+        </div>
       </div>
+      <RandomProducts />
     </>
   );
 };

@@ -14,6 +14,7 @@ const query = groq`
       ...,
       "id": _id,
       "slug": slug.current,
+      category -> {name},
         "mainImage": mainImage.asset->url,
         category->{
             name,
@@ -37,7 +38,7 @@ export default function SearchPage({ params: { slug } }) {
     setProducts(products);
     setIsLoading(false);
   };
-
+console.log(products)
   useEffect(() => {
     fetchProducts(decodeURI(slug));
   }, [slug]);
@@ -45,10 +46,9 @@ export default function SearchPage({ params: { slug } }) {
   console.log(products);
   return (
     <div className="container mx-auto">
-      <div className="text-center py-4 mt-4">
-        <SectionHeading title={products[0]?.category.name} />
+      <div className="text-center py-2 mt-4">
+        <p className=" text-xl">{products[0]?.category.name}</p>
       </div>
-      <hr />
       <div className="flex flex-row">
         <div className={`transition-all ${sidebarIsOpen ? "w-5/6" : "w-full"}`}>
           <SearchedProductList products={products} />

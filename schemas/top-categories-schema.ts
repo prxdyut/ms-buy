@@ -16,7 +16,6 @@ export const FeaturedProductsAndCategories = {
     {
       name: "banner1",
       title: "Banner 1",
-      description: "Upload 16x9 Image Only.",
       type: "array",
       of: [
         {
@@ -38,7 +37,6 @@ export const FeaturedProductsAndCategories = {
     {
       name: "banner2",
       title: "Banner 2",
-      description: "Upload 3x2 Image Only.",
       type: "array",
       of: [
         {
@@ -54,6 +52,16 @@ export const FeaturedProductsAndCategories = {
         {
           type: "reference",
           to: [{ type: "product" }],
+        },
+      ],
+    },
+    {
+      name: "banner3",
+      title: "Banner 3",
+      type: "array",
+      of: [
+        {
+          type: "galleryImage",
         },
       ],
     },

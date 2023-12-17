@@ -16,7 +16,8 @@ export default function EssentialList({ essentials, title }) {
       )}
       <div className="w-100 grid grid-cols-2 lg:grid-cols-4 lg:px-16 justify-center gap-8">
         {essentials.map(({ name, image, slug }, i) => (
-          <div className="" key={i}>
+          <Link 
+          href={"/category/" + slug} className="" key={i}>
             <div className="h-100 w-100 mb-4">
               <div
                 src={image}
@@ -27,13 +28,12 @@ export default function EssentialList({ essentials, title }) {
               </div>
             </div>
             <p className="text-2xl font-semibold uppercase mb-2"> {name}</p>
-            <Link
-              href={"/category/" + slug}
+            <p
               className="hover:underline underline-offset-2 uppercase cursor-pointer"
             >
               Shop Now
-            </Link>
-          </div>
+            </p>
+          </Link>
         ))}
       </div>
     </div>

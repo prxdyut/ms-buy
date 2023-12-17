@@ -29,7 +29,7 @@ const ano = localFont({
       weight: '600',
     },
     {
-      path: '../../fonts/Ano/AnoBlack-Regular.otf',
+      path: '../../fonts/Ano/AnoBold-Regular.otf',
       weight: '700',
     },
   ],
