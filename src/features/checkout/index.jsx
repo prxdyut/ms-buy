@@ -38,6 +38,7 @@ export const Checkout = () => {
   const {
     state: { checkout, cart, promo },
     resetItems,
+    resetPromo,
   } = useContext(AppContext);
 
   useEffect(() => {
@@ -61,7 +62,7 @@ export const Checkout = () => {
           orderData: inputData,
         },
       }),
-    }).then((t) => t.json());
+    }).then((t) => t.json()).finally(() => resetPromo());
 
     const options = {
       key: process.env.NEXT_PUBLIC_RAZORPAY_ID,
@@ -81,17 +82,11 @@ export const Checkout = () => {
               paid: true,
               successfull: true,
             },
-            orderProducts: checkout,
             orderData: inputData,
-            orderSummary: {
-              promo,
-              subtotal: subTotal,
-              shipping: calculateShipping(subTotal),
-              total,
-            },
+            orderSummary: data.transaction,
           }),
         }).then((res) => res.json());
-        console.log(res);
+        resetPromo();
         resetItems("checkout");
         resetItems("cart");
         router.replace("/order-history/" + res._id);
@@ -106,21 +101,10 @@ export const Checkout = () => {
     paymentObject.open();
 
     paymentObject.on("payment.failed", function (response) {
-      console.log(response);
       alert(response.description);
     });
   };
-  console.log({
-    orderProducts: checkout,
-    orderData: inputData,
-    orderSummary: {
-      promo,
-      subtotal: subTotal,
-      shipping: calculateShipping(subTotal),
-      total,
-    },
-  });
-  console.log(inputGroup)
+  
   if (!isLoaded) return <Loading />;
 
   return (

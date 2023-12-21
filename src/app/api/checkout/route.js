@@ -19,8 +19,18 @@ export async function POST(req) {
     .join(", ");
   const products =
     await client.fetch(groq`*[_type == "product" && _id in [ ${orderProductsOnly} ]] {
-    _id,
-    price
+    ..., 
+    "id": _id,
+    "slug": slug.current,
+      "mainImage": mainImage.asset->url,
+      category->{
+          name,
+          slug,
+          "id": _id,
+          "image": image.asset->url
+      },
+      "gallery": gallery[] {asset -> {...}},
+      instock
 }`);
   const orderedProducts = products.map((data) => ({
     ...data,
@@ -31,7 +41,6 @@ export async function POST(req) {
 
   let total = shipping + subtotal;
   let discount = 0;
-  let discountedPrice = total;
 
   if (allOrderData?.promo?.code) {
     const promo = await client.fetch(
@@ -54,7 +63,7 @@ export async function POST(req) {
     paid: false,
     successfull: false,
     timestamp: new Date().toISOString(),
-    products: allOrderedProducts.map(({ id, count, price }, index) => ({
+    products: orderedProducts.map(({ id, count, price }, index) => ({
       _key: `${index + 1}`,
       productReference: { _type: "reference", _ref: id },
       price,
@@ -81,11 +90,20 @@ export async function POST(req) {
     currency,
     receipt: "receipt#" + shortid.generate(),
     payment_capture,
-    notes: { id: data._id, total, userId, promo: allOrderData.promo.code },
+    notes: {
+      id: data._id,
+      total,
+      userId,
+      promo: allOrderData.promo.code,
+    },
   };
   try {
     const response = await razorpay.orders.create(options);
-    return NextResponse.json({ payment: response, order: data });
+    return NextResponse.json({
+      payment: response,
+      order: data,
+      transaction: { products: orderedProducts, promo: allOrderData.promo, subtotal, shipping, total },
+    });
   } catch (err) {
     return NextResponse.json(err);
   }
@@ -99,8 +117,8 @@ export async function PUT(req) {
 
   try {
     const result = await client.patch(_id).set(reqData).commit();
-    console.log(JSON.stringify(data));
-    await sendMail(data)
+
+    await sendMail(data);
 
     return NextResponse.json(result);
   } catch (err) {

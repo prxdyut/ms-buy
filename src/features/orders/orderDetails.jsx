@@ -92,10 +92,11 @@ export default function OrderDetails({ order }) {
                 <p className=" font-semibold text-right">₹ {product.price}</p>
               </Link>
             ))}
-            <div className="mt-4 flex flex-col gap-1 text-end font-semibold lg:text-xl">
-              <p>Subtotal : ₹ {order.subtotal}</p>
-              <p>Shipping : ₹ {order.shipping}</p>
-              <p>Total : ₹ {order.total}</p>
+            <div className="mt-4 grid grid-cols-2 gap-1   ">
+              <p className=" ">Subtotal :</p> <p className="text-end  lg:text-xl">₹ {order.subtotal}</p>
+              <p>Shipping :</p><p className="text-end lg:text-xl"> ₹ {order.shipping} </p>
+              <p>Discount :</p> <p className="text-end lg:text-xl">- ₹ {order.promo.discount}</p>
+              <p className="font-semibold">Total :</p> <p className="text-end font-semibold lg:text-xl">₹ {order.total}</p>
             </div>
           </div>
         </div>

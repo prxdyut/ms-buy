@@ -126,14 +126,19 @@ const AppContextProvider = ({ children }) => {
     setState((prevState) => ({
       ...prevState,
       [key]: [],
-    })); 
+    }));
+  };
+
+  const resetPromo = () => {
+    setState((prevState) => ({
+      ...prevState,
+      "promo": {},
+    }));
   };
 
   const isAdded = (key, productId) => {
     return state[key].some((item) => item.id === productId);
   };
-  const router = useRouter();
-  const pathname = usePathname();
 
   return (
     <AppContext.Provider
@@ -148,6 +153,7 @@ const AppContextProvider = ({ children }) => {
         resetItems,
         forceUpdate,
         setPromoCode,
+        resetPromo
       }}
     >
       {children}

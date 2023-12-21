@@ -21,7 +21,7 @@ import { Loading } from "../Loading/Loading";
 
 export const Cart = () => {
   const {
-    state: { cart, promo: promoData },
+    state: { cart: cartItems, promo: promoData },
     resetItems,
     addItem,
     increaseCount,
@@ -30,6 +30,9 @@ export const Cart = () => {
     forceUpdate,
     setPromoCode,
   } = useContext(AppContext);
+  const cart = [...new Set(cartItems.map(({ id }) => id))].map((id) =>
+    cartItems.find(({ id: cartId }) => cartId == id)
+  );
   const [loading, setLoading] = useState(false);
   const [promo, setPromo] = useState(false);
   const [promoLoading, setPromoLoading] = useState(false);
@@ -84,12 +87,16 @@ export const Cart = () => {
       router.push("/checkout/");
     }
   };
+  useEffect(() => {
+    if (!promo || promo.trim() == "") setDiscount(0);
+  }, [promo]);
 
   const checkPromo = () => {
     setPromoLoading(true);
     fetch(`/api/promo/${promo.trim()}?total=${total}`)
       .then((res) => res.json())
-      .then((res) => setDiscount(res.discount))
+      .then((res) => setDiscount(res.discount || 0))
+      .catch(() => setDiscount(0))
       .finally(() => setPromoLoading(false));
   };
 
@@ -99,10 +106,19 @@ export const Cart = () => {
       setPromoLoading(true);
       fetch(`/api/promo/${promoData.code.trim()}?total=${total}`)
         .then((res) => res.json())
-        .then((res) => setDiscount(res.discount))
+        .then((res) => setDiscount(res.discount || 0))
         .finally(() => setPromoLoading(false));
-    }
+    } else setDiscount(0);
   }, [promoData]);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.getElementsByTagName("body")[0].style.overflow = "hidden";
+    } else {
+      document.getElementsByTagName("body")[0].style.overflow = "";
+    }
+  }, [isOpen]);
+
   const Item = ({ item }) => {
     const [loading, setLoading] = useState(false);
     return (
@@ -113,7 +129,7 @@ export const Cart = () => {
           className="  cursor-default  hover:bg-grey bg-opacity-50 flex gap-4 p-4"
         >
           <div className=" relative aspect-square rounded h-20">
-            <Image src={item.mainImage} fill />
+            <Image src={item.mainImage} fill objectFit="cover" />
           </div>
           <div className=" flex flex-col  flex-grow col-span-3 px-2">
             <p className=" uppercase font-semibold">
@@ -183,7 +199,7 @@ export const Cart = () => {
       </div>
 
       <div
-        className={`absolute top-0 m-0 pb-0 min-h-screen right-0 h-screen overflow-y-auto w-screen lg:w-[36rem] z-50 bg-white transition-all ${
+        className={`fixed top-0 m-0  min-h-screen right-0 h-screen overflow-y-auto w-screen lg:w-[36rem] z-50 bg-white transition-all ${
           isOpen ? "translate-x-0" : " translate-x-full"
         }`}
       >
@@ -203,14 +219,14 @@ export const Cart = () => {
           )}
         </div>
         {cart.length !== 0 && (
-          <div className=" sticky bottom-0 px-4 py-2 bg-white">
+          <div className=" sticky bottom-0 px-4 py-2 pb-8 bg-white">
             {!promo ? (
               <a
                 onClick={(e) => {
                   e.preventDefault();
                   setPromo(" ");
                 }}
-                className=" opacity-75 text-sm py-2 underline cursor-pointer underline-offset-2"
+                className=" opacity-75 text-sm pb-4 py-2 underline cursor-pointer underline-offset-2"
               >
                 Have a Promo Code?{" "}
               </a>
@@ -250,7 +266,7 @@ export const Cart = () => {
               </div>
             )}
             <div
-              className={`grid grid-cols-3 gap-2 ${
+              className={`grid pt-2 grid-cols-3 gap-2 ${
                 promoLoading && "animate-pulse"
               }`}
             >

@@ -6,7 +6,7 @@ export async function sendMail(data) {
       fullName = data.orderData.firstname + " " + data.orderData.lastname,
       orderId = data.update._id,
       orderDate = new Date().toLocaleDateString(),
-      orderData = data.orderProducts.map((product) => ({
+      orderData = data.orderSummary.products.map((product) => ({
         title: product.name,
         category: product.category.name,
         quantity: product.count,
