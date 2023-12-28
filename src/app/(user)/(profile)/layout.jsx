@@ -1,16 +1,28 @@
 "use client";
-import { auth, clerkClient, currentUser, useUser } from "@clerk/nextjs";
+import {
+  RedirectToSignIn,
+  auth,
+  clerkClient,
+  currentUser,
+  useUser,
+} from "@clerk/nextjs";
 import ProfileDetails from "../../../features/profile/index";
 
 import { Loading } from "@src/components/Loading/Loading";
 import AccountHeader from "../../../components/AccountHeader";
 
-export default function Layout({children}) {
-
+export default function Layout({ children }) {
+  const { isSignedIn } = useUser();
   return (
     <div>
-      <AccountHeader />
-      {children}
+      {isSignedIn ? (
+        <>
+          <AccountHeader />
+          {children}
+        </>
+      ) : (
+        <RedirectToSignIn />
+      )}
     </div>
   );
 }

@@ -39,6 +39,7 @@ export const Cart = () => {
   const [discount, setDiscount] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
+  const Subtotal = calculateItemsTotal(cart)
   const total =
     calculateItemsTotal(cart) + calculateShipping(calculateItemsTotal(cart));
   const handleCheckout = async () => {
@@ -93,7 +94,7 @@ export const Cart = () => {
 
   const checkPromo = () => {
     setPromoLoading(true);
-    fetch(`/api/promo/${promo.trim()}?total=${total}`)
+    fetch(`/api/promo/${promo.trim()}?total=${Subtotal}`)
       .then((res) => res.json())
       .then((res) => setDiscount(res.discount || 0))
       .catch(() => setDiscount(0))
@@ -109,7 +110,7 @@ export const Cart = () => {
         .then((res) => setDiscount(res.discount || 0))
         .finally(() => setPromoLoading(false));
     } else setDiscount(0);
-  }, [promoData]);
+  }, [promoData, total]);
 
   useEffect(() => {
     if (isOpen) {
@@ -291,7 +292,7 @@ export const Cart = () => {
               <hr className=" col-span-3 my-1 opacity-50 border-1" />
               <div className=" col-span-2 uppercase   font-semibold opacity-60"></div>
               <div className="  text-lg text-right font-semibold">
-                ₹ {total}{" "}
+                ₹ {total - discount}{" "}
               </div>
             </div>
             <div className=" flex flex-row">

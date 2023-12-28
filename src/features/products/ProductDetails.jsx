@@ -140,7 +140,7 @@ export const ProductDetails = ({ product }) => {
           >
             <PortableText value={product?.description} />
           </div>
-          <div className={` transition-all duration-500 overflow-auto pt-2`}>
+          <div className={` transition-all mt-4 duration-500 overflow-auto pt-2`}>
             <PortableText
               value={store?.productInfo}
               components={{ block: {} }}

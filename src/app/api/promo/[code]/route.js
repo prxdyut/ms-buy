@@ -6,18 +6,17 @@ export async function GET(req, { params }) {
   const { code } = params;
   const query = groq`*[ _type == "promo" && code == $code ][0] {code, max, percentage}`;
   const request = await req;
-  const total = await request.nextUrl.searchParams.get("total");
+  let total = await request.nextUrl.searchParams.get("total");
 
   try {
     const res = await client.fetch(query, { code });
     if (res == null) return NextResponse.json({ discount: 0, total });
+
+    total = parseInt(total);
+
     const { max, percentage } = res;
-    let discount = parseInt(total) / parseInt(percentage);
-    let discountedPrice = parseInt(total);
-    if (discount > max) {
-      discountedPrice = total - max;
-      discount = max;
-    } else discountedPrice = total - discount;
+    let discount = (percentage / 100) * total;
+    if (discount > max) discount = max;
 
     return NextResponse.json({ discount, total });
   } catch (err) {

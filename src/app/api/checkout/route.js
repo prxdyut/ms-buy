@@ -41,7 +41,6 @@ export async function POST(req) {
 
   let total = shipping + subtotal;
   let discount = 0;
-
   if (allOrderData?.promo?.code) {
     const promo = await client.fetch(
       groq`*[ _type == "promo" && code == $code ][0] {code, max, percentage}`,
@@ -49,11 +48,10 @@ export async function POST(req) {
     );
     if (promo !== null) {
       const { max, percentage } = promo;
-      discount = parseInt(total) / parseInt(percentage);
-      if (discount > max) {
-        total = total - max;
-        discount = max;
-      } else total = total - discount;
+      discount = (percentage / 100) * subtotal;
+      if (discount > max) discount = max;
+      total = total - discount;
+      console.log(max, percentage)
     }
   }
 
@@ -97,12 +95,19 @@ export async function POST(req) {
       promo: allOrderData.promo.code,
     },
   };
+  console.log(total, discount,  subtotal, allOrderData?.promo);
   try {
     const response = await razorpay.orders.create(options);
     return NextResponse.json({
       payment: response,
       order: data,
-      transaction: { products: orderedProducts, promo: allOrderData.promo, subtotal, shipping, total },
+      transaction: {
+        products: orderedProducts,
+        promo: allOrderData.promo,
+        subtotal,
+        shipping,
+        total,
+      },
     });
   } catch (err) {
     return NextResponse.json(err);

@@ -62,7 +62,9 @@ export const Checkout = () => {
           orderData: inputData,
         },
       }),
-    }).then((t) => t.json()).finally(() => resetPromo());
+    })
+      .then((t) => t.json())
+      .finally(() => resetPromo());
 
     const options = {
       key: process.env.NEXT_PUBLIC_RAZORPAY_ID,
@@ -104,7 +106,7 @@ export const Checkout = () => {
       alert(response.description);
     });
   };
-  
+
   if (!isLoaded) return <Loading />;
 
   return (
@@ -271,7 +273,7 @@ export const Checkout = () => {
               <hr className=" col-span-3 my-1 opacity-50 border-1" />
               <div className=" col-span-2 uppercase   font-semibold opacity-60"></div>
               <div className="  text-lg text-right font-semibold">
-                ₹ {formatPrice(total)}{" "}
+                ₹ {formatPrice(total - (promo?.discount || 0))}{" "}
               </div>
             </div>
             <div className="my-8" />
