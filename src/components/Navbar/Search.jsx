@@ -140,7 +140,7 @@ export default function Search({
                 {" "}
                 <SearchIcon />
                 <p>{product.name}</p>
-                <p className="  text-xs"> in {product.category.name}</p>
+                <p className="  text-xs"> in {product?.category?.name}</p>
               </Link>
             </li>
           ))}

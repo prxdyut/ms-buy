@@ -1,7 +1,7 @@
 export const Rating = ({ rating }) => {
   return (
     <div className=" flex">
-      {[...Array(rating?.rate ? (rating.rate > 5 ? 5 : rating.rate) : 5)].map(
+      {[...Array(rating?.rate ? (parseInt(rating.rate) > 5 ? 5 : parseInt(rating.rate)) : 5)].map(
         (_, i) => (
           <svg
             key={i}
@@ -17,7 +17,7 @@ export const Rating = ({ rating }) => {
       )}
 
       {[
-        ...Array(5 - rating?.rate || 0),
+        ...Array(5 - parseInt(rating?.rate) || 0),
       ].map((_, i) => (
         <svg
           key={i}

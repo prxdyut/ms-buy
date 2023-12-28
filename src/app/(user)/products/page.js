@@ -31,16 +31,14 @@ export default function SearchPage() {
 
   const fetchProducts = async (slug) => {
     setIsLoading(true);
-    const products = await client.fetch(query, {
-      slug: `${decodeURI(slug)}`,
-    });
+    const products = await client.fetch(query);
     setProducts(products);
     setIsLoading(false);
   };
 
   useEffect(() => {
-    fetchProducts(decodeURI(slug));
-  }, [slug]);
+    fetchProducts();
+  }, []);
 
   console.log(products);
   return (

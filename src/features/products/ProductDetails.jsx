@@ -47,7 +47,7 @@ export const ProductDetails = ({ product }) => {
         <div className="grid grid-cols-1 lg:grid-cols-3">
           <div className=" grid max-lg:overflow-x-auto max-lg:grid-flow-col lg:grid-cols-2 lg:col-span-2 gap-4">
             <Link
-              href={product?.mainImage}
+              href={product?.mainImage || ""}
               target="_blank"
               className="relative w-[75vw] lg:w-full aspect-square rounded"
             >
@@ -61,13 +61,13 @@ export const ProductDetails = ({ product }) => {
             </Link>
             {product?.gallery?.map((image, i) => (
               <Link
-                href={image.asset.url}
+                href={image?.asset?.url || ""}
                 target="_blank"
                 className="relative w-[75vw] lg:w-full aspect-square rounded"
               >
                 <Image
                   key={i}
-                  src={image.asset.url}
+                  src={image?.asset?.url}
                   alt={product.name}
                   fill
                   objectFit="cover"
@@ -85,8 +85,12 @@ export const ProductDetails = ({ product }) => {
               <p className=" text-2xl  w-3/4 mb-3">{product?.name}</p>
               <div className=" flex items-end gap-2">
                 <div className=" text-3xl">₹ {product?.price}</div>
-                <div className=" text-xl opacity-60 line-through">₹ {product?.mrp}</div>
-                <div className=" font-semibold">{parseInt(100 - (product?.price / product?.mrp *100))}% Off</div>
+                <div className=" text-xl opacity-60 line-through">
+                  ₹ {product?.mrp}
+                </div>
+                <div className=" font-semibold">
+                  {parseInt(100 - (product?.price / product?.mrp) * 100)}% Off
+                </div>
               </div>
               <div className=" opacity-75 text-xs mb-2">
                 MRP inclusive of all taxes
@@ -116,7 +120,7 @@ export const ProductDetails = ({ product }) => {
                 <AddToCartButton
                   product={product}
                   count={quantity}
-                  instock={product.instock}
+                  instock={product?.instock || 100}
                 />
               </div>
 

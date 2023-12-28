@@ -49,7 +49,7 @@ export default function SearchPage({ params: { term } }) {
 
   const categories = Object.values(
     products.reduce((uniqueMap, obj) => {
-      uniqueMap[obj.category.name] = obj;
+      uniqueMap[obj?.category?.name] = obj;
       return uniqueMap;
     }, {})
   ).map(({ category }) => category);
@@ -120,11 +120,11 @@ export default function SearchPage({ params: { term } }) {
                 }
               }}
               className={` cursor-pointer ${
-                searchParams.get("category") == category.slug && "font-semibold"
+                searchParams.get("category") == category?.slug && "font-semibold"
               }`}
               key={i}
             >
-              {category.name}
+              {category?.name}
             </li>
           ))}
         </ul>

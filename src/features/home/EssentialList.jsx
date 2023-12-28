@@ -15,7 +15,7 @@ export default function EssentialList({ essentials, title }) {
         </p>
       )}
       <div className="w-100 grid grid-cols-2 lg:grid-cols-4 lg:px-16 justify-center gap-8">
-        {essentials.map(({ name, image, slug }, i) => (
+        {essentials?.map(({ name, image, slug }, i) => (
           <Link 
           href={"/category/" + slug} className="" key={i}>
             <div className="h-100 w-100 mb-4">
