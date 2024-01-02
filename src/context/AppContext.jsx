@@ -59,16 +59,11 @@ const AppContextProvider = ({ children }) => {
     }`;
     const res = await client.fetch(query, { id: productId });
 
-    if (res.instock >= itemCount) {
-      setState((prevState) => ({
-        ...prevState,
-        [key]: [...prevState[key], { ...res, count: itemCount }],
-      }));
-      return true;
-    } else {
-      alert("The Product is Out of Stock.");
-      return false;
-    }
+    setState((prevState) => ({
+      ...prevState,
+      [key]: [...prevState[key], { ...res, count: itemCount }],
+    }));
+    return true;
   };
 
   const removeItem = (key, productId) => {
@@ -132,7 +127,7 @@ const AppContextProvider = ({ children }) => {
   const resetPromo = () => {
     setState((prevState) => ({
       ...prevState,
-      "promo": {},
+      promo: {},
     }));
   };
 
@@ -153,7 +148,7 @@ const AppContextProvider = ({ children }) => {
         resetItems,
         forceUpdate,
         setPromoCode,
-        resetPromo
+        resetPromo,
       }}
     >
       {children}

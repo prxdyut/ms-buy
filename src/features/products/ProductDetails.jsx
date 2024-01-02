@@ -101,15 +101,16 @@ export const ProductDetails = ({ product }) => {
                 <PortableText value={product?.description} />
               </div>
               <div className=" flex flex-row lg:flex-col  max-lg:gap-4">
-                <button
-                  className="lg:px-8 text-sm uppercase max-lg:w-full font-semibold  bg-white border text-black py-2 rounded-full mb-6"
+                <Link
+                  href={"/checkout"}
+                  className="lg:px-8 text-center text-sm uppercase max-lg:w-full font-semibold  bg-white border text-black py-2 rounded-full mb-6"
                   onClick={() => {
                     resetItems("checkout");
-                    addItem("checkout", product, product.instock, quantity);
+                    addItem("checkout", product?.id, quantity);
                   }}
                 >
                   Buy Now
-                </button>
+                </Link>
                 <div className=" max-lg:hidden">
                   <Quantity
                     setQuantity={setQuantity}
@@ -140,7 +141,9 @@ export const ProductDetails = ({ product }) => {
           >
             <PortableText value={product?.description} />
           </div>
-          <div className={` transition-all mt-4 duration-500 overflow-auto pt-2`}>
+          <div
+            className={` transition-all mt-4 duration-500 overflow-auto pt-2`}
+          >
             <PortableText
               value={store?.productInfo}
               components={{ block: {} }}
