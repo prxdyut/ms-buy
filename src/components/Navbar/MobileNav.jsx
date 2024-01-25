@@ -70,7 +70,7 @@ export function MobileNav({ categories: CATEGORIES, topText }) {
               <HamIcon size={24} />
             </div>
           </div>
-          <div class={` ${!SearchisFocused && "hidden"} `}>
+          <div className={` ${!SearchisFocused && "hidden"} `}>
             <Search
               device="mobile"
               SearchisFocused={SearchisFocused}
@@ -88,7 +88,7 @@ export function MobileNav({ categories: CATEGORIES, topText }) {
         onClick={() => setMenuisFocused(false)}
       />
       <div
-        className={`fixed z-30 left-0 top-0 bg-white h-screen w-2/3 p-4 transition-all duration-300 ${
+        className={`fixed z-30 left-0 top-0 bg-white overflow-scroll h-screen w-2/3 p-4 transition-all duration-300 ${
           MenuisFocused ? "translate-x-0" : " translate-x-[-100vw]"
         }`}
       >
@@ -101,7 +101,8 @@ export function MobileNav({ categories: CATEGORIES, topText }) {
         <br />
         <ul className="flex flex-col gap-6 items-left justify-center" onClick={() => setMenuisFocused(false)}>
           {CATEGORIES.map(({ slug, name }, index) => (
-            <React.Fragment>
+            <React.Fragment 
+            key={index}>
               <Link
                 href={"/category/" + slug}
                 className="cursor-pointer font-medium text-sm uppercase"

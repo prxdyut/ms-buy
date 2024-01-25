@@ -7,10 +7,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <title>MS BUY</title>
-        <meta title="description" content="Buy anything online" />
-      </head>
       <body>{children}</body>
     </html>
   );

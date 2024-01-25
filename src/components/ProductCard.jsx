@@ -13,7 +13,7 @@ export const ProductCard = ({ product, variant }) => {
   const small = (
     <div className="bg-white flex flex-row gap-4 p-4">
       <Link href={`/products/${product?.slug}`} className=" w-36">
-      {product?.mainImage ? (
+        {product?.mainImage ? (
           <div className="relative aspect-square mb-4">
             <Image
               src={product?.mainImage}
@@ -39,14 +39,19 @@ export const ProductCard = ({ product, variant }) => {
           <p className=" uppercase text-sm font-semibold mb-2">
             {getSubstring(product?.name, 22)}
           </p>
-        <div className=" flex mb-1 items-center gap-2">
-          <p className=" text-md  ">₹ {product?.price}</p>
-          <p className=" text-sm  opacity-60 line-through">₹ {product?.mrp}</p>
-          <p className=" text-xs font-semibold  ">
-            {parseInt(100 - (product?.price / product?.mrp) * 100)}% Off
-          </p>
-
-        </div>
+          <div className=" flex mb-1 items-center gap-2">
+            <p className=" text-md  ">₹ {product?.price}</p>
+            {product?.mrp && (
+              <p className=" text-sm  opacity-60 line-through">
+                ₹ {product?.mrp}
+              </p>
+            )}
+            {product?.mrp && (
+              <p className=" text-xs font-semibold  ">
+                {parseInt(100 - (product?.price / product?.mrp) * 100)}% Off
+              </p>
+            )}
+          </div>
 
           <p className=" text-xs text-dark mb-0">{product?.category?.name}</p>
         </div>
@@ -106,11 +111,16 @@ export const ProductCard = ({ product, variant }) => {
         </p>
         <div className=" flex mb-1 items-center gap-2 justify-center">
           <p className=" text-md  ">₹ {product?.price}</p>
-          <p className=" text-sm  opacity-60 line-through">₹ {product?.mrp}</p>
-          <p className=" text-xs font-semibold  ">
-            {parseInt(100 - (product?.price / product?.mrp) * 100)}% Off
-          </p>
-
+          {product?.mrp && (
+            <p className=" text-sm  opacity-60 line-through">
+              ₹ {product?.mrp}
+            </p>
+          )}
+          {product?.mrp && (
+            <p className=" text-xs font-semibold  ">
+              {parseInt(100 - (product?.price / product?.mrp) * 100)}% Off
+            </p>
+          )}
         </div>
         <p className="text-center text-sm text-dark mb-4">
           {product?.category?.name}
@@ -128,7 +138,7 @@ export const ProductCard = ({ product, variant }) => {
   const related = (
     <div className="bg-white py-4 px-4 lg:px-6">
       <Link href={`/products/${product?.slug}`}>
-      {product?.mainImage ? (
+        {product?.mainImage ? (
           <div className="relative aspect-square mb-4">
             <Image
               src={product?.mainImage}
@@ -157,7 +167,6 @@ export const ProductCard = ({ product, variant }) => {
           <p className=" text-xs font-semibold  ">
             {parseInt(100 - (product?.price / product?.mrp) * 100)}% Off
           </p>
-
         </div>
         <p className="text-center text-sm text-dark mb-4">
           {product?.category?.name}

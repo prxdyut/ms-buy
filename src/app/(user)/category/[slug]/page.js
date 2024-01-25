@@ -6,7 +6,8 @@ import { useEffect, useRef, useState } from "react";
 import { ProductCard } from "../../../../components/ProductCard";
 import { SectionHeading } from "../../../../components/SectionHeading";
 import { GoArrowRight } from "react-icons/go";
-
+import{getProductsProperly} from '../../../../helpers'
+import { Loading } from "@src/components/Loading/Loading";
 export const revalidate = 2; // revalidate this page every 60 seconds
 
 const query = groq`
@@ -38,12 +39,12 @@ export default function SearchPage({ params: { slug } }) {
     setProducts(products);
     setIsLoading(false);
   };
-console.log(products)
+  
   useEffect(() => {
     fetchProducts(decodeURI(slug));
   }, [slug]);
 
-  console.log(products);
+  if(isLoading) return <Loading/>
   return (
     <div className="container mx-auto">
       <div className="text-center py-2 mt-4">
@@ -51,7 +52,7 @@ console.log(products)
       </div>
       <div className="flex flex-row">
         <div className={`transition-all ${sidebarIsOpen ? "w-5/6" : "w-full"}`}>
-          <SearchedProductList products={products} />
+          <SearchedProductList products={getProductsProperly(products)} />
         </div>
         <div
           className={`bg-grey  transition-all  ${

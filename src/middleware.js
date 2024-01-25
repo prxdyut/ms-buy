@@ -19,15 +19,7 @@ export default authMiddleware({
     return NextResponse.next();
   },
   publicRoutes: [
-    "/",
-    "/api(.*)",
-    "/:uri",
-    "/category/:uri",
-    "/products/:uri",
-    "/products/",
-    "/category/",
-    "/search/:term",
-    "/studio(.*)",
+    "(.*)",
   ],
 });
 

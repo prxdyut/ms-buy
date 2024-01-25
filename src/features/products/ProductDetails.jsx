@@ -22,10 +22,14 @@ const items = [
   },
 ];
 
-export const ProductDetails = ({ product }) => {
+export const ProductDetails = ({ product, variants }) => {
   const [quantity, setQuantity] = useState(1);
   const { isAdded, addItem, resetItems, store } = useContext(AppContext);
-
+  const variantsNoDuplicates = (
+    Array.from(new Set(variants.map((a) => a.slug))).map((slug) => {
+      return variants.find((a) => a.slug === slug);
+    })
+  );
   return (
     <>
       <div className="container mx-auto px-4 lg:px-8 py-4">
@@ -46,35 +50,38 @@ export const ProductDetails = ({ product }) => {
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3">
           <div className=" grid max-lg:overflow-x-auto max-lg:grid-flow-col lg:grid-cols-2 lg:col-span-2 gap-4">
-            <Link
-              href={product?.mainImage || ""}
-              target="_blank"
-              className="relative w-[75vw] lg:w-full aspect-square rounded"
-            >
-              <Image
-                src={product?.mainImage}
-                alt={product?.name}
-                fill
-                objectFit="cover"
-                className="bg-grey"
-              />
-            </Link>
-            {product?.gallery?.map((image, i) => (
+            {product?.mainImage && (
               <Link
-                href={image?.asset?.url || ""}
+                href={product?.mainImage || ""}
                 target="_blank"
                 className="relative w-[75vw] lg:w-full aspect-square rounded"
               >
                 <Image
-                  key={i}
-                  src={image?.asset?.url}
-                  alt={product.name}
+                  src={product?.mainImage}
+                  alt={product?.name}
                   fill
                   objectFit="cover"
                   className="bg-grey"
                 />
               </Link>
-            ))}
+            )}
+            {product?.gallery?.length > 0 &&
+              product?.gallery?.map((image, i) => (
+                <Link
+                  href={image?.asset?.url || ""}
+                  target="_blank"
+                  className="relative w-[75vw] lg:w-full aspect-square rounded"
+                >
+                  <Image
+                    key={i}
+                    src={image?.asset?.url}
+                    alt={product.name}
+                    fill
+                    objectFit="cover"
+                    className="bg-grey"
+                  />
+                </Link>
+              ))}
           </div>
           <div className="px-0 lg:px-12 mt-4">
             <div className="sticky top-32">
@@ -92,6 +99,30 @@ export const ProductDetails = ({ product }) => {
                   {parseInt(100 - (product?.price / product?.mrp) * 100)}% Off
                 </div>
               </div>
+              <div className=" py-4 flex gap-2 flex-wrap">
+                {variantsNoDuplicates.length > 0 &&
+                  variantsNoDuplicates.map((variant) => {
+                    const variantName = variant?.name
+                      ?.replace(variant?.mainName, "")
+                      ?.trim();
+
+                    const productVariantName = product?.name
+                      ?.replace(variant?.mainName, "")
+                      ?.trim();
+
+                    const active = variantName == productVariantName;
+                    return (
+                      <Link
+                        href={"/products/" + variant?.slug}
+                        className={`" uppercase  text-sm shadow  px-2 rounded py-1 ${
+                          active && "border-2"
+                        } "`}
+                      >
+                        {variantName}
+                      </Link>
+                    );
+                  })}
+              </div>{" "}
               <div className=" opacity-75 text-xs mb-2">
                 MRP inclusive of all taxes
               </div>
@@ -124,7 +155,6 @@ export const ProductDetails = ({ product }) => {
                   instock={product?.instock || 100}
                 />
               </div>
-
               <div className=" text-dark text-sm mb-2 text-center">
                 Shipping Charges are calculated at checkout
               </div>

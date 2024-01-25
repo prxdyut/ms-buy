@@ -50,13 +50,10 @@ export default async function RootLayout({ children }) {
     return client.fetch(groq`${getAllCategoriesQueries}`);
   };
 
-  const categories = await getCategoriesAsync();
+  const categories = [{id: 'more', name:'Explore', slug:''},...await getCategoriesAsync()];
+
   return (
     <html lang="en">
-      <head>
-        <title>MS BUY</title>
-        <meta title="description" content="Buy Eyelashes online" />
-      </head>
       <body className={`${ano.variable} ${ano.className} ${ano.style.fontWeight}`}>
         <ClerkProvider>
           <AppContextProvider>

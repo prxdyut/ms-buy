@@ -18,6 +18,7 @@ import { useContext, useEffect, useState } from "react";
 export const Checkout = () => {
   const { user, isLoaded, isSignedIn } = useUser();
 
+  const [loadingPayment, setLoadingPayment] = useState(false);
   const [subTotal, setSubTotal] = useState(0);
   const [inputData, setInputData] = useState({});
   const total = subTotal > 0 ? subTotal + calculateShipping(subTotal) : 0;
@@ -47,6 +48,7 @@ export const Checkout = () => {
   }, [checkout]);
 
   const makePayment = async () => {
+    setLoadingPayment(true);
     const data = await fetch("/api/checkout", {
       method: "POST",
       headers: {},
@@ -73,6 +75,11 @@ export const Checkout = () => {
       currency: "INR",
       amount: data.payment.amount,
       order_id: data.payment.id,
+      customer: {
+        name: user?.firstName + ' ' + user?.lastName,
+        contact: inputData?.phone1,
+        email: inputData?.email,
+      },
       description: "Pay for Order",
       handler: async function (response) {
         let res = await fetch("/api/checkout", {
@@ -101,12 +108,21 @@ export const Checkout = () => {
 
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
-
+    setLoadingPayment(false);
     paymentObject.on("payment.failed", function (response) {
       alert(response.description);
     });
   };
-
+  const isValid =
+    inputData?.firstname &&
+    inputData?.lastname &&
+    inputData?.email &&
+    inputData?.address1 &&
+    inputData?.address2 &&
+    inputData?.city &&
+    inputData?.state &&
+    inputData?.country &&
+    inputData?.pincode;
   if (!isLoaded) return <Loading />;
 
   return (
@@ -227,7 +243,7 @@ export const Checkout = () => {
             <textarea
               id="message"
               rows="4"
-              class="border-2 px-3 py-4 col-span-2 w-full focus:outline-none placeholder:font-light border-grey"
+              className="border-2 px-3 py-4 col-span-2 w-full focus:outline-none placeholder:font-light border-grey"
               placeholder="DELIVERY INSTRUCTIONS"
               onChange={(e) =>
                 setInputData({ ...inputData, instructions: e.target.value })
@@ -240,12 +256,25 @@ export const Checkout = () => {
                 src="https://checkout.razorpay.com/v1/checkout.js"
               />
               <button
-                className="px-4 py-4 bg-black text-white w-full"
+                disabled={!isValid}
+                className={`" px-4 py-4 bg-black text-white w-full ${
+                  !isValid && "opacity-75"
+                } "`}
                 onClick={() => {
-                  total > 0 ? makePayment() : null;
+                  isValid && (total > 0 ? makePayment() : null);
                 }}
               >
-                Pay ₹ {formatPrice(total)}
+                Pay ₹ {formatPrice(total - (promo?.discount || 0))}
+                {loadingPayment && (
+                  <div className=" fixed w-screen top-0 right-0 z-50  flex justify-center items-center bg-opacity-50 h-screen bg-black">
+                    <div className="flex space-x-2 justify-center items-center">
+                      <span className="sr-only">Loading...</span>
+                      <div className="h-4 w-4 bg-white rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                      <div className="h-4 w-4 bg-white rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                      <div className="h-4 w-4 bg-white rounded-full animate-bounce"></div>
+                    </div>{" "}
+                  </div>
+                )}
               </button>
             </div>
           </div>
@@ -280,7 +309,7 @@ export const Checkout = () => {
             <p className="   text-lg uppercase font-semibold mb-2">
               shopping Bag
             </p>
-            {cart.map((item, index) => (
+            {checkout.map((item, index) => (
               <div key={index} className=" grid grid-cols-4 px-4 py-2">
                 <div className=" relative aspect-square rounded">
                   <Image src={item.mainImage} fill />

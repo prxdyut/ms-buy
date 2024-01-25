@@ -30,6 +30,6 @@ export default async function ProductsPage({ params: { id } }) {
     return client.fetch(groq`${getAllProductsQueries}`, { _id: id });
   };
   const order = await getOrderAsync();
-console.log(order)
+
   return <Orderdetails order={order} />;
 }

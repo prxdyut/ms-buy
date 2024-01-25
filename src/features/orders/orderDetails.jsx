@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 
 export default function OrderDetails({ order }) {
-  console.log(order);
+
   const param = useParams();
   return (
     <>

@@ -59,7 +59,7 @@ export function DesktopNav({ categories: CATEGORIES, topText }) {
                 <AccountIcon size={20} />
                 {isSignedIn ? (
                   <>
-                    <p className=" text-sm font-semibold">{user.fullName}</p>{" "}
+                    <p className=" text-sm">{user.fullName}</p>{" "}
                   </>
                 ) : (
                   <p className=" ">Sign in</p>
@@ -71,7 +71,7 @@ export function DesktopNav({ categories: CATEGORIES, topText }) {
               {CATEGORIES.map(({ name, slug }, index) => {
                 const [hover, setHover] = useState(false);
                 return (
-                  <React.Fragment>
+                  <React.Fragment key={index}>
                     <Link
                       className={`relative cursor-pointer font-medium text-sm uppercase hover:underline underline-offset-2 decoration-[1.5px] decoration-gray-700 ${
                         hover && "underline"

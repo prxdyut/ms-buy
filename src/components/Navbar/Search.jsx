@@ -34,7 +34,7 @@ const Loading = (
         fill="currentFill"
       />
     </svg>
-    <span class="sr-only">Loading...</span>
+    <span className="sr-only">Loading...</span>
   </div>
 );
 export default function Search({
@@ -101,7 +101,7 @@ export default function Search({
         placeholder="SEARCH"
         onKeyDown={search}
       />
-      <button type="submit" class={`absolute left-0 top-0 mt-3 ml-4`}>
+      <button type="submit" className={`absolute left-0 top-0 mt-3 ml-4`}>
         <SearchIcon />
       </button>
       <div

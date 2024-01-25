@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { ProductCard } from "../../../components/ProductCard";
 import { SectionHeading } from "../../../components/SectionHeading";
 import { GoArrowRight } from "react-icons/go";
+import{getProductsProperly} from '../../../helpers'
 
 export const revalidate = 2; // revalidate this page every 60 seconds
 
@@ -40,24 +41,17 @@ export default function SearchPage() {
     fetchProducts();
   }, []);
 
-  console.log(products);
   return (
     <div className="container mx-auto">
       <div className="text-center py-4 mt-4">
-        <SectionHeading title={"Search Results"} />
+        <p className="text-xl">All Products</p>
       </div>
       <div className=" flex justify-end">
-        <button
-          onClick={() => setSidebarisOpen(!sidebarIsOpen)}
-          className="bg-grey uppercase   text-black pl-4 pr-12 pb-4 py-2 text-left flex flex-row items-center justify-center gap-4"
-        >
-          Filters <GoArrowRight />
-        </button>
+        
       </div>
-      <hr />
       <div className="flex flex-row">
         <div className={`transition-all ${sidebarIsOpen ? "w-5/6" : "w-full"}`}>
-          <SearchedProductList products={products} />
+          <SearchedProductList products={getProductsProperly(products)} />
         </div>
         <div
           className={`bg-grey  transition-all  ${
@@ -75,7 +69,7 @@ export default function SearchPage() {
 
 const SearchedProductList = ({ products }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 bg-grey  gap-4 p-8">
+    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4  gap-4 p-8">
       {products.map((product) => (
         <ProductCard product={product} key={product.id} variant={"compact"} />
       ))}

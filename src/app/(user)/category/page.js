@@ -28,7 +28,9 @@ export default async function Home() {
 
   return (
     <main className="flex flex-col mt-4 px-4">
-      <p className=" text-2xl font-semibold ">All Category</p>
+    <div className="text-center py-2 mt-4">
+      <p className=" text-xl">All Categories</p>
+    </div>
       <EssentialList essentials={featuredItems} />
     </main>
   );

@@ -53,7 +53,7 @@ export default function SearchPage({ params: { term } }) {
       return uniqueMap;
     }, {})
   ).map(({ category }) => category);
-  console.log(categories);
+
 
   const router = useRouter();
   const pathname = usePathname();

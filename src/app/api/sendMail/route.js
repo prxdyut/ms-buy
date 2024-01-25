@@ -451,7 +451,7 @@ export async function POST(req) {
           </style>
       </head>
       
-      <body class="body" id="body" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#ecba78"
+      <body className="body" id="body" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#ecba78"
           style="-webkit-text-size-adjust: none; -ms-text-size-adjust: none; margin: 0; padding: 0;">
           <!--[if !mso 9]><!-->
           <div
@@ -460,7 +460,7 @@ export async function POST(req) {
           </div>
           <!--<![endif]-->
           <!-- BEGIN: CONTAINER -->
-          <table class="container container_full" cellpadding="0" cellspacing="0" border="0" width="100%"
+          <table className="container container_full" cellpadding="0" cellspacing="0" border="0" width="100%"
               style="border-collapse: collapse; min-width: 100%;" role="presentation" bgcolor="#ecba78">
               <tbody>
                   <tr>
@@ -468,24 +468,24 @@ export async function POST(req) {
                           <center style="width: 100%;">
                               <table border="0" width="600" cellpadding="0" cellspacing="0" align="center"
                                   style="width: 600px; min-width: 600px; max-width: 600px; margin: auto;"
-                                  class="email-container" role="presentation">
+                                  className="email-container" role="presentation">
                                   <tbody>
                                       <tr>
                                           <th valign="top" style="mso-line-height-rule: exactly;">
                                               <!-- BEGIN : SECTION : HEADER -->
-                                              <table class="section_wrapper header" data-id="header" id="section-header"
+                                              <table className="section_wrapper header" data-id="header" id="section-header"
                                                   border="0" width="100%" cellpadding="0" cellspacing="0" align="center"
                                                   style="min-width: 100%;" role="presentation" bgcolor="#ffffff">
                                                   <tbody>
                                                       <tr>
-                                                          <td class="section_wrapper_th"
+                                                          <td className="section_wrapper_th"
                                                               style="mso-line-height-rule: exactly; padding-top: 52px; padding-bottom: 26px;"
                                                               bgcolor="#ffffff">
                                                               <table border="0" width="100%" cellpadding="0" cellspacing="0"
                                                                   align="center" style="min-width: 100%;" role="presentation">
                                                                   <tbody>
                                                                       <tr>
-                                                                          <th class="column_logo"
+                                                                          <th className="column_logo"
                                                                               style="mso-line-height-rule: exactly; padding-top: 13px; padding-bottom: 13px;"
                                                                               align="center" bgcolor="#ffffff">
                                                                               <!-- Logo : BEGIN -->
@@ -493,7 +493,7 @@ export async function POST(req) {
                                                                                   target="_blank"
                                                                                   style="color: #c3c3c3; text-decoration: none !important; text-underline: none;">
                                                                                   <img src="https://www.galaeyelashes.in/email/logo.jpg"
-                                                                                      class="logo " width="96" border="0"
+                                                                                      className="logo " width="96" border="0"
                                                                                       style="width: 96px; height: auto !important; display: block; text-align: center; margin: auto;">
                                                                               </a>
                                                                               <!-- Logo : END -->
@@ -507,19 +507,19 @@ export async function POST(req) {
                                               </table>
                                               <!-- END : SECTION : HEADER -->
                                               <!-- BEGIN : SECTION : MAIN -->
-                                              <table class="section_wrapper main" data-id="main" id="section-main" border="0"
+                                              <table className="section_wrapper main" data-id="main" id="section-main" border="0"
                                                   width="100%" cellpadding="0" cellspacing="0" align="center"
                                                   style="min-width: 100%;" role="presentation" bgcolor="#ffffff">
                                                   <tbody>
                                                       <tr>
-                                                          <td class="section_wrapper_th"
+                                                          <td className="section_wrapper_th"
                                                               style="mso-line-height-rule: exactly;" bgcolor="#ffffff">
                                                               <table border="0" width="100%" cellpadding="0" cellspacing="0"
                                                                   align="center" style="min-width: 100%;" id="mixContainer"
                                                                   role="presentation">
                                                                   <!-- BEGIN SECTION: Heading -->
                                                                   <tbody>
-                                                                      <tr id="section-1468266" class="section heading">
+                                                                      <tr id="section-1468266" className="section heading">
                                                                           <th style="mso-line-height-rule: exactly; color: #4b4b4b; padding: 26px 52px 13px;"
                                                                               bgcolor="#ffffff">
                                                                               <table cellspacing="0" cellpadding="0"
@@ -541,7 +541,7 @@ export async function POST(req) {
                                                                       </tr>
                                                                       <!-- END SECTION: Heading -->
                                                                       <!-- BEGIN SECTION: Introduction -->
-                                                                      <tr id="section-1468267" class="section introduction">
+                                                                      <tr id="section-1468267" className="section introduction">
                                                                           <th style="mso-line-height-rule: exactly; padding: 13px 52px;"
                                                                               bgcolor="#ffffff">
       
@@ -556,7 +556,7 @@ export async function POST(req) {
       
       
                                                                               <p data-key="1468267_introduction_text"
-                                                                                  class="text"
+                                                                                  className="text"
                                                                                   style="mso-line-height-rule: exactly; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,'Karla'; font-size: 16px; line-height: 26px; font-weight: 400; color: #666363; margin: 13px 0;"
                                                                                   align="center">
                                                                               </p>
@@ -572,7 +572,7 @@ export async function POST(req) {
                                                                       <!-- END SECTION: Introduction -->
                                                                       <!-- BEGIN SECTION: Order Number And Date -->
                                                                       <tr id="section-1468270"
-                                                                          class="section order_number_and_date">
+                                                                          className="section order_number_and_date">
                                                                           <th style="mso-line-height-rule: exactly; padding: 13px 52px;"
                                                                               bgcolor="#ffffff">
                                                                               <h2 style="font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,'Karla'; color: #4b4b4b; font-size: 20px; line-height: 26px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin: 0;"
@@ -580,7 +580,7 @@ export async function POST(req) {
                                                                                   <span data-key="1468270_order_number">Order
                                                                                       No.</span> ${orderId}
                                                                               </h2>
-                                                                              <p class="muted"
+                                                                              <p className="muted"
                                                                                   style="mso-line-height-rule: exactly; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,'Karla'; font-size: 14px; line-height: 26px; font-weight: normal; color: #bdbdbd; margin: 0;"
                                                                                   align="center">${orderDate}</p>
                                                                           </th>
@@ -588,7 +588,7 @@ export async function POST(req) {
                                                                       <!-- END SECTION: Order Number And Date -->
                                                                       <!-- BEGIN SECTION: Products With Pricing -->
                                                                       <tr id="section-1468271"
-                                                                          class="section products_with_pricing">
+                                                                          className="section products_with_pricing">
       
                                                                           <!-- Bold 1 -->
       
@@ -597,13 +597,13 @@ export async function POST(req) {
                                                                           <!-- end Bold 1 -->
                                                                           <th style="mso-line-height-rule: exactly; padding: 13px 52px;"
                                                                               bgcolor="#ffffff">
-                                                                              <table class="table-inner" cellspacing="0"
+                                                                              <table className="table-inner" cellspacing="0"
                                                                                   cellpadding="0" border="0" width="100%"
                                                                                   style="min-width: 100%;"
                                                                                   role="presentation">
                                                                                   <tbody>
                                                                                       <tr>
-                                                                                          <th class="product-table"
+                                                                                          <th className="product-table"
                                                                                               style="mso-line-height-rule: exactly;"
                                                                                               bgcolor="#ffffff" valign="top">
                                                                                               <table cellspacing="0"
@@ -614,7 +614,7 @@ export async function POST(req) {
                                                                                                   <tbody>
                                                                                                       <tr>
                                                                                                           <th colspan="2"
-                                                                                                              class="product-table-h3-wrapper"
+                                                                                                              className="product-table-h3-wrapper"
                                                                                                               style="mso-line-height-rule: exactly;"
                                                                                                               bgcolor="#ffffff"
                                                                                                               valign="top">
@@ -632,9 +632,9 @@ export async function POST(req) {
       
       ${orderData.map(
         (order) =>
-          `<tr class="row-border-bottom">
+          `<tr className="row-border-bottom">
           <th
-            class="table-stack product-image-wrapper stack-column-center"
+            className="table-stack product-image-wrapper stack-column-center"
             width="1"
             style="mso-line-height-rule: exactly; border-bottom-width: 2px; border-bottom-color: #dadada; border-bottom-style: solid; padding: 13px 13px 13px 0;"
             bgcolor="#ffffff"
@@ -642,14 +642,14 @@ export async function POST(req) {
           >
             <img
               width="140"
-              class="product-image"
+              className="product-image"
               src="${order.image}"
               alt="Product Image"
               style="vertical-align: middle; text-align: center; width: 140px; max-width: 140px; height: auto !important; border-radius: 1px; padding: 0px;"
             />
           </th>
           <th
-            class="product-details-wrapper table-stack stack-column"
+            className="product-details-wrapper table-stack stack-column"
             style="mso-line-height-rule: exactly; padding-top: 13px; padding-bottom: 13px; border-bottom-width: 2px; border-bottom-color: #dadada; border-bottom-style: solid;"
             bgcolor="#ffffff"
             valign="middle"
@@ -665,7 +665,7 @@ export async function POST(req) {
               <tbody>
                 <tr>
                   <th
-                    class="line-item-description"
+                    className="line-item-description"
                     style="mso-line-height-rule: exactly; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,'Karla'; font-size: 16px; line-height: 26px; font-weight: 400; color: #666363; padding: 13px 6px 13px 0;"
                     align="left"
                     bgcolor="#ffffff"
@@ -686,7 +686,7 @@ export async function POST(req) {
                       </a>
                       <br />
                       <span
-                        class="muted"
+                        className="muted"
                         style="text-align: center; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,'Karla'; font-size: 14px; line-height: 26px; font-weight: normal; color: #bdbdbd; word-break: break-all;"
                       >
                         ${order.category}
@@ -701,7 +701,7 @@ export async function POST(req) {
                   ></th>
 
                   <th
-                    class="right line-item-qty"
+                    className="right line-item-qty"
                     width="1"
                     style="mso-line-height-rule: exactly; white-space: nowrap; padding: 13px 0 13px 13px;"
                     align="right"
@@ -716,7 +716,7 @@ export async function POST(req) {
                     </p>
                   </th>
                   <th
-                    class="right line-item-line-price"
+                    className="right line-item-line-price"
                     width="1"
                     style="mso-line-height-rule: exactly; white-space: nowrap; padding: 13px 0 13px 26px;"
                     align="right"
@@ -740,7 +740,7 @@ export async function POST(req) {
                                                                                                       
                                                                                                       <tr>
                                                                                                           <th colspan="2"
-                                                                                                              class="product-empty-row"
+                                                                                                              className="product-empty-row"
                                                                                                               style="mso-line-height-rule: exactly;"
                                                                                                               bgcolor="#ffffff"
                                                                                                               valign="top">
@@ -762,7 +762,7 @@ export async function POST(req) {
                                                                                           </th>
                                                                                       </tr>
                                                                                       <tr>
-                                                                                          <th class="pricing-table"
+                                                                                          <th className="pricing-table"
                                                                                               style="mso-line-height-rule: exactly; padding: 13px 0;"
                                                                                               bgcolor="#ffffff" valign="top">
                                                                                               <table cellspacing="0"
@@ -773,7 +773,7 @@ export async function POST(req) {
       
                                                                                                   <tbody>
                                                                                                       <tr>
-                                                                                                          <th class="table-title"
+                                                                                                          <th className="table-title"
                                                                                                               style="mso-line-height-rule: exactly; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,'Karla'; font-size: 16px; line-height: 26px; font-weight: bold; color: #666363; width: 65%; padding: 6px 0;"
                                                                                                               align="left"
                                                                                                               bgcolor="#ffffff"
@@ -783,7 +783,7 @@ export async function POST(req) {
                                                                                                                   style="font-weight: bold;">Discount</span>
                                                                                                               (${promoCode})
                                                                                                           </th>
-                                                                                                          <th class="table-text"
+                                                                                                          <th className="table-text"
                                                                                                               style="mso-line-height-rule: exactly; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,'Karla'; font-size: 16px; line-height: 26px; font-weight: 400; color: #666363; width: 35%; padding: 6px 0;"
                                                                                                               align="right"
                                                                                                               bgcolor="#ffffff"
@@ -792,14 +792,14 @@ export async function POST(req) {
                                                                                                       </tr>
       
                                                                                                       <tr>
-                                                                                                          <th class="table-title"
+                                                                                                          <th className="table-title"
                                                                                                               data-key="1468271_subtotal"
                                                                                                               style="mso-line-height-rule: exactly; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,'Karla'; font-size: 16px; line-height: 26px; font-weight: bold; color: #666363; width: 65%; padding: 6px 0;"
                                                                                                               align="left"
                                                                                                               bgcolor="#ffffff"
                                                                                                               valign="top">
                                                                                                               Subtotal</th>
-                                                                                                          <th class="table-text"
+                                                                                                          <th className="table-text"
                                                                                                               style="mso-line-height-rule: exactly; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,'Karla'; font-size: 16px; line-height: 26px; font-weight: 400; color: #666363; width: 35%; padding: 6px 0;"
                                                                                                               align="right"
                                                                                                               bgcolor="#ffffff"
@@ -808,13 +808,13 @@ export async function POST(req) {
                                                                                                       </tr>
       
                                                                                                       <tr>
-                                                                                                          <th class="table-title"
+                                                                                                          <th className="table-title"
                                                                                                               style="mso-line-height-rule: exactly; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,'Karla'; font-size: 16px; line-height: 26px; font-weight: bold; color: #666363; width: 65%; padding: 6px 0;"
                                                                                                               align="left"
                                                                                                               bgcolor="#ffffff"
                                                                                                               valign="top">
                                                                                                               Shipping</th>
-                                                                                                          <th class="table-text"
+                                                                                                          <th className="table-text"
                                                                                                               style="mso-line-height-rule: exactly; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,'Karla'; font-size: 16px; line-height: 26px; font-weight: 400; color: #666363; width: 35%; padding: 6px 0;"
                                                                                                               align="right"
                                                                                                               bgcolor="#ffffff"
@@ -824,15 +824,15 @@ export async function POST(req) {
       
       
                                                                                                       <tr
-                                                                                                          class="pricing-table-total-row">
-                                                                                                          <th class="table-title"
+                                                                                                          className="pricing-table-total-row">
+                                                                                                          <th className="table-title"
                                                                                                               data-key="1468271_total"
                                                                                                               style="mso-line-height-rule: exactly; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,'Karla'; font-size: 16px; line-height: 26px; font-weight: bold; color: #666363; width: 65%; padding: 6px 0;"
                                                                                                               align="left"
                                                                                                               bgcolor="#ffffff"
                                                                                                               valign="top">
                                                                                                               Total</th>
-                                                                                                          <th class="table-text"
+                                                                                                          <th className="table-text"
                                                                                                               style="mso-line-height-rule: exactly; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,'Karla'; font-size: 16px; line-height: 26px; font-weight: 400; color: #666363; width: 35%; padding: 6px 0;"
                                                                                                               align="right"
                                                                                                               bgcolor="#ffffff"
@@ -855,10 +855,10 @@ export async function POST(req) {
                                                                       </tr>
                                                                       <!-- END SECTION: Products With Pricing -->
                                                                       <!-- BEGIN SECTION: Payment Info -->
-                                                                      <tr id="section-1468272" class="section payment_info">
+                                                                      <tr id="section-1468272" className="section payment_info">
                                                                           <th style="mso-line-height-rule: exactly; padding: 13px 52px;"
                                                                               bgcolor="#ffffff">
-                                                                              <table class="table-inner" cellspacing="0"
+                                                                              <table className="table-inner" cellspacing="0"
                                                                                   cellpadding="0" border="0" width="100%"
                                                                                   style="min-width: 100%;"
                                                                                   role="presentation">
@@ -876,7 +876,7 @@ export async function POST(req) {
                                                                       <!-- END SECTION: Payment Info -->
                                                                       <!-- BEGIN SECTION: Customer And Shipping Address -->
                                                                       <tr id="section-1468273"
-                                                                          class="section customer_and_shipping_address">
+                                                                          className="section customer_and_shipping_address">
                                                                           <!-- BEGIN : 2 COLUMNS : BILL_TO -->
                                                                           <th style="mso-line-height-rule: exactly; padding: 13px 52px;"
                                                                               bgcolor="#ffffff">
@@ -888,7 +888,7 @@ export async function POST(req) {
                                                                                       <tr>
                                                                                           <!-- BEGIN : Column 1 of 2 : BILL_TO -->
                                                                                           <th width="50%"
-                                                                                              class="column_1_of_2 column_bill_to "
+                                                                                              className="column_1_of_2 column_bill_to "
                                                                                               style="mso-line-height-rule: exactly;"
                                                                                               align="left" bgcolor="#ffffff"
                                                                                               valign="top">
@@ -905,7 +905,7 @@ export async function POST(req) {
                                                                                           <!-- END : Column 1 of 2 : BILL_TO -->
                                                                                           <!-- BEGIN : Column 2 of 2 : SHIP_TO -->
                                                                                           <th width="50%"
-                                                                                              class="column_2_of_2 column_ship_to "
+                                                                                              className="column_2_of_2 column_ship_to "
                                                                                               style="mso-line-height-rule: exactly;"
                                                                                               align="right" bgcolor="#ffffff"
                                                                                               valign="top">
@@ -930,7 +930,7 @@ export async function POST(req) {
                                                                                                       </tr>
       
                                                                                                       <tr>
-                                                                                                          <th class="shipping_address "
+                                                                                                          <th className="shipping_address "
                                                                                                               style="mso-line-height-rule: exactly; padding-left: 5%;"
                                                                                                               align="right"
                                                                                                               bgcolor="#ffffff"
@@ -955,7 +955,7 @@ export async function POST(req) {
                                                                       </tr>
                                                                       <!-- END SECTION: Customer And Shipping Address -->
                                                                       <!-- BEGIN SECTION: Divider -->
-                                                                      <tr id="section-1468275" class="section divider">
+                                                                      <tr id="section-1468275" className="section divider">
                                                                           <th style="mso-line-height-rule: exactly; padding: 26px 52px;"
                                                                               bgcolor="#ffffff">
                                                                               <table cellspacing="0" cellpadding="0"
@@ -972,8 +972,8 @@ export async function POST(req) {
                                                                       </tr>
                                                                       <!-- END SECTION: Divider -->
                                                                       <!-- BEGIN SECTION: Closing Text -->
-                                                                      <tr id="section-1468276" class="section closing_text">
-                                                                          <th data-key="1468276_closing_text" class="text"
+                                                                      <tr id="section-1468276" className="section closing_text">
+                                                                          <th data-key="1468276_closing_text" className="text"
                                                                               style="mso-line-height-rule: exactly; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,'Karla'; font-size: 16px; line-height: 26px; font-weight: 400; color: #666363; padding: 13px 52px 52px;"
                                                                               align="center" bgcolor="#ffffff">
                                                                               <p style="mso-line-height-rule: exactly; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,'Karla'; font-size: 16px; line-height: 26px; font-weight: 400; color: #666363; margin: 0;"
@@ -984,15 +984,15 @@ export async function POST(req) {
                                                                       </tr>
                                                                       <!-- END SECTION: Closing Text -->
                                                                       <tr data-id="link-list">
-                                                                          <td class="menu_bar menu_bar_6"
+                                                                          <td className="menu_bar menu_bar_6"
                                                                               style="mso-line-height-rule: exactly; padding: 26px 0;"
                                                                               bgcolor="#ffffff">
-                                                                              <table class="table_menu_bar" border="0"
+                                                                              <table className="table_menu_bar" border="0"
                                                                                   width="100%" cellpadding="0" cellspacing="0"
                                                                                   role="presentation">
                                                                                   <tbody>
                                                                                       <tr>
-                                                                                          <th class="menu_bar_item first"
+                                                                                          <th className="menu_bar_item first"
                                                                                               style="width: 33%; mso-line-height-rule: exactly; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,'Karla'; font-size: 16px; font-weight: 400; line-height: 26px; text-transform: uppercase; color: #bdbdbd; border-right-color: #dadada; border-right-style: solid; border-left-color: #dadada; border-left-style: none; letter-spacing: 1px; border: 0;"
                                                                                               align="center"
                                                                                               bgcolor="#ffffff">
@@ -1002,7 +1002,7 @@ export async function POST(req) {
                                                                                                   Shop
                                                                                               </a>
                                                                                           </th>
-                                                                                          <th class="menu_bar_item"
+                                                                                          <th className="menu_bar_item"
                                                                                               style="width: 33%; mso-line-height-rule: exactly; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,'Karla'; font-size: 16px; font-weight: 400; line-height: 26px; text-transform: uppercase; color: #bdbdbd; border-right-color: #dadada; border-right-style: solid; border-left-color: #dadada; border-left-style: solid; letter-spacing: 1px; border: 0;"
                                                                                               align="center"
                                                                                               bgcolor="#ffffff">
@@ -1012,7 +1012,7 @@ export async function POST(req) {
                                                                                                   About Us
                                                                                               </a>
                                                                                           </th>
-                                                                                          <th class="menu_bar_item last"
+                                                                                          <th className="menu_bar_item last"
                                                                                               style="width: 33%; mso-line-height-rule: exactly; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,'Karla'; font-size: 16px; font-weight: 400; line-height: 26px; text-transform: uppercase; color: #bdbdbd; border-right-color: #dadada; border-right-style: none; border-left-color: #dadada; border-left-style: solid; letter-spacing: 1px; border: 0;"
                                                                                               align="center"
                                                                                               bgcolor="#ffffff">
@@ -1035,12 +1035,12 @@ export async function POST(req) {
                                               </table>
                                               <!-- END : SECTION : MAIN -->
                                               <!-- BEGIN : SECTION : FOOTER -->
-                                              <table class="section_wrapper footer" data-id="footer" id="section-footer"
+                                              <table className="section_wrapper footer" data-id="footer" id="section-footer"
                                                   border="0" width="100%" cellpadding="0" cellspacing="0" align="center"
                                                   style="min-width: 100%;" role="presentation" bgcolor="#ffffff">
                                                   <tbody>
                                                       <tr>
-                                                          <td class="section_wrapper_th"
+                                                          <td className="section_wrapper_th"
                                                               style="mso-line-height-rule: exactly; padding: 0 52px;"
                                                               bgcolor="#ffffff">
                                                               <table border="0" width="100%" cellpadding="0" cellspacing="0"
@@ -1061,7 +1061,7 @@ export async function POST(req) {
       
                                                                                           <!-- BEGIN : Column 2 of 2 : SHOP_BLOCK -->
                                                                                           <th width="50%"
-                                                                                              class="column_2_of_2 column_shop_block "
+                                                                                              className="column_2_of_2 column_shop_block "
                                                                                               style="mso-line-height-rule: exactly; padding-top: 26px; padding-bottom: 26px; border-top-width: 2px; border-top-color: #dadada; border-top-style: solid; border-bottom-width: 2px; border-bottom-color: #dadada; border-bottom-style: solid;"
                                                                                               align="center" bgcolor="#ffffff"
                                                                                               valign="top">
@@ -1074,7 +1074,7 @@ export async function POST(req) {
                                                                                                   <tbody>
                                                                                                       <tr style=""
                                                                                                           align="center">
-                                                                                                          <th class="column_shop_block2 "
+                                                                                                          <th className="column_shop_block2 "
                                                                                                               data-key="section_shop_block2"
                                                                                                               width="100%"
                                                                                                               style="mso-line-height-rule: exactly; padding-left: 5%; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,'Karla'; font-size: 14px; line-height: 24px; font-weight: 400; color: #a3a1a1; text-transform: none;"
@@ -1120,7 +1120,7 @@ export async function POST(req) {
                                                                                   <!-- Store Website : BEGIN -->
                                                                                   <tbody>
                                                                                       <tr>
-                                                                                          <th class="column_shop_block1 "
+                                                                                          <th className="column_shop_block1 "
                                                                                               width="100%"
                                                                                               style="mso-line-height-rule: exactly; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,'Karla'; font-size: 14px; line-height: 24px; font-weight: 400; color: #a3a1a1; text-transform: none; padding-bottom: 13px; padding-top: 26px;"
                                                                                               align="center"

@@ -13,7 +13,7 @@ export async function PUT(req) {
       lastName,
       username,
     });
-    console.log(reqData);
+    
     return NextResponse.json(reqData);
   } catch (err) {
     console.error(err);

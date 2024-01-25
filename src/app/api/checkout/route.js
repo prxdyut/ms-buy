@@ -51,7 +51,6 @@ export async function POST(req) {
       discount = (percentage / 100) * subtotal;
       if (discount > max) discount = max;
       total = total - discount;
-      console.log(max, percentage)
     }
   }
 
@@ -95,7 +94,6 @@ export async function POST(req) {
       promo: allOrderData.promo.code,
     },
   };
-  console.log(total, discount,  subtotal, allOrderData?.promo);
   try {
     const response = await razorpay.orders.create(options);
     return NextResponse.json({

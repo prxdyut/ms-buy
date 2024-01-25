@@ -6,7 +6,7 @@ import { useState } from "react";
 
 export default function EssentialList({ essentials, title }) {
   const [] = useState();
-  console.log(essentials);
+  
   return (
     <div className="flex flex-col gap-8  px-4 py-8 lg:p-8 container mx-auto">
       {title && (
