@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Background Removal</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="display: flex; justify-content: center; margin-block: 2rem">
+      <button
+        onclick="document.getElementById('fileInput').click()"
+        style="
+          padding: 0.5rem 1rem;
+          border-radius: 1rem;
+          border: 0;
+          background: black;
+          color: white;
+          text-transform: uppercase;
+          cursor: pointer;
+        "
+      >
+        Upload
+      </button>
+      <input
+        type="file"
+        id="fileInput"
+        accept="image/*"
+        style="display: none"
+      />
+      &nbsp;
+      <input
+        type="text"
+        id="toleranceInput"
+        value="25"
+        placeholder="Tolerance"
+        style="padding: 0.5rem 1rem; border-radius: 1rem"
+      />
+    </div>
+    <canvas id="canvas" style="display: none"></canvas>
+    <div style="display: flex; width: 100vw; justify-content: space-evenly">
+      <img id="output" alt="Result Image" style="height: 45vh; width: 45vw" />
+      <img id="input" alt="Uploaded Image" style="height: 45vh; width: 45vw" />
+    </div>
+    <script>
+      function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result.split(",")[1]);
+          reader.onerror = (error) => reject(error);
+          reader.readAsDataURL(file);
+        });
+      }
+      function removeBackground(img, targetColor, tolerance) {
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+        var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        var data = imageData.data;
+
+        var borderMaskColor = [226, 216, 222];
+        var borderMaskTolerance = 40;
+
+        for (var y = 0; y < canvas.height; y++) {
+          for (var x = 0; x < canvas.width; x++) {
+            if (
+              x < canvas.width * 0.1 ||
+              x > canvas.width * 0.9 ||
+              y < canvas.height * 0.1 ||
+              y > canvas.height * 0.9
+            ) {
+              var index = (y * canvas.width + x) * 4;
+              var red = data[index];
+              var green = data[index + 1];
+              var blue = data[index + 2];
+              if (
+                red >= borderMaskColor[0] - borderMaskTolerance &&
+                red <= borderMaskColor[0] + borderMaskTolerance &&
+                green >= borderMaskColor[1] - borderMaskTolerance &&
+                green <= borderMaskColor[1] + borderMaskTolerance &&
+                blue >= borderMaskColor[2] - borderMaskTolerance &&
+                blue <= borderMaskColor[2] + borderMaskTolerance
+              ) {
+                data[index + 3] = 0;
+              }
+            } else {
+              var index = (y * canvas.width + x) * 4;
+              var red = data[index];
+              var green = data[index + 1];
+              var blue = data[index + 2];
+              if (
+                red >= targetColor[0] - tolerance &&
+                red <= targetColor[0] + tolerance &&
+                green >= targetColor[1] - tolerance &&
+                green <= targetColor[1] + tolerance &&
+                blue >= targetColor[2] - tolerance &&
+                blue <= targetColor[2] + tolerance
+              ) {
+                data[index + 3] = 0;
+              }
+            }
+          }
+        }
+
+        ctx.putImageData(imageData, 0, 0);
+        document.getElementById("output").src = canvas.toDataURL();
+      }
+
+      function ManipulateImage(forceTolerance) {
+        var file = document.getElementById("fileInput").files[0];
+
+        if (file) {
+          var reader = new FileReader();
+          var inputImage = document.querySelector("img#input");
+
+          reader.onload = function (event) {
+            var img = new Image();
+            img.onload = function () {
+              var targetColor = [240, 230, 237]; // Adjust these values according to your specific color
+              var tolerance = forceTolerance || 25; // Adjust the tolerance level as per requirement
+              removeBackground(img, targetColor, tolerance);
+            };
+            img.src = event.target.result;
+          };
+          reader.readAsDataURL(file);
+
+          fileToBase64(file).then(
+            (base64String) =>
+              (inputImage.src = "data:image/png;base64," + base64String)
+          );
+        } else {
+          alert("Please Upload File");
+        }
+      }
+
+      document
+        .getElementById("fileInput")
+        .addEventListener("change", () =>
+          ManipulateImage(
+            Number(document.getElementById("toleranceInput").value) || null
+          )
+        );
+
+      document
+        .getElementById("toleranceInput")
+        .addEventListener("change", (e) =>
+          Number(e.target.value)
+            ? ManipulateImage(Number(e.target.value))
+            : alert("Please Enter a number")
+        );
+    </script>
+  </body>
+</html>
