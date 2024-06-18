@@ -52,7 +52,7 @@ export async function sendMail(data) {
      await transporter.sendMail({
       from: `"Gala Eyelashes" <business@galaeyelashes.in>`,
       to,
-      bcc: ['daspradyut516@gmail.com', 'meetbindi99@gmail.com'].join(','),
+      bcc: ['daspradyut516@gmail.com', 'meetbindi99@gmail.com'].join(', '),
       subject,
       html: `<html>
     
