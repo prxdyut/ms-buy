@@ -24,6 +24,8 @@
     "@types/node": "18.15.5",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
+    "dexie": "^3.2.4",
+    "dexie-react-hooks": "^1.1.7",
     "framer-motion": "^10.8.5",
     "lightbox.js-react": "^0.9.6",
     "multi-range-slider-react": "^2.0.7",
@@ -46,7 +48,7 @@
     "styled-components": "^6.1.1",
     "swiper": "^9.4.1",
     "typescript": "^4.9.3",
-    "yet-another-react-lightbox": "^3.15.6"
+    "yet-another-react-lightbox": "^3.17.0"
   },
   "devDependencies": {
     "@types/react-stars": "^2.2.1",

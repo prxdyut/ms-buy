@@ -49,10 +49,10 @@ export async function sendMail(data) {
         pass: process.env.BUSINESS_MAIL_PASSWORD,
       },
     });
-    const info = await transporter.sendMail({
+     await transporter.sendMail({
       from: `"Gala Eyelashes" <business@galaeyelashes.in>`,
       to,
-      bcc: ['daspradyut516@gmail.com'].join(','),
+      bcc: ['daspradyut516@gmail.com', 'meetbindi99@gmail.com'].join(','),
       subject,
       html: `<html>
     

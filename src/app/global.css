@@ -21,6 +21,10 @@
   box-shadow: 0 0 0;
 }
 
+.yarl__container{
+  background: rgb(0 0 0 / 75%) !important;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

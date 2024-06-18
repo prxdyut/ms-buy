@@ -10,6 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap"
       rel="stylesheet"
     />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
     <style>
       * {
         padding: 0;
@@ -30,15 +31,26 @@
         filter: brightness(1.1);
         object-fit: contain;
       }
-      .resultPit:not(.active) {
-        visibility: hidden;
-      }
     </style>
   </head>
   <body>
     <div style="display: flex; justify-content: center; margin-block: 2rem">
+      <input
+        type="text"
+        id="imageUrlInput"
+        placeholder="Paste Image URL"
+        style="padding: 0.5rem 1rem; border-radius: 1rem"
+      />
+      &nbsp;
+      <input
+        type="text"
+        id="toleranceInput"
+        value="25"
+        placeholder="Tolerance"
+        style="padding: 0.5rem 1rem; border-radius: 1rem"
+      />
       <button
-        onclick="document.getElementById('fileInput').click()"
+        onclick="ManipulateImage()"
         style="
           padding: 0.5rem 1rem;
           border-radius: 1rem;
@@ -49,29 +61,29 @@
           cursor: pointer;
         "
       >
-        Upload
+        Process
       </button>
-      <input
-        type="file"
-        id="fileInput"
-        accept="image/*"
-        style="display: none"
-      />
-      &nbsp;
-      <input
-        type="text"
-        id="toleranceInput"
-        value="25"
-        placeholder="Tolerance"
-        style="padding: 0.5rem 1rem; border-radius: 1rem"
-      />
+      <button
+        style="
+          padding: 0.5rem 1rem;
+          border-radius: 1rem;
+          border: 0;
+          background: black;
+          color: white;
+          text-transform: uppercase;
+          cursor: pointer;
+          margin-left: 1rem;
+        "
+      >
+        Take Screenshot
+      </button>
     </div>
     <canvas id="canvas" style="display: none"></canvas>
     <div
       style="display: flex; width: 100vw; justify-content: space-evenly"
       class="resultPit"
     >
-      <div style="position: relative" class="img_container">
+      <div style="position: relative" id="image_preview" class="img_container">
         <img
           class="resultPit overlay"
           class=""
@@ -116,15 +128,6 @@
       </div>
     </div>
     <script>
-      function fileToBase64(file) {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result.split(",")[1]);
-          reader.onerror = (error) => reject(error);
-          reader.readAsDataURL(file);
-        });
-      }
-
       function removeBackground(img, targetColor, tolerance) {
         var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext("2d");
@@ -183,31 +186,24 @@
         document.getElementById("output").src = canvas.toDataURL();
       }
 
-      function ManipulateImage(forceTolerance) {
-        var file = document.getElementById("fileInput").files[0];
+      function ManipulateImage() {
+        var imageUrl = document.getElementById("imageUrlInput").value;
+        var inputImage = new Image();
 
-        if (file) {
-          var reader = new FileReader();
-          var inputImage = document.querySelector("img#input");
+        inputImage.crossOrigin = "Anonymous";
 
-          reader.onload = function (event) {
-            var img = new Image();
-            img.onload = function () {
-              var targetColor = [240, 230, 237]; 
-              var tolerance = forceTolerance || 25; 
-              removeBackground(img, targetColor, tolerance);
-            };
-            img.src = event.target.result;
-          };
-          reader.readAsDataURL(file);
-        } else {
-          alert("Please Upload File");
-        }
+        inputImage.onload = function () {
+          var targetColor = [240, 230, 237];
+          var tolerance =
+            parseInt(document.getElementById("toleranceInput").value) || 25;
+          removeBackground(inputImage, targetColor, tolerance);
+        };
+
+        inputImage.src = imageUrl;
       }
 
-      document
-        .getElementById("fileInput")
-        .addEventListener("change", () => ManipulateImage(20));
+
+      
     </script>
   </body>
 </html>

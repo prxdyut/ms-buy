@@ -3,7 +3,7 @@ import "lightbox.js-react/dist/index.css";
 import { CustomBreadcrumb } from "@src/components/CustomBreadcrumb";
 import { AppContext } from "@src/context/AppContext";
 import { getSubstring } from "@src/helpers";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import Image from "next/image";
 import "yet-another-react-lightbox/styles.css";
 import { Quantity } from "@src/components/Quantity/Quantity";
@@ -11,6 +11,13 @@ import { AddToCartButton } from "@src/components/Cart/AddToCartButton";
 import Link from "next/link";
 import { PortableText } from "@portabletext/react";
 import { RandomProducts } from "./random";
+import { ProductImage } from "./ProductImage";
+import "yet-another-react-lightbox/plugins/thumbnails.css";
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
+import { Thumbnails } from "yet-another-react-lightbox/plugins";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
+import "yet-another-react-lightbox/styles.css";
 const items = [
   {
     name: "Products",
@@ -21,14 +28,36 @@ const items = [
     link: "/category",
   },
 ];
+function matchFrontTwoWords(str1, str2) {
+  // Split the strings into arrays of words
+  const words1 = str1.trim().split(/\s+/);
+  const words2 = str2.trim().split(/\s+/);
 
-export const ProductDetails = ({ product, variants }) => {
+  // Check if both arrays have at least two words
+  if (words1.length < 2 || words2.length < 2) {
+    return false;
+  }
+
+  // Compare the first two words
+  return words1[0] === words2[0] && words1[1] === words2[1];
+}
+export const ProductDetails = ({ product, variants, variant }) => {
   const [quantity, setQuantity] = useState(1);
   const { isAdded, addItem, resetItems, store } = useContext(AppContext);
-  const variantsNoDuplicates = (
-    Array.from(new Set(variants.map((a) => a.slug))).map((slug) => {
+  const variantsNoDuplicates = Array.from(new Set(variants.map((a) => a.slug)))
+    .map((slug) => {
       return variants.find((a) => a.slug === slug);
     })
+    .filter((_) => matchFrontTwoWords(_.name, _.mainName));
+
+  const [open, setOpen] = useState(false);
+
+  console.log(
+    [
+      product?.mainImage,
+      ...(product?.gallery?.map((image) => image?.asset?.url) || []),
+    ].map((img) => ({ type: "custom-slide", src: img })),
+    Boolean("0")
   );
   return (
     <>
@@ -51,36 +80,28 @@ export const ProductDetails = ({ product, variants }) => {
         <div className="grid grid-cols-1 lg:grid-cols-3">
           <div className=" grid max-lg:overflow-x-auto max-lg:grid-flow-col lg:grid-cols-2 lg:col-span-2 gap-4">
             {product?.mainImage && (
-              <Link
-                href={product?.mainImage || ""}
-                target="_blank"
+              <div
+                // href={product?.mainImage || ""}
+                // target="_blank"
+                onClick={() => setOpen("0")}
                 className="relative w-[75vw] lg:w-full aspect-square rounded"
               >
-                <Image
-                  src={product?.mainImage}
-                  alt={product?.name}
-                  fill
-                  objectFit="cover"
-                  className="bg-grey"
-                />
-              </Link>
+                <ProductImage name={product?.name} image={product?.mainImage} />
+              </div>
             )}
             {product?.gallery?.length > 0 &&
               product?.gallery?.map((image, i) => (
-                <Link
-                  href={image?.asset?.url || ""}
-                  target="_blank"
+                <div
+                  // href={image?.asset?.url || ""}
+                  // target="_blank"
+                  onClick={() => setOpen(`${i + 1}`)}
                   className="relative w-[75vw] lg:w-full aspect-square rounded"
                 >
-                  <Image
-                    key={i}
-                    src={image?.asset?.url}
-                    alt={product.name}
-                    fill
-                    objectFit="cover"
-                    className="bg-grey"
+                  <ProductImage
+                    name={product?.name}
+                    image={image?.asset?.url}
                   />
-                </Link>
+                </div>
               ))}
           </div>
           <div className="px-0 lg:px-12 mt-4">
@@ -93,10 +114,15 @@ export const ProductDetails = ({ product, variants }) => {
               <div className=" flex items-end gap-2">
                 <div className=" text-3xl">₹ {product?.price}</div>
                 <div className=" text-xl opacity-60 line-through">
-                  ₹ {product?.mrp}
+                  {!!("₹ " + product?.mrp)}
                 </div>
                 <div className=" font-semibold">
-                  {parseInt(100 - (product?.price / product?.mrp) * 100)}% Off
+                  {
+                    !!(
+                      parseInt(100 - (product?.price / product?.mrp) * 100) +
+                      " % Off"
+                    )
+                  }
                 </div>
               </div>
               <div className=" py-4 flex gap-2 flex-wrap">
@@ -181,7 +207,24 @@ export const ProductDetails = ({ product, variants }) => {
           </div>
         </div>
       </div>
-      <RandomProducts />
+      <Lightbox
+        open={Boolean(open)}
+        index={Number(open)}
+        close={() => setOpen(false)}
+        slides={[
+          product?.mainImage,
+          ...(product?.gallery?.map((image) => image?.asset?.url) || []),
+        ].map((img) => ({ type: "custom-slide", src: img }))}
+        plugins={[Thumbnails, Zoom]}
+        render={{
+          thumbnail: ({ slide }) =>
+            slide.type === "custom-slide" ? <img src={slide.src} /> : undefined,
+          slide: ({ slide }) =>
+            slide.type === "custom-slide" ? (
+              <ProductImage name={product?.name} image={slide.src} />
+            ) : undefined,
+        }}
+      />
     </>
   );
 };

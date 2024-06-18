@@ -20,7 +20,7 @@ export async function generateMetadata({ params }, parent) {
   };
 }
 
-export default async function ProductDetailsPage({ params: { slug } }) {
+export default async function ProductDetailsPage({ params: { slug }, searchParams }) {
   const query1 = groq`
 *[_type == "product" && slug.current == $slug][0] {
   ...,
@@ -58,6 +58,6 @@ export default async function ProductDetailsPage({ params: { slug } }) {
   const variants = getVariantsFor(product)
     ? await client.fetch(query2, { variant: getVariantsFor(product) })
     : [];
-
-  return <ProductDetails product={product} variants={variants} />;
+    
+  return <ProductDetails product={product} variants={variants} variant={getVariantsFor(product)} />;
 }

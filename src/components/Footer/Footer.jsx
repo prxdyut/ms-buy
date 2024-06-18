@@ -12,7 +12,7 @@ export const Footer = () => {
   const { store } = useContext(AppContext);
 
   return (
-    <div className=" flex flex-col ">
+    <div className=" flex flex-col">
       <div className=" grid grid-cols-2 lg:grid-cols-5 gap-4 py-8 pt-12 bg-black text-white px-8">
         <div>
           <Link href="/" className="flex w-[60] lg:w-[-webkit-fill-available] lg:h-10 relative h-6">

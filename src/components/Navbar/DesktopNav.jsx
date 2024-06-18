@@ -68,7 +68,7 @@ export function DesktopNav({ categories: CATEGORIES, topText }) {
               <Cart />
             </div>
             <ul className="container flex gap-6 w-100 align-middle items-center justify-center">
-              {CATEGORIES.map(({ name, slug }, index) => {
+              {CATEGORIES.slice(0,5).map(({ name, slug }, index) => {
                 const [hover, setHover] = useState(false);
                 return (
                   <React.Fragment key={index}>

@@ -102,7 +102,7 @@ export default async function Home() {
         frameborder="0"
         marginheight="0"
         marginwidth="0"
-        className=" w-full h-[70vh] lg:h-[72vh]"
+        className=" w-full lg:h-[37rem] max-sm:h-[38rem] sm:h-[42rem] h-[30rem]"
       ></iframe>
     </main>
   );

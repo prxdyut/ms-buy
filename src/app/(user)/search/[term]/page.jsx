@@ -1,6 +1,7 @@
 "use client";
 import { client } from "@utils/sanity.client";
 import { groq } from "next-sanity";
+import { FaSort } from "react-icons/fa";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ProductCard } from "../../../../components/ProductCard";
@@ -8,31 +9,47 @@ import { SectionHeading } from "../../../../components/SectionHeading";
 import { GoArrowRight } from "react-icons/go";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Loading } from "../../../../components/Loading/Loading";
+import { Sort } from "@/components/Search/Sort";
 
 import MultiRangeSlider from "multi-range-slider-react";
 
 export const revalidate = 2; // revalidate this page every 60 seconds
 
-const query = groq`
-    *[_type == "product" && (name match $searchText || description match $searchText) ] {
-      ...,
-      "id": _id,
-      "slug": slug.current,
-        "mainImage": mainImage.asset->url,
-        category->{
-            name,
-            "id": _id,
-            "image": image.asset->url,
-            "slug": slug.current,
-        },
-        "gallery": gallery[].asset->url
-    }
-`;
-
-export default function SearchPage({ params: { term } }) {
+export default function SearchPage({
+  params: { term },
+  searchParams: sParams,
+}) {
+  console.log(sParams);
   const [isLoading, setIsLoading] = useState(false);
   const [products, setProducts] = useState([]);
-  const [sidebarIsOpen, setSidebarisOpen] = useState(false);
+  const [filterIsOpen, setfilterIsOpen] = useState(false);
+  const [sortIsOpen, setSortIsOpen] = useState(false);
+
+  const query = groq`
+*[_type == "product" && (name match $searchText || description match $searchText) ] ${
+    sParams.sort == "price_low_to_high"
+      ? "| order(price asc)"
+      : sParams.sort == "price_high_to_low"
+      ? "| order(price desc)"
+      : sParams.sort == "alphabetical_a_to_z"
+      ? "| order(name asc)"
+      : sParams.sort == "alphabetical_z_to_a"
+      ? "| order(name desc)"
+      : ""
+  } {
+  ...,
+  "id": _id,
+  "slug": slug.current,
+    "mainImage": mainImage.asset->url,
+    category->{
+        name,
+        "id": _id,
+        "image": image.asset->url,
+        "slug": slug.current,
+    },
+    "gallery": gallery[].asset->url
+}
+`;
 
   const fetchProducts = async (term) => {
     setIsLoading(true);
@@ -45,7 +62,7 @@ export default function SearchPage({ params: { term } }) {
 
   useEffect(() => {
     fetchProducts(decodeURI(term));
-  }, [term]);
+  }, [term, sParams]);
 
   const categories = Object.values(
     products.reduce((uniqueMap, obj) => {
@@ -53,7 +70,6 @@ export default function SearchPage({ params: { term } }) {
       return uniqueMap;
     }, {})
   ).map(({ category }) => category);
-
 
   const router = useRouter();
   const pathname = usePathname();
@@ -98,7 +114,7 @@ export default function SearchPage({ params: { term } }) {
   const sidebar = (
     <div
       className={`bg-white w-full  overflow-hidden flex flex-col p-4 gap-4 ${
-        sidebarIsOpen ? " h-full" : " h-0"
+        filterIsOpen ? " h-full" : " h-0"
       }`}
     >
       <div className="">
@@ -120,7 +136,8 @@ export default function SearchPage({ params: { term } }) {
                 }
               }}
               className={` cursor-pointer ${
-                searchParams.get("category") == category?.slug && "font-semibold"
+                searchParams.get("category") == category?.slug &&
+                "font-semibold"
               }`}
               key={i}
             >
@@ -180,12 +197,57 @@ export default function SearchPage({ params: { term } }) {
             setMaxValue(
               `${Math.max(...filteredProducts.map(({ price }) => price))}`
             );
-            setSidebarisOpen(false);
+            setfilterIsOpen(false);
           }}
           className="text-sm bg-black text-white px-3 py-2 rounded "
         >
           Clear Filters
         </Link>
+      </div>
+    </div>
+  );
+
+  const sortItems = [
+    "Price: Low to High",
+    "Price: High to Low",
+    "Relevance: Product Search",
+    "Alphabetical: A to Z",
+    "Alphabetical: Z to A",
+  ];
+
+  const sort = (
+    <div
+      className={`bg-white w-full   overflow-hidden flex flex-col p-4 gap-4 ${
+        sortIsOpen ? " h-full" : " h-0"
+      }`}
+    >
+      <div className="">
+        <p className=" text-xl font-semibold">Sort</p>
+        <ul className="pt-2">
+          {sortItems.map((item, i) => (
+            <li
+              onClick={(e) => {
+                router.push(
+                  pathname +
+                    "?" +
+                    createQueryString(
+                      "sort",
+                      item
+                        .toLowerCase()
+                        .replaceAll(" ", "_")
+                        .replaceAll(":_", "_")
+                    )
+                );
+              }}
+              className={` cursor-pointer ${
+                searchParams.get("sort") == item && "font-semibold"
+              }`}
+              key={i}
+            >
+              {item}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
@@ -198,7 +260,13 @@ export default function SearchPage({ params: { term } }) {
       </div>
       <div className=" flex justify-end">
         <button
-          onClick={() => setSidebarisOpen(!sidebarIsOpen)}
+          onClick={() => setSortIsOpen(!sortIsOpen)}
+          className="bg-grey uppercase   text-black pl-4 pr-12 pb-4 py-2 text-left flex flex-row items-center justify-center gap-4"
+        >
+          Sort <FaSort />
+        </button>
+        <button
+          onClick={() => setfilterIsOpen(!filterIsOpen)}
           className="bg-grey uppercase   text-black pl-4 pr-12 pb-4 py-2 text-left flex flex-row items-center justify-center gap-4"
         >
           Filters <GoArrowRight />
@@ -208,26 +276,30 @@ export default function SearchPage({ params: { term } }) {
       <div className="flex flex-col lg:flex-row">
         <div
           className={` hidden max-lg:block bg-white  transition-all  ${
-            sidebarIsOpen
+            filterIsOpen || sortIsOpen
               ? "w-full h-full p-4"
               : "w-full h-0 p-0 mr-[-8px] opacity-0"
           }`}
         >
-          {sidebar}
+          {sortIsOpen && sort}
+          {filterIsOpen && sidebar}
         </div>
         <div
           className={`transition-all ${
-            sidebarIsOpen ? "w-full lg:w-5/6" : "w-full"
+            filterIsOpen || sortIsOpen ? "w-full lg:w-5/6" : "w-full"
           }`}
         >
           <SearchedProductList products={filteredProducts} />
         </div>
         <div
           className={` hidden lg:block bg-white  transition-all  ${
-            sidebarIsOpen ? "w-1/6 p-4" : "w-0 p-0 mr-[-8px] opacity-0"
+            filterIsOpen || sortIsOpen
+              ? "w-1/6 p-4"
+              : "w-0 p-0 mr-[-8px] opacity-0"
           }`}
         >
-          {sidebar}
+          {sortIsOpen && sort}
+          {filterIsOpen && sidebar}
         </div>
       </div>
     </div>
@@ -241,7 +313,7 @@ const SearchedProductList = ({ products }) => {
     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 bg-white  gap-4 p-4 lg:p-8">
       {products.length > 0 ? (
         products.map((product) => (
-          <ProductCard product={product} key={product.id} variant={"compact"} />
+          product.price ? <ProductCard product={product} key={product.id} variant={"compact"} /> : null
         ))
       ) : (
         <p>
